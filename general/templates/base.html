@@ -87,7 +87,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="../../index.html">Registro Consejeria Pre Prueba</a></li>
+            <li><a href="{% url 'pre_prueba_vih' %}">Registro Consejeria Pre Prueba</a></li>
             <li><a href="../../index2.html"> Registro de Pruebas</a></li>
             <li><a href="../../index2.html"> Registro Consejeria Post-Prueba</a></li>
             <li><a href="../../index2.html"> Retroalimentacion del Formulario</a></li>
@@ -145,21 +145,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="../../index.html"><i class="fa fa-circle-o"></i> Accion 1</a></li>
-            <li><a href="../../index2.html"><i class="fa fa-circle-o"></i> Accion 2</a></li>
-          </ul>
-        </li>
-
-        <li class="treeview">
-          <a href="#">
-          <i class="fa fa-circle-o"></i>
-            <span>PARAMETRIZACION</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="../../index.html"><i class="fa fa-circle-o"></i> Accion 1</a></li>
+            <li><a href="{% url 'crear_usuario' %}"><i class="fa fa-circle-o"></i> Usuarios</a></li>
             <li><a href="../../index2.html"><i class="fa fa-circle-o"></i> Accion 2</a></li>
           </ul>
         </li>
@@ -210,13 +196,8 @@
 <!-- AdminLTE App -->
 <script src="{% static 'js/app.min.js' %}"></script>
 
-<script type="text/javascript">
-$(document).ready(function(){
-  console.log('kahdkajshdkajshdkjsahkdj')
-   $('.user-panel>.info').css({ 'position' : ''});
-})
-   
-</script>
+{% block js %}
+        {% endblock %}
 
  <style type="text/css">
     .user-panel>.info{

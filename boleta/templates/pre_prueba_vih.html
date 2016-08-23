@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load bootstrap %}
+
+
+{% block contenido %}
+<script src="{% static 'js/jquery-2.2.3.min.js' %}"></script>
+<script src="{% static 'plugins/input-mask/jquery.inputmask.js' %}"></script>
+<script src="{% static 'plugins/input-mask/jquery.inputmask.date.extensions.js' %}"></script>
+<script src="{% static 'plugins/input-mask/jquery.inputmask.extensions.js' %}"></script>
+
+<div class="box box-primary">
+  <div class="box-header with-border">
+    <h3 class="box-title">Consejería Pre Prueba</h3>
+  </div>
+  <!-- /.box-header -->
+  <!-- form start -->
+  <form role="form" class="form-horizontal"  method="POST">
+    {% csrf_token %}
+    <div class="box-body">
+        {% if exito %}
+          <div class="alert alert-success" role="alert"> 
+            Se guardaron los datos correctamente 
+          </div>
+        {% endif %}
+        <div class="form-group">
+          <label for="inputEmail3" class="col-sm-2 control-label">Identidad</label>
+          <div class="col-sm-3">
+            <input type="text" class="form-control" id='identidad' data-inputmask='"mask": "9999-9999-99999"' data-mask>
+          </div>
+        </div>
+        {{formulario|bootstrap_horizontal  }}
+    </div>
+    <!-- /.box-body -->
+
+    <div class="box-footer">
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+  </form>
+</div>
+
+<script type="text/javascript">
+  //LAS MASCARAS
+  $(":input").inputmask();
+
+  //BUSQUEDA DE IDENTIDAD
+  $('#identidad').keypress(function (e) {
+      event.preventDefault();
+      
+      var key = e.which;
+      if(key == 13){
+        console.log('alsjdlaksjdlakjdlkajdlajsdkasldjals')
+      }
+  }); 
+
+</script>
+
+{% endblock %}

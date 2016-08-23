@@ -37,6 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'bootstrapform',
+    
+    'general',
+    'boleta',
 ]
 
 MIDDLEWARE = [
@@ -54,7 +59,10 @@ ROOT_URLCONF = 'usaid.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'general', 'templates')],
+        'DIRS': [
+                os.path.join(BASE_DIR, 'general', 'templates'),
+                os.path.join(BASE_DIR, 'boleta', 'templates'),
+                ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
