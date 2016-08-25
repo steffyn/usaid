@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'bootstrapform',
-    
+
     'general',
     'boleta',
 ]
@@ -83,7 +83,7 @@ WSGI_APPLICATION = 'usaid.wsgi.application'
 
 DATABASES = {
     'default': {
-        'NAME': 'usaid',
+        'NAME': 'usaid2',
         'ENGINE': 'sql_server.pyodbc',
         'HOST': 'DESKTOP-83M0N9S',
         'USER': 'usaid',

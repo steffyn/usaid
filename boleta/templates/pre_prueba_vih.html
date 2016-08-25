@@ -4,10 +4,17 @@
 
 
 {% block contenido %}
+<link rel="stylesheet" href="{% static 'plugins/select2/select2.css' %}">
+<link rel="stylesheet" href="{% static 'plugins/daterangepicker/daterangepicker.css' %}">
+
+
 <script src="{% static 'js/jquery-2.2.3.min.js' %}"></script>
 <script src="{% static 'plugins/input-mask/jquery.inputmask.js' %}"></script>
 <script src="{% static 'plugins/input-mask/jquery.inputmask.date.extensions.js' %}"></script>
 <script src="{% static 'plugins/input-mask/jquery.inputmask.extensions.js' %}"></script>
+<script src="{% static 'plugins/select2/select2.min.js' %}"></script>
+<script src="{% static 'plugins/daterangepicker/moment.min.js' %}"></script>
+<script src="{% static 'plugins/daterangepicker/daterangepicker.js' %}"></script>
 
 <div class="box box-primary">
   <div class="box-header with-border">
@@ -23,36 +30,329 @@
             Se guardaron los datos correctamente 
           </div>
         {% endif %}
-        <div class="form-group">
-          <label for="inputEmail3" class="col-sm-2 control-label">Identidad</label>
-          <div class="col-sm-3">
-            <input type="text" class="form-control" id='identidad' data-inputmask='"mask": "9999-9999-99999"' data-mask>
+        <p>
+          Datos Generales de la Persona Usuaria de los Servicios
+        </p>
+        
+
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="inputEmail3" class="col-sm-4 control-label">Identidad</label>
+              <div class="col-sm-8 form-inline">
+                <input type="text" class="form-control" id='identidad' data-inputmask='"mask": "9999-9999-99999"' data-mask>
+                <input type="checkbox" id="no_identidad"> No tiene Identidad
+              </div>
+            </div>
+            {{formulario|bootstrap_horizontal:'col-md-4'  }}
           </div>
         </div>
-        {{formulario|bootstrap_horizontal  }}
+
+        <div id="encargados" style='display: none'>
+             <p class="page-header"></p>
+            <p> Padres y/o Encargados </p>
+            <div class="row">
+              <div class="col-sm-6">
+                <label class="control-label">DATOS MADRE</label>
+                 <br>
+                 <br>
+                {{formulario2.identidad_madre|bootstrap_horizontal:'col-md-4'  }}
+                {{formulario2.nombre_madre|bootstrap_horizontal:'col-md-4'  }}
+                {{formulario2.telefono_madre|bootstrap_horizontal:'col-md-4'  }}
+
+                 <label class="control-label">DATOS PADRE</label>
+                 <br>
+                 <br>
+                {{formulario2.identidad_padre|bootstrap_horizontal:'col-md-4'  }}
+                {{formulario2.nombre_padre|bootstrap_horizontal:'col-md-4'  }}
+                {{formulario2.telefono_padre|bootstrap_horizontal:'col-md-4'  }}
+
+                 <label class="control-label">DATOS ENCARGADO</label>
+                 <br>
+                 <br>
+                {{formulario2.identidad_tutor|bootstrap_horizontal:'col-md-4'  }}
+                {{formulario2.nombre_tutor|bootstrap_horizontal:'col-md-4'  }}
+                {{formulario2.telefono_tutor|bootstrap_horizontal:'col-md-4'  }}
+                {{formulario2.direccion_tutor|bootstrap_horizontal:'col-md-4'  }}
+              </div>
+          </div>
+        </div>
+       
+
+        <p class="page-header"></p>
+        <div class="row">
+              <div class="col-sm-12">
+                <div class="alert alert-info text-center">
+
+                  <b> Número de Expediente Clínico o Código Identificador Único  <br> <span id="expediente">  </span>  </b>
+                </div>
+              </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-2">
+              <label class="control-label col-md-4 pull-right">Edad</label>
+            </div>
+            <div class="col-sm-2">
+              {{formulario2.edad_anios|bootstrap_horizontal:'col-md-4' }}
+            </div>
+            <div class="col-sm-2">
+              {{formulario2.edad_meses|bootstrap_horizontal:'col-md-4' }}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              {{formulario2.pseudonimo|bootstrap_horizontal:'col-md-4'  }}
+              {{formulario2.telefono_fijo|bootstrap_horizontal:'col-md-4'  }}
+              {{formulario2.telefono_celular|bootstrap_horizontal:'col-md-4'  }}
+              {{formulario2.ocupacion|bootstrap_horizontal:'col-md-4'  }}
+              {{formulario2.actividad_economica|bootstrap_horizontal:'col-md-4'  }}
+              {{formulario2.estado_civil|bootstrap_horizontal:'col-md-4'  }}
+            </div>
+          </div>
+
+
+
+          <p class="page-header"></p>
+          <p> Dirección Actual </p>
+          <div class="row">
+            <div class="col-sm-6">
+              {{formulario2.departamento|bootstrap_horizontal:'col-md-4'  }}
+              <div class="form-group">
+                <label for="id_municipio" class="col-md-4 control-label">Municipio</label>
+                <div class="col-md-8">
+                    <select class="form-control" id="id_municipio" name="municipios">
+                        <option value="">---------------</option>
+                    </select>
+                    {{ formulario2.municipio.errors }}
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="id_ciudad" class="col-md-4 control-label">Ciudad</label>
+                <div class="col-md-8">
+                    <select class="form-control" id="id_ciudad" name="ciudades">
+                        <option value="">---------------</option>
+                    </select>
+                    {{ formulario2.aldea.errors }}
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="id_barrio" class="col-md-4 control-label">Barrio</label>
+                <div class="col-md-8">
+                    <select class="form-control" id="id_barrio" name="barrios">
+                        <option value="">---------------</option>
+                    </select>
+                    {{ formulario2.barrio.errors }}
+                </div>
+              </div>
+
+              {{formulario2.calle|bootstrap_horizontal:'col-md-4'  }}
+              {{formulario2.bloque|bootstrap_horizontal:'col-md-4'  }}
+              {{formulario2.numero_casa|bootstrap_horizontal:'col-md-4'  }}
+              {{formulario2.referencias|bootstrap_horizontal:'col-md-4'  }}
+              {{formulario2.poblacion|bootstrap_horizontal:'col-md-4'  }}
+              {{formulario2.grupo_etnico|bootstrap_horizontal:'col-md-4'  }}
+              {{formulario2.condiciones|bootstrap_horizontal:'col-md-4'  }}
+              <div style="display:none">
+                  {{formulario2.fecha_ultima_menstruacion|bootstrap_horizontal:'col-md-4'  }}
+              </div>
+            </div>
+          </div>
+
+          <p class="page-header"></p>
+          <p> Dirección Actual </p>
+          <div class="row">
+            <div class="col-sm-6">
+              {{formulario3|bootstrap_horizontal:'col-md-4'  }}
+            </div>
+          </div>
+
     </div>
     <!-- /.box-body -->
 
     <div class="box-footer">
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="submit" class="btn btn-primary">Guardar</button>
     </div>
   </form>
 </div>
 
 <script type="text/javascript">
-  //LAS MASCARAS
+  //LOS PLUGINS
   $(":input").inputmask();
+  $("select").select2();
+  moment.locale('es');
+  $('#id_fecha_consejeria, #id_fecha_ultima_menstruacion, #id_fecha_nacimiento').daterangepicker({
+        autoUpdateInput: false,
+        singleDatePicker: true,
+        showDropdowns: true,
+        locale: {
+          format: 'DD-MM-YYYY',
+          daysOfWeek: [
+            "Do",
+            "Lu",
+            "Ma",
+            "Mi",
+            "Ju",
+            "Vi",
+            "Sa"
+        ],
+        monthNames: [
+            "Enero",
+            "Febrero",
+            "Marzo",
+            "Abril",
+            "Mayo",
+            "Junio",
+            "Julio",
+            "Agosto",
+            "Septiembre",
+            "Octubre",
+            "Noviembre",
+            "Diciembre"
+        ],
+        },
+    },
+    function(start, end, label) {
+        var years = moment().diff(start, 'years');
+        //alert("You are " + years + " years old.");
+    });
+
+  $("#id_telefono_fijo, #id_telefono_celular, #id_telefono_madre, #id_telefono_padre, #id_telefono_tutor").inputmask("9999-9999");
+
+  $("#id_identidad_madre, #id_identidad_padre, #id_identidad_tutor").inputmask("9999-9999=99999");
 
   //BUSQUEDA DE IDENTIDAD
   $('#identidad').keypress(function (e) {
       event.preventDefault();
-      
+      identidad = $(this).val().replace('-', '');
+      identidad = identidad.replace('-', '')
       var key = e.which;
       if(key == 13){
-        console.log('alsjdlaksjdlakjdlkajdlajsdkasldjals')
+        $.ajax({
+          url: "{% url 'pre_prueba_vih' %}",
+          data: { 
+                  identidad: identidad
+                }
+        })
+          .done(function( persona ) {
+            if (persona==false){
+
+            }else{
+              console.log(persona.sexo)
+              $('#id_primer_nombre').val(persona.primer_nombre)
+              $('#id_segundo_nombre').val(persona.segundo_nombre)
+              $('#id_primer_apellido').val(persona.primer_apellido)
+              $('#id_segundo_apellido').val(persona.segundo_apellido)
+              $('#id_fecha_nacimiento').val(persona.fecha_nacimiento)
+              $('#id_sexo_'+(persona.sexo-1)).prop('checked', true)
+
+              //CALCULO DE EDAD
+              edad = $('#id_fecha_nacimiento').val().split("-");
+              var mes = edad[1];
+              var anio = edad[0];
+              var anio_actual = new Date().getFullYear();
+              var edad_anios = anio_actual - anio;
+              var mes_actual = new Date().getMonth()+1;
+              var edad_mes = mes_actual - mes;
+                
+              if (edad_mes < 0){
+                  if (edad_mes > 0){
+                     edad_anios = edad_anios-1
+                     edad_mes = ((12-mes)+mes_actual)
+                  }
+                }
+
+              $('#id_edad_anios').val(edad_anios)
+              $('#id_edad_meses').val(edad_mes)
+
+              if(parseInt(edad_anios)<18){
+                $('#encargados').show().fadeIn();
+              }else{
+                $('#encargados').hide().fadeOut();
+              }
+
+              expediente = identidad + '-' + persona.fecha_nacimiento + '-' + persona.sexo
+              $('#expediente').text(btoa(expediente))
+            }
+          });
       }
   }); 
 
+
+//ESTA SECCION ES DE LOS SELECT DE DEPTO; MUNICIPIO; DEPARTAMENTO DE CONCURSO
+    function ajaxsace(tabla, valor, select){
+       $('#' + select).empty();
+      $('#' + select).append("<option value=''>---------------</option>");
+      valor= $('#'+valor).val()
+      $.ajax({
+        type: "GET",
+        data:
+          { tabla: tabla, valor: valor },
+        url: "/boleta/ajax/",
+        success: function(msg)
+        {
+          $.each(msg, function(key, val)
+          {
+            $('#' + select).append("<option value="+val.id+">" + '' + val.codigo + ' | ' + val.nombre + "</option>");
+          });
+          $('#' + select).trigger("chosen:updated");
+        }
+      });
+    }
+    
+    if ($('#id_departamento').val() != ''){
+      ajaxsace('municipio', 'id_departamento', 'id_municipio' )
+    }
+
+    $('#id_departamento').change(function(){
+      ajaxsace('municipio', 'id_departamento', 'id_municipio' )
+    })
+
+    $('#id_municipio').change(function(){
+      ajaxsace('ciudad', 'id_municipio', 'id_ciudad' )
+    })
+
+    $('#id_ciudad').change(function(){
+      ajaxsace('barrio', 'id_ciudad', 'id_barrio' )
+    })
+
+//NO IDENTIDAD
+$('#no_identidad').change(function(){
+  no_identidad = $(this).prop('checked')
+  if (no_identidad == true){
+    $('#id_primer_nombre').prop('readonly', false).val('')
+    $('#id_segundo_nombre').prop('readonly', false).val('')
+    $('#id_primer_apellido').prop('readonly', false).val('')
+    $('#id_segundo_apellido').prop('readonly', false).val('')
+    $('#id_fecha_nacimiento').prop('disabled', false).val('')
+    $('#id_edad_anios').val('')
+    $('#id_edad_meses').val('')
+    $('#expediente').text('')
+
+  }else{
+    $('#id_primer_nombre').prop('readonly', true).val('')
+    $('#id_segundo_nombre').prop('readonly', true).val('')
+    $('#id_primer_apellido').prop('readonly', true).val('')
+    $('#id_segundo_apellido').prop('readonly', true).val('')
+    $('#id_fecha_nacimiento').prop('disabled', true).val('')
+    $('#id_edad_anios').val('')
+    $('#id_edad_meses').val('')
+    $('#expediente').text('')
+  }
+  
+})
+
+//NO IDENTIDAD
+$('input[name=sexo]').change(function(){
+  genero = $(this).val()
+  console.log(genero)
+  if (genero == '1'){
+    $('#id_condiciones').find('option[text="CONDICION 1"]').hide();
+    console.log('akjshdkajhdskjashdkajhsdkj')
+  }
+  
+})
 </script>
 
 {% endblock %}

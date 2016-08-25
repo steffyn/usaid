@@ -81,6 +81,8 @@ class RPN(models.Model):
 class ActividadesEconomicas(models.Model):
 	nombre = models.CharField(max_length=255)
 	activa = models.BooleanField(default=True)
+	def __unicode__(self):
+		return u'%s' % (self.nombre)
 
 class Establecimientos(models.Model):
     codigo = models.CharField(max_length=10, blank=True, null=True)
@@ -113,3 +115,18 @@ class Responsables(models.Model):
 
     def __unicode__(self):
 		return u'%s %s' % (self.nombres, self.primer_apellido)
+
+class GruposEtnicos(models.Model):
+    nombre = models.CharField(max_length=50) 
+    activo = models.BooleanField(default=True) 
+    def __unicode__(self):
+		return u'%s' % (self.nombre)
+
+class Poblaciones(models.Model):
+    nombre = models.CharField(max_length=50)
+    orden = models.IntegerField()
+    activo = models.BooleanField(default=True)
+
+    def __unicode__(self):
+		return u'%s' % (self.nombre)
+
