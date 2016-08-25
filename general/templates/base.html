@@ -58,7 +58,7 @@
           </li>
           <!-- Control Sidebar Toggle Button -->
           <li>
-            <a href="#" data-toggle="control-sidebar">Cerrar Sesion</a>
+            <a href="{% url 'cerrar_sesion' %}">Cerrar Sesion</a>
           </li>
         </ul>
       </div>
@@ -89,8 +89,7 @@
           <ul class="treeview-menu">
             <li><a href="{% url 'pre_prueba_vih' %}">Registro Consejeria Pre Prueba</a></li>
             <li><a href="{% url 'prueba_vih' %}"> Registro de Pruebas</a></li>
-            <li><a href="../../index2.html"> Registro Consejeria Post-Prueba</a></li>
-            <li><a href="../../index2.html"> Retroalimentacion del Formulario</a></li>
+            <li><a href="{% url 'post_prueba_vih' %}"> Registro Consejeria Post-Prueba</a></li>
           </ul>
         </li>
         <li class="treeview">
@@ -134,21 +133,21 @@
             <li><a href="../../index2.html"><i class="fa fa-circle-o"></i> Accion 2</a></li>
           </ul>
         </li>
-
-        <li class="header">ADMINISTRATIVO</li>
-        <li class="treeview">
-          <a href="#">
-          <i class="fa fa-circle-o"></i>
-            <span>SEGURIDAD</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="{% url 'crear_usuario' %}"><i class="fa fa-circle-o"></i> Usuarios</a></li>
-            <li><a href="../../index2.html"><i class="fa fa-circle-o"></i> Accion 2</a></li>
-          </ul>
-        </li>
+        {% if perms.user.add_user %}
+          <li class="header">ADMINISTRATIVO</li>
+          <li class="treeview">
+            <a href="#">
+            <i class="fa fa-circle-o"></i>
+              <span>SEGURIDAD</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              <li><a href="{% url 'crear_usuario' %}">Usuarios</a></li>
+            </ul>
+          </li>
+        {% endif %}
       </ul>
     </section>
     <!-- /.sidebar -->
@@ -197,7 +196,7 @@
 <script src="{% static 'js/app.min.js' %}"></script>
 
 {% block js %}
-        {% endblock %}
+{% endblock %}
 
  <style type="text/css">
     .user-panel>.info{

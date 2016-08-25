@@ -1,16 +1,20 @@
 
 from __future__ import unicode_literals
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import *
 from django.template import RequestContext
 from django.urls import reverse
+from django.contrib.auth import authenticate, login as auth_login, logout
 
 from django.contrib.auth.decorators import login_required
 from django.db import transaction, IntegrityError
-
-
 from general.forms import *
+
+def cerrar_sesion(request):
+	logout(request)
+	return redirect('login')
+
 def login(request):
 	ctx = {}
 	logout(request)
@@ -22,7 +26,7 @@ def login(request):
 		if user is not None:
 			if user.is_active:
 				auth_login(request, user)
-				return HttpResponseRedirect(reverse('principal'))
+				return HttpResponseRedirect(reverse('pre_prueba_vih'))
 		else:
 			ctx = {
 				'error': True,

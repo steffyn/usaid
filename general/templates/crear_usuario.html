@@ -4,9 +4,12 @@
 
 
 {% block contenido %}
+<link rel="stylesheet" href="{% static 'plugins/daterangepicker/daterangepicker.css' %}">
+
+
 <script src="{% static 'js/jquery-2.2.3.min.js' %}"></script>
-<link rel="stylesheet" href="{% static 'plugins/datepicker/datepicker3.css' %}">
-<script src="{% static 'plugins/datepicker/bootstrap-datepicker.js' %}"></script>
+<script src="{% static 'plugins/daterangepicker/moment.min.js' %}"></script>
+<script src="{% static 'plugins/daterangepicker/daterangepicker.js' %}"></script>
 
 
 <div class="box box-primary">
@@ -37,8 +40,41 @@
 
 
 <script>
-  $(function () {
-       $('#datetimepicker4').datetimepicker();
-  });
+  $('#id_fecha_nacimiento').daterangepicker({
+        //autoUpdateInput: false,
+        singleDatePicker: true,
+        showDropdowns: true,
+        locale: {
+          format: 'DD-MM-YYYY',
+          daysOfWeek: [
+            "Do",
+            "Lu",
+            "Ma",
+            "Mi",
+            "Ju",
+            "Vi",
+            "Sa"
+        ],
+        monthNames: [
+            "Enero",
+            "Febrero",
+            "Marzo",
+            "Abril",
+            "Mayo",
+            "Junio",
+            "Julio",
+            "Agosto",
+            "Septiembre",
+            "Octubre",
+            "Noviembre",
+            "Diciembre"
+        ],
+        },
+    },
+    function(start, end, label) {
+        var years = moment().diff(start, 'years');
+        //alert("You are " + years + " years old.");
+    }).val('');
+
 </script>
 {% endblock %}

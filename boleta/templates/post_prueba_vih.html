@@ -64,19 +64,9 @@
 
         <div class="row">
           <div class="col-sm-6">
-            {{formulario.fecha_solicitud|bootstrap_horizontal:'col-md-4'}}
-            {{formulario.numero_prueba|bootstrap_horizontal:'col-md-4'}}
-            {{formulario.fecha_extraccion|bootstrap_horizontal:'col-md-4'}}
-            {{formulario.fecha_muestra|bootstrap_horizontal:'col-md-4'}}
-            {{formulario.fecha_prueba|bootstrap_horizontal:'col-md-4'}}
-            {{formulario.nombre_persona_prueba|bootstrap_horizontal:'col-md-4'}}
-            {{formulario.kit_prueba_tamizaje|bootstrap_horizontal:'col-md-4'}}
-            {{formulario.resultado_prueba_tamizaje|bootstrap_horizontal:'col-md-4'}}
-            {{formulario.kit_prueba_confirmatoria|bootstrap_horizontal:'col-md-4'}}
-            {{formulario.fecha_prueba_confirmatoria|bootstrap_horizontal:'col-md-4'}}
-            {{formulario.resultado_prueba_confirmatoria|bootstrap_horizontal:'col-md-4'}}
-            {{formulario.nombre_laboratorio|bootstrap_horizontal:'col-md-4'}}
-            {{formulario.fecha_refirio_prueba_confirmatoria|bootstrap_horizontal:'col-md-4'}}
+          {{formulario.fecha_consejeria|bootstrap_horizontal:'col-md-4'}}
+          {{formulario.referido|bootstrap_horizontal:'col-md-4'}}
+          {{formulario.observaciones|bootstrap_horizontal:'col-md-4'}}
           </div>
         </div>
         
@@ -89,16 +79,12 @@
           </button>
         </div>
       </div>
-
-      
     </div>
   </form>
 </div>
 <script type="text/javascript">
-   $(":input").inputmask();
-   $("select").select2();
-  moment.locale('es');
-  $('#id_fecha_solicitud, #id_fecha_extraccion, #id_fecha_muestra, #id_fecha_prueba, #id_fecha_prueba_confirmatoria, #id_fecha_refirio_prueba_confirmatoria').daterangepicker({
+  $(":input").inputmask();
+  $('#id_fecha_consejeria').daterangepicker({
         singleDatePicker: true,
         showDropdowns: true,
         locale: {
@@ -144,23 +130,36 @@
       var key = e.which;
       if(key == 13){
         $.ajax({
-          url: "{% url 'prueba_vih' %}",
+          url: "{% url 'post_prueba_vih' %}",
           data: { 
                   identidad: identidad
                 }
         })
           .done(function( data ) {
-            console.log(data)
             if (data.persona==false){
               $('#error_identidad').show()
-              $('#expediente,#id_fecha_solicitud, #id_numero_prueba, #id_fecha_extraccion, #id_fecha_muestra, #id_fecha_prueba, #id_kit_prueba_tamizaje, #id_resultado_prueba_tamizaje, #id_nombre_persona_prueba, #id_fecha_prueba_confirmatoria, #id_related_name, #id_institucion_prueba_confirmatoria, #id_resultado_prueba_confirmatoria, #id_nombre_laboratorio, #id_fecha_refirio_prueba_confirmatoria').val('')
+              $('#expediente,#id_fecha_consejeria, #id_observaciones, #id_referido').val('')
             }else{
-              console.log(data)
+              console.log(data.boleta.pk, data.boleta)
               $('#error_identidad').hide()
-              $('#id_numero_prueba').val(data.numero_prueba)
+              $('#boleta').val(data.boleta.pk)
               $('#expediente').val(data.expediente)
-              $('#boleta').val(data.boleta)
-              $('#id_nombre_persona_prueba').val(data.persona.primer_nombre + ' ' + data.persona.segundo_nombre + ' ' + data.persona.primer_apellido + ' ' + data.persona.segundo_apellido)
+
+              if(data.boleta.edad_anios <= 18){
+                if(data.boleta.nombre_madre != ''){
+                  $('#id_referido').val(data.boleta.nombre_madre)
+                }else if(data.boleta.nombre_padre != ''){ 
+                  $('#id_referido').val(data.boleta.nombre_padre)
+                }else if(data.boleta.nombre_tutor != ''){
+                  $('#id_referido').val(data.boleta.nombre_tutor)
+                }else{
+                  $('#id_referido').val(data.persona.primer_nombre + ' ' + data.persona.segundo_nombre + ' ' + data.persona.primer_apellido + ' ' + data.persona.segundo_apellido)
+                }
+                
+              }else{
+                $('#id_referido').val(data.persona.primer_nombre + ' ' + data.persona.segundo_nombre + ' ' + data.persona.primer_apellido + ' ' + data.persona.segundo_apellido)
+              }
+              
             }
           });
       }

@@ -82,6 +82,8 @@ class Boletas(models.Model):
 	fecha_actualizacion = models.DateTimeField(auto_now=True)
 	condiciones = models.ManyToManyField(Condiciones)
 
+	def __unicode__(self):
+		return u'%s' % (self.identidad)
 
 class BoletasConsejeria(models.Model):
 	boleta = models.ForeignKey(Boletas)
@@ -105,7 +107,7 @@ class BoletasConsejeriaPostPrueba(models.Model):
 	fecha_creacion = models.DateTimeField(auto_now_add=True)
 	actualizado_por = models.ForeignKey(User, related_name='actualizado_por_boleta_postprueba')
 	fecha_actualizacion = models.DateTimeField(auto_now=True)
-
+	referido =models.CharField(max_length=255, blank=True, null=True)
 
 class BoletasObservaciones(models.Model):
 	boleta = models.ForeignKey(Boletas)
@@ -125,11 +127,11 @@ class BoletasPruebas(models.Model):
 	fecha_extraccion = models.DateTimeField(blank=True, null=True)
 	fecha_muestra = models.DateTimeField(blank=True, null=True)
 	fecha_prueba = models.DateTimeField(blank=True, null=True)
-	kit_prueba_tamizaje = models.IntegerField(blank=True, null=True)
+	kit_prueba_tamizaje = models.ForeignKey(Pruebas, blank=True, null=True, related_name='kit_tamizaje')
 	resultado_prueba_tamizaje = models.IntegerField(blank=True, null=True)
 	nombre_persona_prueba = models.CharField(max_length=255, blank=True, null=True)
 	fecha_prueba_confirmatoria = models.DateTimeField(blank=True, null=True)
-	kit_prueba_confirmatoria = models.IntegerField()
+	kit_prueba_confirmatoria = models.ForeignKey(Pruebas, blank=True, null=True, related_name='kit_confirmatoria')
 	institucion_prueba_confirmatoria = models.IntegerField( blank=True, null=True)
 	resultado_prueba_confirmatoria = models.IntegerField( blank=True, null=True)
 	nombre_laboratorio = models.CharField(max_length=255, blank=True, null=True)

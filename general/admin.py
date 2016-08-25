@@ -11,5 +11,6 @@ admin.site.register(Departamentos)
 admin.site.register(Municipios)
 admin.site.register(Poblaciones)
 admin.site.register(GruposEtnicos)
+admin.site.register(Pruebas)
 
 # Register your models here.

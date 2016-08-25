@@ -33,15 +33,16 @@
         <p>
           Datos Generales de la Persona Usuaria de los Servicios
         </p>
-        
+        {{formulario2.errors}}
 
         <div class="row">
           <div class="col-sm-6">
             <div class="form-group">
               <label for="inputEmail3" class="col-sm-4 control-label">Identidad</label>
               <div class="col-sm-8 form-inline">
-                <input type="text" class="form-control" id='identidad' data-inputmask='"mask": "9999-9999-99999"' data-mask>
+                <input type="text" name="identidad" class="form-control" id='identidad' data-inputmask='"mask": "9999-9999-99999"' data-mask>
                 <input type="checkbox" id="no_identidad"> No tiene Identidad
+                <input type="hidden" class="form-control" id='input_expediente' name='expediente'>
               </div>
             </div>
             {{formulario|bootstrap_horizontal:'col-md-4'  }}
@@ -120,7 +121,7 @@
               <div class="form-group">
                 <label for="id_municipio" class="col-md-4 control-label">Municipio</label>
                 <div class="col-md-8">
-                    <select class="form-control" id="id_municipio" name="municipios">
+                    <select class="form-control" id="id_municipio" name="municipio">
                         <option value="">---------------</option>
                     </select>
                     {{ formulario2.municipio.errors }}
@@ -130,7 +131,7 @@
               <div class="form-group">
                 <label for="id_ciudad" class="col-md-4 control-label">Ciudad</label>
                 <div class="col-md-8">
-                    <select class="form-control" id="id_ciudad" name="ciudades">
+                    <select class="form-control" id="id_ciudad" name="ciudad">
                         <option value="">---------------</option>
                     </select>
                     {{ formulario2.aldea.errors }}
@@ -140,7 +141,7 @@
               <div class="form-group">
                 <label for="id_barrio" class="col-md-4 control-label">Barrio</label>
                 <div class="col-md-8">
-                    <select class="form-control" id="id_barrio" name="barrios">
+                    <select class="form-control" id="id_barrio" name="barrio">
                         <option value="">---------------</option>
                     </select>
                     {{ formulario2.barrio.errors }}
@@ -153,6 +154,7 @@
               {{formulario2.referencias|bootstrap_horizontal:'col-md-4'  }}
               {{formulario2.poblacion|bootstrap_horizontal:'col-md-4'  }}
               {{formulario2.grupo_etnico|bootstrap_horizontal:'col-md-4'  }}
+              {{formulario2.establecimiento|bootstrap_horizontal:'col-md-4'  }}
               {{formulario2.condiciones|bootstrap_horizontal:'col-md-4'  }}
               <div style="display:none">
                   {{formulario2.fecha_ultima_menstruacion|bootstrap_horizontal:'col-md-4'  }}
@@ -172,18 +174,28 @@
     <!-- /.box-body -->
 
     <div class="box-footer">
-      <button type="submit" class="btn btn-primary">Guardar</button>
+      <div class="row">
+        <div class="col-xs-12 no-print">
+          <button type="submit" id="button" class="btn btn-primary">Guardar Registro</button>
+          <button type="button" class="btn btn-success"><i class="fa fa-print"></i>Imprimir Boleta
+          </button>
+        </div>
+      </div>
     </div>
   </form>
 </div>
 
 <script type="text/javascript">
+  $('#button').click(function(){
+    $("#id_fecha_nacimiento").prop('disabled', false)
+    return true
+  })
   //LOS PLUGINS
   $(":input").inputmask();
   $("select").select2();
   moment.locale('es');
   $('#id_fecha_consejeria, #id_fecha_ultima_menstruacion, #id_fecha_nacimiento').daterangepicker({
-        autoUpdateInput: false,
+        //autoUpdateInput: false,
         singleDatePicker: true,
         showDropdowns: true,
         locale: {
@@ -214,9 +226,48 @@
         },
     },
     function(start, end, label) {
-        var years = moment().diff(start, 'years');
-        //alert("You are " + years + " years old.");
-    });
+      // console.log($(this).attr('name'), label)
+
+      //   var years = moment().diff(start, 'years');
+      //   var month = moment().diff(start, 'months');
+      //   meses =  parseInt(month - (years*12))
+      //   hola = moment.preciseDiff(start, moment());
+      //   console.log(hola)
+      //   $('#id_edad_meses').val(month)
+      //   $('#id_edad_anios').val(years)
+    }).val('');
+
+   $('#id_fecha_consejeria, #id_fecha_ultima_menstruacion').daterangepicker({
+        //autoUpdateInput: false,
+        singleDatePicker: true,
+        showDropdowns: true,
+        locale: {
+          format: 'DD-MM-YYYY',
+          daysOfWeek: [
+            "Do",
+            "Lu",
+            "Ma",
+            "Mi",
+            "Ju",
+            "Vi",
+            "Sa"
+        ],
+        monthNames: [
+            "Enero",
+            "Febrero",
+            "Marzo",
+            "Abril",
+            "Mayo",
+            "Junio",
+            "Julio",
+            "Agosto",
+            "Septiembre",
+            "Octubre",
+            "Noviembre",
+            "Diciembre"
+        ],
+        },
+    }).val('');
 
   $("#id_telefono_fijo, #id_telefono_celular, #id_telefono_madre, #id_telefono_padre, #id_telefono_tutor").inputmask("9999-9999");
 
@@ -274,6 +325,7 @@
 
               expediente = identidad + '-' + persona.fecha_nacimiento + '-' + persona.sexo
               $('#expediente').text(btoa(expediente))
+              $('#input_expediente').text(btoa(expediente))
             }
           });
       }

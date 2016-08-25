@@ -85,48 +85,55 @@ class ActividadesEconomicas(models.Model):
 		return u'%s' % (self.nombre)
 
 class Establecimientos(models.Model):
-    codigo = models.CharField(max_length=10, blank=True, null=True)
-    nombre = models.CharField(max_length=100, blank=True, null=True)
-    departamento =  models.ForeignKey(Departamentos, related_name='establecimiento_origen_departamento')
-    municipio =  models.ForeignKey(Municipios, related_name='establecimiento_origen_municipio')
-    referencia = models.CharField(max_length=500, blank=True, null=True)
-    telefono = models.CharField( max_length=10, blank=True, null=True)
-    tipo_establecimiento = models.IntegerField(choices=TIPO_ESTABLECIMIENTO, blank=True, null=True)
-    proveedor = models.IntegerField(choices=PROVEEDORES, blank=True, null=True)
-    region_sanitaria = models.CharField(max_length=1000, blank=True, null=True)
-    publico = models.NullBooleanField()
+	codigo = models.CharField(max_length=10, blank=True, null=True)
+	nombre = models.CharField(max_length=100, blank=True, null=True)
+	departamento =  models.ForeignKey(Departamentos, related_name='establecimiento_origen_departamento')
+	municipio =  models.ForeignKey(Municipios, related_name='establecimiento_origen_municipio')
+	referencia = models.CharField(max_length=500, blank=True, null=True)
+	telefono = models.CharField( max_length=10, blank=True, null=True)
+	tipo_establecimiento = models.IntegerField(choices=TIPO_ESTABLECIMIENTO, blank=True, null=True)
+	proveedor = models.IntegerField(choices=PROVEEDORES, blank=True, null=True)
+	region_sanitaria = models.CharField(max_length=1000, blank=True, null=True)
+	publico = models.NullBooleanField()
 
-    def __unicode__(self):
+	def __unicode__(self):
 		return u'%s' % (self.nombre)
 
 
 class Responsables(models.Model):
-    nombres = models.CharField(max_length=50)
-    primer_apellido = models.CharField(max_length=50)
-    segundo_apellido = models.CharField(max_length=50, blank=True, null=True)
-    fecha_nacimiento = models.DateField(max_length=10)
-    sexo = models.IntegerField(choices=GENERO)
-    direccion = models.CharField(max_length=255, blank=True, null=True)
-    telefono_fijo = models.CharField(max_length=10, blank=True, null=True)
-    telefono_celular = models.CharField(max_length=10, blank=True, null=True)
-    usuario_sistema = models.ForeignKey(User)
-    establecimiento = models.ForeignKey(Establecimientos)
-    activo = models.BooleanField(default=True)
+	nombres = models.CharField(max_length=50)
+	primer_apellido = models.CharField(max_length=50)
+	segundo_apellido = models.CharField(max_length=50, blank=True, null=True)
+	fecha_nacimiento = models.DateField(max_length=10)
+	sexo = models.IntegerField(choices=GENERO)
+	direccion = models.CharField(max_length=255, blank=True, null=True)
+	telefono_fijo = models.CharField(max_length=10, blank=True, null=True)
+	telefono_celular = models.CharField(max_length=10, blank=True, null=True)
+	usuario_sistema = models.ForeignKey(User)
+	establecimiento = models.ForeignKey(Establecimientos)
+	activo = models.BooleanField(default=True)
 
-    def __unicode__(self):
+	def __unicode__(self):
 		return u'%s %s' % (self.nombres, self.primer_apellido)
 
 class GruposEtnicos(models.Model):
-    nombre = models.CharField(max_length=50) 
-    activo = models.BooleanField(default=True) 
-    def __unicode__(self):
+	nombre = models.CharField(max_length=50) 
+	activo = models.BooleanField(default=True) 
+	def __unicode__(self):
 		return u'%s' % (self.nombre)
 
 class Poblaciones(models.Model):
-    nombre = models.CharField(max_length=50)
-    orden = models.IntegerField()
-    activo = models.BooleanField(default=True)
+	nombre = models.CharField(max_length=50)
+	orden = models.IntegerField()
+	activo = models.BooleanField(default=True)
 
-    def __unicode__(self):
+	def __unicode__(self):
 		return u'%s' % (self.nombre)
 
+class Pruebas(models.Model):
+	nombre = models.CharField(max_length=255)
+	tipo = models.IntegerField()
+	activo = models.BooleanField(default=True)
+
+	def __unicode__(self):
+		return u'%s' % (self.nombre)

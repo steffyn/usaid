@@ -8,13 +8,17 @@ from django.contrib.auth.models import User
 class UsuarioForm(ModelForm):
 	class Meta:
 		model = User
-		fields = ['username', 'password']
+		fields = ['username', 'password', 'groups']
+		widgets = {
+			'password': TextInput(attrs={'type': 'password'}),
+		}
 
 class UsuarioResponsableForm(ModelForm):
 	class Meta:
 		model = Responsables
 		fields = "__all__"
 		exclude = ['usuario_sistema', 'activo']
+	sexo =  forms.ChoiceField(choices=GENERO, widget=RadioSelect)
 	
 
 class RPNForm(ModelForm):
