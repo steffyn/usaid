@@ -29,17 +29,9 @@
           </div>
         {% endif %}
 
-        {% if error %}
-          <div class="text-center">
-            <span class="label label-danger ">ERROR!! El usuario o contraseña no es correcta.</span>
-            <br>
-            <br>
-          </div>
-        {% endif %}
-
 
         <div class="row">
-          <div class="col-sm-6">
+          <div class="col-sm-8">
             <div class="form-group">
               <label for="inputEmail3" class="col-sm-4 control-label">Identidad</label>
               <div class="col-sm-8 form-inline">
@@ -51,7 +43,7 @@
         </div>
 
         <div class="row">
-          <div class="col-sm-6">
+          <div class="col-sm-8">
             <div class="form-group">
               <label for="inputEmail3" class="col-sm-4 control-label">Número de Expediente Clínico</label>
               <div class="col-sm-8">
@@ -63,7 +55,7 @@
         </div>
 
         <div class="row">
-          <div class="col-sm-6">
+          <div class="col-sm-8">
           {{formulario.fecha_consejeria|bootstrap_horizontal:'col-md-4'}}
           {{formulario.referido|bootstrap_horizontal:'col-md-4'}}
           {{formulario.observaciones|bootstrap_horizontal:'col-md-4'}}
@@ -87,6 +79,7 @@
   $('#id_fecha_consejeria').daterangepicker({
         singleDatePicker: true,
         showDropdowns: true,
+        maxDate: moment(),
         locale: {
           format: 'YYYY-MM-DD',
           daysOfWeek: [
@@ -153,11 +146,11 @@
                 }else if(data.boleta.nombre_tutor != ''){
                   $('#id_referido').val(data.boleta.nombre_tutor)
                 }else{
-                  $('#id_referido').val(data.persona.primer_nombre + ' ' + data.persona.segundo_nombre + ' ' + data.persona.primer_apellido + ' ' + data.persona.segundo_apellido)
+                  $('#id_referido').val(data.boleta.primer_nombre + ' ' + data.boleta.segundo_nombre + ' ' + data.boleta.primer_apellido + ' ' + data.boleta.segundo_apellido)
                 }
                 
               }else{
-                $('#id_referido').val(data.persona.primer_nombre + ' ' + data.persona.segundo_nombre + ' ' + data.persona.primer_apellido + ' ' + data.persona.segundo_apellido)
+                $('#id_referido').val(data.boleta.primer_nombre + ' ' + data.boleta.segundo_nombre + ' ' + data.boleta.primer_apellido + ' ' + data.boleta.segundo_apellido)
               }
               
             }

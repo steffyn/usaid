@@ -20,7 +20,8 @@ class BoletaForm(ModelForm):
 	class Meta:
 		model = Boletas
 		fields = "__all__"
-		exclude = ['actualizado_por', 'creado_por', 'identidad', 'expediente', 'sexo', 'municipio', 'ciudad', 'barrio']
+		exclude = ['actualizado_por', 'creado_por', 'identidad', 'expediente', 'sexo', 'municipio', 'ciudad', 'barrio',
+					'primer_nombre', 'segundo_nombre', 'primer_apellido', 'segundo_apellido', 'fecha_nacimiento']
 		widgets = {
 			'edad_anios': TextInput(attrs={'readonly': 'readonly', 'type': 'text'}),
 			'edad_meses': TextInput(attrs={'readonly': 'readonly', 'type': 'text'}),

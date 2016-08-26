@@ -27,10 +27,10 @@ class RPNForm(ModelForm):
 		exclude = ['estado_civil', 'fotografia', 'identidad']
 
 		widgets = {
-			'primer_nombre': TextInput(attrs={'readonly': 'readonly'}),
+			'primer_nombre': TextInput(attrs={'readonly': 'readonly', 'required': 'required'}),
 			'segundo_nombre': TextInput(attrs={'readonly': 'readonly'}),
-			'primer_apellido': TextInput(attrs={'readonly': 'readonly'}),
+			'primer_apellido': TextInput(attrs={'readonly': 'readonly', 'required': 'required'}),
 			'segundo_apellido': TextInput(attrs={'readonly': 'readonly'}),
-			'fecha_nacimiento': TextInput(attrs={'disabled': 'readonly'}),
+			'fecha_nacimiento': TextInput(attrs={'disabled': 'readonly', 'required': 'required'}),
 		}
 	sexo =  forms.ChoiceField(choices=GENERO, widget=RadioSelect)

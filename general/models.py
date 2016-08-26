@@ -69,7 +69,7 @@ class RPN(models.Model):
 	segundo_nombre = models.CharField(max_length=50,  blank=True, null=True)
 	primer_apellido = models.CharField(max_length=50)
 	segundo_apellido = models.CharField(max_length=50,  blank=True, null=True)
-	fecha_nacimiento = models.DateField()
+	fecha_nacimiento = models.DateField(verbose_name='Fecha de Nacimiento')
 	sexo = models.IntegerField(choices=GENERO)
 	estado_civil = models.IntegerField(choices=ESTADO_CIVIL)
 	fotografia = models.ImageField( blank=True, null=True)

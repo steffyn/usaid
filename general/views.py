@@ -8,6 +8,7 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, login as auth_login, logout
 
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers  import make_password
 from django.db import transaction, IntegrityError
 from general.forms import *
 
@@ -47,6 +48,7 @@ def crear_usuario(request):
 			try:
 				with transaction.atomic():
 					usuario = formulario.save(commit=False)
+					usuario.password = make_password(request.POST['password'])
 					usuario.first_name = request.POST['nombres']
 					usuario.last_name = request.POST['primer_apellido']
 					usuario.save()

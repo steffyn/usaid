@@ -27,6 +27,7 @@ def date_handler(obj):
 @login_required()
 def pre_prueba_vih(request):
 	exito = False
+	embarazada = Condiciones.objects.get(nombre='Embarazada')
 	#AJAX
 	if request.is_ajax():
 		identidad = request.GET['identidad']
@@ -46,6 +47,7 @@ def pre_prueba_vih(request):
 			'formulario' : formulario,
 			'formulario2': formulario2,
 			'formulario3': formulario3,
+			'embarazada': embarazada,
 			'exito': exito,
 		}
 		return render(request, 'pre_prueba_vih.html', ctx)
@@ -54,10 +56,11 @@ def pre_prueba_vih(request):
 	elif request.method == 'POST':
 		ide = request.POST['identidad']
 		identidad = ide.replace("-", "")
-		persona = RPN.objects.get(identidad=identidad)
-		formulario = RPNForm()
+
+		formulario = RPNForm(request.POST)
 		formulario2 = BoletaForm(request.POST)
 		formulario3 = BoletaConsejeriaForm(request.POST)
+		print request.POST['expediente'], 'EXPEDIENTE', request.POST['fecha_nacimiento']
 		if formulario2.is_valid() and formulario3.is_valid():
 			try:
 				registro = formulario2.save(commit=False)
@@ -65,8 +68,16 @@ def pre_prueba_vih(request):
 				registro.ciudad =  Ciudades.objects.get(pk=request.POST['ciudad'])
 				registro.barrio =  Ciudades.objects.get(pk=request.POST['barrio'])
 				registro.municipio =  Municipios.objects.get(pk=request.POST['municipio'])
-				registro.identidad =  persona.identidad
-				registro.sexo =  persona.sexo
+				registro.identidad =  identidad
+				registro.sexo =  request.POST['sexo']
+				registro.primer_nombre =  request.POST['primer_nombre']
+				registro.segundo_nombre =  request.POST['segundo_nombre']
+				registro.primer_apellido =  request.POST['primer_apellido']
+				registro.segundo_apellido =  request.POST['segundo_apellido']
+				registro.fecha_nacimiento =  request.POST['fecha_nacimiento']
+				registro.identidad_madre = request.POST['identidad_madre'].replace("-", "")
+				registro.identidad_padre = request.POST['identidad_padre'].replace("-", "")
+				registro.identidad_tutor = request.POST['identidad_tutor'].replace("-", "")
 				registro.rpn =  True
 				registro.creado_por = request.user
 				registro.actualizado_por = request.user
@@ -74,7 +85,7 @@ def pre_prueba_vih(request):
 
 				registro2 = formulario3.save(commit=False)
 				registro2.boleta = registro
-				registro2.nombre_persona_solicitante = '%s %s %s %s'%(persona.primer_nombre,persona.segundo_nombre, persona.primer_apellido, persona.segundo_apellido)
+				registro2.nombre_persona_solicitante = '%s %s %s %s'%(request.POST['primer_nombre'],request.POST['segundo_nombre'], request.POST['primer_apellido'], request.POST['segundo_apellido'])
 				registro2.creado_por = request.user
 				registro2.actualizado_por = request.user
 				
@@ -85,11 +96,12 @@ def pre_prueba_vih(request):
 					registro2.nombre_consejero = request.user.first_name + ' ' + request.user.last_name
 				
 				registro2.save()
+				formulario = RPNForm()
 				formulario2 = BoletaForm()
 				formulario3 = BoletaConsejeriaForm()
 				exito = True
 			except Exception, e:
-				pass
+				print e
 		else:
 			print 'PASO POR AQUI'
 			pass
@@ -97,6 +109,7 @@ def pre_prueba_vih(request):
 			'formulario' : formulario,
 			'formulario2': formulario2,
 			'formulario3': formulario3,
+			'embarazada': embarazada,
 			'exito': exito,
 		}
 		return render(request, 'pre_prueba_vih.html', ctx)
@@ -107,18 +120,19 @@ def prueba_vih(request):
 	if request.is_ajax():
 		identidad = request.GET['identidad']
 		try:
-			persona = dict(RPN.objects.values(
+
+			boleta = Boletas.objects.values(
+				'expediente', 
+				'pk',
 				'primer_nombre', 
 				'segundo_nombre', 
 				'primer_apellido', 
 				'segundo_apellido', 
 				'sexo', 
 				'fecha_nacimiento'
-			).get(identidad=identidad))
-
-			boleta = Boletas.objects.values('expediente', 'pk').get(identidad=identidad)
+			).get(identidad=identidad)
 			expediente = boleta['expediente']
-			boleta = boleta['pk']
+			#boleta = boleta['pk']
 
 			cantidad = BoletasPruebas.objects.filter(boleta__identidad=identidad)
 			if not cantidad:
@@ -126,7 +140,7 @@ def prueba_vih(request):
 			else:
 				cantidad_boleta = int(cantidad.count()) + 1
 
-			print cantidad_boleta
+			persona = True
 		except Exception, e:
 			print 'ERROR' , e
 			persona = False
@@ -154,6 +168,7 @@ def prueba_vih(request):
 
 	#POST
 	elif request.method == 'POST':
+		print 'aksjhdkajshdkasd',request.POST['boleta']
 		formulario = BoletaPruebaForm(request.POST)
 		if formulario.is_valid():
 			registro = formulario.save(commit=False)
@@ -179,16 +194,17 @@ def post_prueba_vih(request):
 	if request.is_ajax():
 		identidad = request.GET['identidad']
 		try:
-			persona = dict(RPN.objects.values(
+
+			boleta = dict(Boletas.objects.values(
 				'primer_nombre', 
 				'segundo_nombre', 
 				'primer_apellido', 
 				'segundo_apellido', 
 				'sexo', 
+				'expediente', 'pk', 'nombre_madre', 'nombre_padre', 'nombre_tutor', 'edad_anios'
 			).get(identidad=identidad))
-
-			boleta = dict(Boletas.objects.values('expediente', 'pk', 'nombre_madre', 'nombre_padre', 'nombre_tutor', 'edad_anios').get(identidad=identidad))
 			expediente = boleta['expediente']
+			persona = True
 
 		except Exception, e:
 			print 'ERROR',e

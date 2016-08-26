@@ -10,7 +10,9 @@
 <script src="{% static 'js/jquery-2.2.3.min.js' %}"></script>
 <script src="{% static 'plugins/daterangepicker/moment.min.js' %}"></script>
 <script src="{% static 'plugins/daterangepicker/daterangepicker.js' %}"></script>
-
+<script src="{% static 'plugins/input-mask/jquery.inputmask.js' %}"></script>
+<script src="{% static 'plugins/input-mask/jquery.inputmask.date.extensions.js' %}"></script>
+<script src="{% static 'plugins/input-mask/jquery.inputmask.extensions.js' %}"></script>
 
 <div class="box box-primary">
   <div class="box-header with-border">
@@ -32,7 +34,7 @@
     <!-- /.box-body -->
 
     <div class="box-footer">
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="submit" class="btn btn-primary">Guardar Registro</button>
     </div>
   </form>
 </div>
@@ -40,12 +42,14 @@
 
 
 <script>
+$("#id_telefono_fijo, #id_telefono_celular").inputmask("9999-9999");
   $('#id_fecha_nacimiento').daterangepicker({
         //autoUpdateInput: false,
         singleDatePicker: true,
         showDropdowns: true,
+        maxDate: moment(),
         locale: {
-          format: 'DD-MM-YYYY',
+          format: 'YYYY-MM-DD',
           daysOfWeek: [
             "Do",
             "Lu",

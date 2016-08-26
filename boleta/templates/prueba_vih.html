@@ -18,7 +18,7 @@
 
 <div class="box box-primary">
   <div class="box-header with-border">
-    <h3 class="box-title">Creacion de Usuario</h3>
+    <h3 class="box-title">Prueba de VIH</h3>
   </div>
   <form  class="form-horizontal" role="form"  method="POST">
     {% csrf_token %}
@@ -28,18 +28,8 @@
             Se guardaron los datos correctamente 
           </div>
         {% endif %}
-
-        {% if error %}
-          <div class="text-center">
-            <span class="label label-danger ">ERROR!! El usuario o contraseña no es correcta.</span>
-            <br>
-            <br>
-          </div>
-        {% endif %}
-
-
         <div class="row">
-          <div class="col-sm-6">
+          <div class="col-sm-8">
             <div class="form-group">
               <label for="inputEmail3" class="col-sm-4 control-label">Identidad</label>
               <div class="col-sm-8 form-inline">
@@ -51,7 +41,7 @@
         </div>
 
         <div class="row">
-          <div class="col-sm-6">
+          <div class="col-sm-8">
             <div class="form-group">
               <label for="inputEmail3" class="col-sm-4 control-label">Número de Expediente Clínico</label>
               <div class="col-sm-8">
@@ -63,7 +53,8 @@
         </div>
 
         <div class="row">
-          <div class="col-sm-6">
+
+          <div class="col-sm-8">
             {{formulario.fecha_solicitud|bootstrap_horizontal:'col-md-4'}}
             {{formulario.numero_prueba|bootstrap_horizontal:'col-md-4'}}
             {{formulario.fecha_extraccion|bootstrap_horizontal:'col-md-4'}}
@@ -72,11 +63,13 @@
             {{formulario.nombre_persona_prueba|bootstrap_horizontal:'col-md-4'}}
             {{formulario.kit_prueba_tamizaje|bootstrap_horizontal:'col-md-4'}}
             {{formulario.resultado_prueba_tamizaje|bootstrap_horizontal:'col-md-4'}}
-            {{formulario.kit_prueba_confirmatoria|bootstrap_horizontal:'col-md-4'}}
-            {{formulario.fecha_prueba_confirmatoria|bootstrap_horizontal:'col-md-4'}}
-            {{formulario.resultado_prueba_confirmatoria|bootstrap_horizontal:'col-md-4'}}
-            {{formulario.nombre_laboratorio|bootstrap_horizontal:'col-md-4'}}
-            {{formulario.fecha_refirio_prueba_confirmatoria|bootstrap_horizontal:'col-md-4'}}
+            <div id='prueba_positiva' style="display:none">
+              {{formulario.kit_prueba_confirmatoria|bootstrap_horizontal:'col-md-4'}}
+              {{formulario.fecha_prueba_confirmatoria|bootstrap_horizontal:'col-md-4'}}
+              {{formulario.resultado_prueba_confirmatoria|bootstrap_horizontal:'col-md-4'}}
+              {{formulario.nombre_laboratorio|bootstrap_horizontal:'col-md-4'}}
+              {{formulario.fecha_refirio_prueba_confirmatoria|bootstrap_horizontal:'col-md-4'}}
+            </div>
           </div>
         </div>
         
@@ -97,9 +90,9 @@
 <script type="text/javascript">
    $(":input").inputmask();
    $("select").select2();
-  moment.locale('es');
   $('#id_fecha_solicitud, #id_fecha_extraccion, #id_fecha_muestra, #id_fecha_prueba, #id_fecha_prueba_confirmatoria, #id_fecha_refirio_prueba_confirmatoria').daterangepicker({
         singleDatePicker: true,
+        maxDate: moment(),
         showDropdowns: true,
         locale: {
           format: 'YYYY-MM-DD',
@@ -159,12 +152,20 @@
               $('#error_identidad').hide()
               $('#id_numero_prueba').val(data.numero_prueba)
               $('#expediente').val(data.expediente)
-              $('#boleta').val(data.boleta)
-              $('#id_nombre_persona_prueba').val(data.persona.primer_nombre + ' ' + data.persona.segundo_nombre + ' ' + data.persona.primer_apellido + ' ' + data.persona.segundo_apellido)
+              $('#boleta').val(data.boleta.pk)
+              $('#id_nombre_persona_prueba').val(data.boleta.primer_nombre + ' ' + data.boleta.segundo_nombre + ' ' + data.boleta.primer_apellido + ' ' + data.boleta.segundo_apellido)
             }
           });
       }
   });
+
+  $('input[name=resultado_prueba_tamizaje]').change(function(){
+    if ($(this).val() == 1){
+      $('#prueba_positiva').show()
+    }else{
+      $('#prueba_positiva').hide()
+    }
+  })
 </script>
 {% endblock %}
 

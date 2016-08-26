@@ -34,15 +34,17 @@
           Datos Generales de la Persona Usuaria de los Servicios
         </p>
         {{formulario2.errors}}
+        {{formulario3.errors}}
 
         <div class="row">
-          <div class="col-sm-6">
+          <div class="col-sm-7">
             <div class="form-group">
               <label for="inputEmail3" class="col-sm-4 control-label">Identidad</label>
               <div class="col-sm-8 form-inline">
-                <input type="text" name="identidad" class="form-control" id='identidad' data-inputmask='"mask": "9999-9999-99999"' data-mask>
+                <input type="text" name="identidad" class="form-control" id='identidad' data-inputmask='"mask": "9999-9999-99999"' data-mask required>
                 <input type="checkbox" id="no_identidad"> No tiene Identidad
                 <input type="hidden" class="form-control" id='input_expediente' name='expediente'>
+                <span class="label label-danger "  id='error_identidad' style="display:none">No se encontraron registros con la identidad ingresadda</span>
               </div>
             </div>
             {{formulario|bootstrap_horizontal:'col-md-4'  }}
@@ -53,7 +55,7 @@
              <p class="page-header"></p>
             <p> Padres y/o Encargados </p>
             <div class="row">
-              <div class="col-sm-6">
+              <div class="col-sm-7">
                 <label class="control-label">DATOS MADRE</label>
                  <br>
                  <br>
@@ -91,7 +93,7 @@
           </div>
           <div class="row">
             <div class="col-sm-2">
-              <label class="control-label col-md-4 pull-right">Edad</label>
+              <label class="control-label pull-right">Edad</label>
             </div>
             <div class="col-sm-2">
               {{formulario2.edad_anios|bootstrap_horizontal:'col-md-4' }}
@@ -101,7 +103,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-sm-6">
+            <div class="col-sm-7">
               {{formulario2.pseudonimo|bootstrap_horizontal:'col-md-4'  }}
               {{formulario2.telefono_fijo|bootstrap_horizontal:'col-md-4'  }}
               {{formulario2.telefono_celular|bootstrap_horizontal:'col-md-4'  }}
@@ -116,7 +118,7 @@
           <p class="page-header"></p>
           <p> Dirección Actual </p>
           <div class="row">
-            <div class="col-sm-6">
+            <div class="col-sm-7">
               {{formulario2.departamento|bootstrap_horizontal:'col-md-4'  }}
               <div class="form-group">
                 <label for="id_municipio" class="col-md-4 control-label">Municipio</label>
@@ -154,9 +156,11 @@
               {{formulario2.referencias|bootstrap_horizontal:'col-md-4'  }}
               {{formulario2.poblacion|bootstrap_horizontal:'col-md-4'  }}
               {{formulario2.grupo_etnico|bootstrap_horizontal:'col-md-4'  }}
+              {{formulario2.otro_grupo_etnico|bootstrap_horizontal:'col-md-4'  }}
               {{formulario2.establecimiento|bootstrap_horizontal:'col-md-4'  }}
               {{formulario2.condiciones|bootstrap_horizontal:'col-md-4'  }}
-              <div style="display:none">
+              {{formulario2.otro_condicion|bootstrap_horizontal:'col-md-4'  }}
+              <div id='embarazada' style="display:none">
                   {{formulario2.fecha_ultima_menstruacion|bootstrap_horizontal:'col-md-4'  }}
               </div>
             </div>
@@ -165,7 +169,7 @@
           <p class="page-header"></p>
           <p> Dirección Actual </p>
           <div class="row">
-            <div class="col-sm-6">
+            <div class="col-sm-7">
               {{formulario3|bootstrap_horizontal:'col-md-4'  }}
             </div>
           </div>
@@ -193,13 +197,13 @@
   //LOS PLUGINS
   $(":input").inputmask();
   $("select").select2();
-  moment.locale('es');
-  $('#id_fecha_consejeria, #id_fecha_ultima_menstruacion, #id_fecha_nacimiento').daterangepicker({
+  $('#id_fecha_nacimiento').daterangepicker({
         //autoUpdateInput: false,
         singleDatePicker: true,
         showDropdowns: true,
+        maxDate: moment(),
         locale: {
-          format: 'DD-MM-YYYY',
+          format: 'YYYY-MM-DD',
           daysOfWeek: [
             "Do",
             "Lu",
@@ -226,23 +230,49 @@
         },
     },
     function(start, end, label) {
-      // console.log($(this).attr('name'), label)
+      console.log(start.format('YYYY-MM-DD'))
+      edad = start.format('YYYY-MM-DD').split("-");
+      var mes = edad[1];
+      var anio = edad[0];
+      var anio_actual = new Date().getFullYear();
+      var edad_anios = anio_actual - anio;
+      var mes_actual = new Date().getMonth()+1;
+      var edad_mes = mes_actual - mes;
+        
+      if (edad_mes < 0){
+          if (edad_mes > 0){
+             edad_anios = edad_anios-1
+             edad_mes = ((12-mes)+mes_actual)
+          }
+        }
 
-      //   var years = moment().diff(start, 'years');
-      //   var month = moment().diff(start, 'months');
-      //   meses =  parseInt(month - (years*12))
-      //   hola = moment.preciseDiff(start, moment());
-      //   console.log(hola)
-      //   $('#id_edad_meses').val(month)
-      //   $('#id_edad_anios').val(years)
+      $('#id_edad_anios').val(edad_anios)
+      $('#id_edad_meses').val(Math.abs(edad_mes))
+
+      if(parseInt(edad_anios)<18){
+        $('#encargados').show().fadeIn();
+      }else{
+        $('#encargados').hide().fadeOut();
+      }
+
+      //EXPEDIENTE
+      identidad = $('#identidad').val().replace('-', '');
+      identidad = identidad.replace('-', '')
+
+      expediente = identidad + '-' + start.format('YYYY-MM-DD') + '-' + $('input[name=sexo]').val()
+      console.log(expediente)
+      $('#expediente').text(btoa(expediente))
+      $('#input_expediente').val(btoa(expediente))
     }).val('');
 
    $('#id_fecha_consejeria, #id_fecha_ultima_menstruacion').daterangepicker({
         //autoUpdateInput: false,
         singleDatePicker: true,
         showDropdowns: true,
+        maxDate: moment(),
         locale: {
-          format: 'DD-MM-YYYY',
+          format: 'YYYY-MM-DD',
+
           daysOfWeek: [
             "Do",
             "Lu",
@@ -271,13 +301,19 @@
 
   $("#id_telefono_fijo, #id_telefono_celular, #id_telefono_madre, #id_telefono_padre, #id_telefono_tutor").inputmask("9999-9999");
 
-  $("#id_identidad_madre, #id_identidad_padre, #id_identidad_tutor").inputmask("9999-9999=99999");
+  $("#id_identidad_madre, #id_identidad_padre, #id_identidad_tutor").attr('maxlength', 20).inputmask("9999-9999-99999");
 
   //BUSQUEDA DE IDENTIDAD
   $('#identidad').keypress(function (e) {
       event.preventDefault();
       identidad = $(this).val().replace('-', '');
       identidad = identidad.replace('-', '')
+
+      expediente = identidad + '-' + $('#id_fecha_nacimiento').val() + '-' + $('input[name=sexo]').val()
+      console.log(expediente)
+      $('#expediente').text(btoa(expediente))
+      $('#input_expediente').val(btoa(expediente))
+
       var key = e.which;
       if(key == 13){
         $.ajax({
@@ -288,15 +324,22 @@
         })
           .done(function( persona ) {
             if (persona==false){
-
+              $('#error_identidad').show()
             }else{
-              console.log(persona.sexo)
+              $('#error_identidad').hide()
               $('#id_primer_nombre').val(persona.primer_nombre)
               $('#id_segundo_nombre').val(persona.segundo_nombre)
               $('#id_primer_apellido').val(persona.primer_apellido)
               $('#id_segundo_apellido').val(persona.segundo_apellido)
               $('#id_fecha_nacimiento').val(persona.fecha_nacimiento)
               $('#id_sexo_'+(persona.sexo-1)).prop('checked', true)
+
+              //ESA ONDA DE EMBARADA
+              if (persona.sexo == 1){
+                $("#id_condiciones option[value='"+ embarazada_id +"']").remove();
+              }else{
+                $("#id_condiciones").append('<option value="'+ embarazada_id +'">Embarazada</option>');
+              }
 
               //CALCULO DE EDAD
               edad = $('#id_fecha_nacimiento').val().split("-");
@@ -315,7 +358,7 @@
                 }
 
               $('#id_edad_anios').val(edad_anios)
-              $('#id_edad_meses').val(edad_mes)
+              $('#id_edad_meses').val(Math.abs(edad_mes))
 
               if(parseInt(edad_anios)<18){
                 $('#encargados').show().fadeIn();
@@ -325,7 +368,7 @@
 
               expediente = identidad + '-' + persona.fecha_nacimiento + '-' + persona.sexo
               $('#expediente').text(btoa(expediente))
-              $('#input_expediente').text(btoa(expediente))
+              $('#input_expediente').val(btoa(expediente))
             }
           });
       }
@@ -395,15 +438,42 @@ $('#no_identidad').change(function(){
   
 })
 
+var embarazada_id = {{embarazada.pk}}
+
 //NO IDENTIDAD
 $('input[name=sexo]').change(function(){
   genero = $(this).val()
-  console.log(genero)
-  if (genero == '1'){
-    $('#id_condiciones').find('option[text="CONDICION 1"]').hide();
-    console.log('akjshdkajhdskjashdkajhsdkj')
+
+  //EXPEDIENTE
+  if($('#no_identidad').prop('checked') == true){
+    identidad = $('#identidad').val().replace('-', '');
+    identidad = identidad.replace('-', '')
+    expediente = identidad + '-' + $('#id_fecha_nacimiento').val() + '-' + $('input[name=sexo]').val()
+    $('#expediente').text(btoa(expediente))
+    $('#input_expediente').val(btoa(expediente))
   }
   
+
+  if (genero == '1'){
+    $("#id_condiciones option[value='"+ embarazada_id +"']").remove();
+    $('#embarazada').hide()
+  }else{
+    $("#id_condiciones").append('<option value="'+ embarazada_id +'">Embarazada</option>');
+  }
+  
+})
+
+
+//EMBARAZADA
+$('#id_condiciones').change(function(){
+  valores = $(this).val()
+  embarazada = jQuery.inArray( embarazada_id.toString(), valores )
+  if( embarazada >= 0) {
+    console.log('PASO POR AQUI')
+    $('#embarazada').show()
+  }else{
+    $('#embarazada').hide()
+  }
 })
 </script>
 
