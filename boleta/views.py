@@ -7,13 +7,16 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.urls import reverse
-
 from django.db.models import Count
 
 from general.forms import *
 from boleta.forms import *
 
 import json
+
+def usuario(id):
+	return Responsables.objects.get(pk=id)
+
 @login_required()
 def principal(request):
 	return render(request, 'principal.html')
@@ -27,20 +30,29 @@ def date_handler(obj):
 @login_required()
 def pre_prueba_vih(request):
 	exito = False
+	responsable = usuario(request.user.pk)
 	embarazada = Condiciones.objects.get(nombre='Embarazada')
 	#AJAX
 	if request.is_ajax():
 		identidad = request.GET['identidad']
 		try:
-			persona = RPN.objects.values('primer_nombre', 'segundo_nombre', 'primer_apellido', 'segundo_apellido', 'sexo', 'fecha_nacimiento').get(identidad=identidad)
+			persona = dict(RPN.objects.values('primer_nombre', 'segundo_nombre', 'primer_apellido', 'segundo_apellido', 'sexo', 'fecha_nacimiento').get(identidad=identidad))
+			query = BoletasConsejeria.objects.filter(boleta__identidad=identidad)
+			periodicidad = query.count()
 		except Exception, e:
 			persona = False
+			periodicidad = 0
 
+		data = {
+			'persona': persona,
+			'periodicidad': periodicidad
+		}
 		return HttpResponse(json.dumps(persona, default=date_handler), content_type='application/json')
 	
 	#GET
 	elif request.method == 'GET':
 		formulario = RPNForm()
+		formulario.fields['sexo'].widget.attrs['disabled'] = True
 		formulario2 = BoletaForm()
 		formulario3 = BoletaConsejeriaForm()
 		ctx = {
@@ -49,6 +61,7 @@ def pre_prueba_vih(request):
 			'formulario3': formulario3,
 			'embarazada': embarazada,
 			'exito': exito,
+			'responsable': responsable,
 		}
 		return render(request, 'pre_prueba_vih.html', ctx)
 
@@ -97,6 +110,8 @@ def pre_prueba_vih(request):
 				
 				registro2.save()
 				formulario = RPNForm()
+				formulario.fields['sexo'].widget.attrs['disabled'] = True
+
 				formulario2 = BoletaForm()
 				formulario3 = BoletaConsejeriaForm()
 				exito = True
@@ -111,11 +126,14 @@ def pre_prueba_vih(request):
 			'formulario3': formulario3,
 			'embarazada': embarazada,
 			'exito': exito,
+			'responsable': responsable,
 		}
 		return render(request, 'pre_prueba_vih.html', ctx)
 
+@login_required()
 def prueba_vih(request):
 	exito = False
+	responsable = usuario(request.user.pk)
 	#AJAX
 	if request.is_ajax():
 		identidad = request.GET['identidad']
@@ -163,6 +181,7 @@ def prueba_vih(request):
 		ctx = {
 			'formulario' : formulario,
 			'exito': exito,
+			'responsable': responsable,
 		}
 		return render(request, 'prueba_vih.html', ctx)
 
@@ -185,25 +204,35 @@ def prueba_vih(request):
 		ctx = {
 			'formulario' : formulario,
 			'exito': exito,
+			'responsable': responsable,
 		}
 		return render(request, 'prueba_vih.html', ctx)	
 
+@login_required()
 def post_prueba_vih(request):
 	exito = False
+	responsable = usuario(request.user.pk)
 	#AJAX
 	if request.is_ajax():
 		identidad = request.GET['identidad']
 		try:
 
-			boleta = dict(Boletas.objects.values(
-				'primer_nombre', 
-				'segundo_nombre', 
-				'primer_apellido', 
-				'segundo_apellido', 
-				'sexo', 
-				'expediente', 'pk', 'nombre_madre', 'nombre_padre', 'nombre_tutor', 'edad_anios'
-			).get(identidad=identidad))
-			expediente = boleta['expediente']
+			boleta = dict(BoletasPruebas.objects.values(
+				'boleta__primer_nombre', 
+				'boleta__segundo_nombre', 
+				'boleta__primer_apellido', 
+				'boleta__segundo_apellido', 
+				'boleta__sexo', 
+				'boleta__expediente', 
+				'boleta__pk', 
+				'boleta__nombre_madre', 
+				'boleta__nombre_padre', 
+				'boleta__nombre_tutor', 
+				'boleta__edad_anios',
+				'resultado_prueba_tamizaje',
+				'resultado_prueba_confirmatoria',
+			).get(boleta__identidad=identidad))
+			expediente = boleta['boleta__expediente']
 			persona = True
 
 		except Exception, e:
@@ -226,6 +255,7 @@ def post_prueba_vih(request):
 		ctx = {
 			'formulario' : formulario,
 			'exito': exito,
+			'responsable': responsable,
 		}
 		return render(request, 'post_prueba_vih.html', ctx)
 
@@ -254,9 +284,9 @@ def post_prueba_vih(request):
 		ctx = {
 			'formulario' : formulario,
 			'exito': exito,
+			'responsable': responsable,
 		}
 		return render(request, 'post_prueba_vih.html', ctx)	
-
 
 @login_required()
 def ajax(request):

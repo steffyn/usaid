@@ -30,9 +30,10 @@
             Se guardaron los datos correctamente 
           </div>
         {% endif %}
-        <p>
-          Datos Generales de la Persona Usuaria de los Servicios
-        </p>
+        <p class="text-center"> <b>
+          DATOS GENERALES DE LA PERSONA USUARIA DE LOS SERVICIOS
+        </b></p>
+        <p class="page-header"></p>
         {{formulario2.errors}}
         {{formulario3.errors}}
 
@@ -50,43 +51,12 @@
             {{formulario|bootstrap_horizontal:'col-md-4'  }}
           </div>
         </div>
-
-        <div id="encargados" style='display: none'>
-             <p class="page-header"></p>
-            <p> Padres y/o Encargados </p>
-            <div class="row">
-              <div class="col-sm-7">
-                <label class="control-label">DATOS MADRE</label>
-                 <br>
-                 <br>
-                {{formulario2.identidad_madre|bootstrap_horizontal:'col-md-4'  }}
-                {{formulario2.nombre_madre|bootstrap_horizontal:'col-md-4'  }}
-                {{formulario2.telefono_madre|bootstrap_horizontal:'col-md-4'  }}
-
-                 <label class="control-label">DATOS PADRE</label>
-                 <br>
-                 <br>
-                {{formulario2.identidad_padre|bootstrap_horizontal:'col-md-4'  }}
-                {{formulario2.nombre_padre|bootstrap_horizontal:'col-md-4'  }}
-                {{formulario2.telefono_padre|bootstrap_horizontal:'col-md-4'  }}
-
-                 <label class="control-label">DATOS ENCARGADO</label>
-                 <br>
-                 <br>
-                {{formulario2.identidad_tutor|bootstrap_horizontal:'col-md-4'  }}
-                {{formulario2.nombre_tutor|bootstrap_horizontal:'col-md-4'  }}
-                {{formulario2.telefono_tutor|bootstrap_horizontal:'col-md-4'  }}
-                {{formulario2.direccion_tutor|bootstrap_horizontal:'col-md-4'  }}
-              </div>
-          </div>
-        </div>
        
 
         <p class="page-header"></p>
         <div class="row">
               <div class="col-sm-12">
                 <div class="alert alert-info text-center">
-
                   <b> Número de Expediente Clínico o Código Identificador Único  <br> <span id="expediente">  </span>  </b>
                 </div>
               </div>
@@ -116,7 +86,10 @@
 
 
           <p class="page-header"></p>
-          <p> Dirección Actual </p>
+          <p class="text-center"> <b>
+            DIRECCION ACTUAL
+          </b></p>
+          <p class="page-header"></p>
           <div class="row">
             <div class="col-sm-7">
               {{formulario2.departamento|bootstrap_horizontal:'col-md-4'  }}
@@ -166,11 +139,74 @@
             </div>
           </div>
 
+          <div id="encargados" style='display: none'>
+              <p class="page-header"></p>
+              <p class="text-center"> <b>
+                DATOS PADRES Y/O TUTOR
+              </b></p>
+              <p class="page-header"></p>
+            <div class="row">
+              <div class="col-sm-7">
+                <label class="control-label">DATOS MADRE</label>
+                 <br>
+                 <br>
+                {{formulario2.identidad_madre|bootstrap_horizontal:'col-md-4'  }}
+                {{formulario2.nombre_madre|bootstrap_horizontal:'col-md-4'  }}
+                {{formulario2.telefono_madre|bootstrap_horizontal:'col-md-4'  }}
+
+                 <label class="control-label">DATOS PADRE</label>
+                 <br>
+                 <br>
+                {{formulario2.identidad_padre|bootstrap_horizontal:'col-md-4'  }}
+                {{formulario2.nombre_padre|bootstrap_horizontal:'col-md-4'  }}
+                {{formulario2.telefono_padre|bootstrap_horizontal:'col-md-4'  }}
+
+                 <label class="control-label">DATOS ENCARGADO</label>
+                 <br>
+                 <br>
+                {{formulario2.identidad_tutor|bootstrap_horizontal:'col-md-4'  }}
+                {{formulario2.nombre_tutor|bootstrap_horizontal:'col-md-4'  }}
+                {{formulario2.telefono_tutor|bootstrap_horizontal:'col-md-4'  }}
+                {{formulario2.direccion_tutor|bootstrap_horizontal:'col-md-4'  }}
+              </div>
+          </div>
+        </div>
+
           <p class="page-header"></p>
-          <p> Dirección Actual </p>
+          <p class="text-center"> <b>
+            CONSEJERIA
+          </b></p>
+          <p class="page-header"></p>
           <div class="row">
             <div class="col-sm-7">
+              <div class="form-group">
+                <label for="inputEmail3" class="col-sm-4 control-label">Identidad</label>
+                <div class="col-sm-8">
+                  <input type="text" readonly class="form-control identidad">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputEmail3" class="col-sm-4 control-label">Número de Expediente</label>
+                <div class="col-sm-8">
+                  <input type="text" readonly class="form-control expediente">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="consejero" class="col-sm-4 control-label">Nombre del Consejero</label>
+                <div class="col-sm-8">
+                  <input type="text" readonly id="consejero" class="form-control" value="{{user.first_name}} {{user.last_name}}">
+                </div>
+              </div>
               {{formulario3|bootstrap_horizontal:'col-md-4'  }}
+              <div class="form-group">
+                <label for="consejero" class="col-sm-4 control-label">Leer a Persona</label>
+                <div class="col-sm-8">
+                  <div class="well" >  
+                      <input type="checkbox" required> Por este medio autorizo al personal de salud para que me realice la prueba del VIH.
+                  </div>  
+                </div>
+              </div>
+
             </div>
           </div>
 
@@ -191,7 +227,7 @@
 
 <script type="text/javascript">
   $('#button').click(function(){
-    $("#id_fecha_nacimiento").prop('disabled', false)
+    $("#id_fecha_nacimiento, input[name=sexo]").prop('disabled', false)
     return true
   })
   //LOS PLUGINS
@@ -262,7 +298,7 @@
       expediente = identidad + '-' + start.format('YYYY-MM-DD') + '-' + $('input[name=sexo]').val()
       console.log(expediente)
       $('#expediente').text(btoa(expediente))
-      $('#input_expediente').val(btoa(expediente))
+      $('#input_expediente, .expediente').val(btoa(expediente))
     }).val('');
 
    $('#id_fecha_consejeria, #id_fecha_ultima_menstruacion').daterangepicker({
@@ -297,7 +333,7 @@
             "Diciembre"
         ],
         },
-    }).val('');
+    });
 
   $("#id_telefono_fijo, #id_telefono_celular, #id_telefono_madre, #id_telefono_padre, #id_telefono_tutor").inputmask("9999-9999");
 
@@ -310,9 +346,9 @@
       identidad = identidad.replace('-', '')
 
       expediente = identidad + '-' + $('#id_fecha_nacimiento').val() + '-' + $('input[name=sexo]').val()
-      console.log(expediente)
+      $('.identidad').val($(this).val())
       $('#expediente').text(btoa(expediente))
-      $('#input_expediente').val(btoa(expediente))
+      $('#input_expediente, .expediente').val(btoa(expediente))
 
       var key = e.which;
       if(key == 13){
@@ -324,14 +360,20 @@
         })
           .done(function( persona ) {
             if (persona==false){
-              $('#error_identidad').show()
+              $('#error_identidad').show().delay(4000).fadeOut()
+              $('#id_primer_nombre, #id_segundo_nombre, #id_primer_apellido, #id_segundo_apellido, #id_fecha_nacimiento').prop('readonly', false).val('')
+              $('#id_fecha_nacimiento, input[name=sexo]').prop('disabled',false).val('')
+
+
             }else{
               $('#error_identidad').hide()
-              $('#id_primer_nombre').val(persona.primer_nombre)
-              $('#id_segundo_nombre').val(persona.segundo_nombre)
-              $('#id_primer_apellido').val(persona.primer_apellido)
-              $('#id_segundo_apellido').val(persona.segundo_apellido)
-              $('#id_fecha_nacimiento').val(persona.fecha_nacimiento)
+              $('#id_primer_nombre').val(persona.primer_nombre).prop('readonly', true)
+              $('#id_segundo_nombre').val(persona.segundo_nombre).prop('readonly', true)
+              $('#id_primer_apellido').val(persona.primer_apellido).prop('readonly', true)
+              $('#id_segundo_apellido').val(persona.segundo_apellido).prop('readonly', true)
+              $('#id_fecha_nacimiento').val(persona.fecha_nacimiento).prop('readonly', true).prop('disabled', true)
+              
+              $('input[name=sexo]').prop('disabled',true).val('')
               $('#id_sexo_'+(persona.sexo-1)).prop('checked', true)
 
               //ESA ONDA DE EMBARADA
@@ -368,7 +410,7 @@
 
               expediente = identidad + '-' + persona.fecha_nacimiento + '-' + persona.sexo
               $('#expediente').text(btoa(expediente))
-              $('#input_expediente').val(btoa(expediente))
+              $('#input_expediente, .expediente').val(btoa(expediente))
             }
           });
       }
@@ -416,6 +458,8 @@
 $('#no_identidad').change(function(){
   no_identidad = $(this).prop('checked')
   if (no_identidad == true){
+    rand = Math.floor(Math.random()*99999999999999+1);
+    $('#identidad').val(rand)
     $('#id_primer_nombre').prop('readonly', false).val('')
     $('#id_segundo_nombre').prop('readonly', false).val('')
     $('#id_primer_apellido').prop('readonly', false).val('')
@@ -426,6 +470,7 @@ $('#no_identidad').change(function(){
     $('#expediente').text('')
 
   }else{
+    $('#identidad').val('')
     $('#id_primer_nombre').prop('readonly', true).val('')
     $('#id_segundo_nombre').prop('readonly', true).val('')
     $('#id_primer_apellido').prop('readonly', true).val('')
@@ -445,13 +490,11 @@ $('input[name=sexo]').change(function(){
   genero = $(this).val()
 
   //EXPEDIENTE
-  if($('#no_identidad').prop('checked') == true){
-    identidad = $('#identidad').val().replace('-', '');
-    identidad = identidad.replace('-', '')
-    expediente = identidad + '-' + $('#id_fecha_nacimiento').val() + '-' + $('input[name=sexo]').val()
-    $('#expediente').text(btoa(expediente))
-    $('#input_expediente').val(btoa(expediente))
-  }
+  identidad = $('#identidad').val().replace('-', '');
+  identidad = identidad.replace('-', '')
+  expediente = identidad + '-' + $('#id_fecha_nacimiento').val() + '-' + $('input[name=sexo]').val()
+  $('#expediente').text(btoa(expediente))
+  $('#input_expediente, .expediente').val(btoa(expediente))
   
 
   if (genero == '1'){

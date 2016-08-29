@@ -37,11 +37,6 @@
                 <span class="label label-danger "  id='error_identidad' style="display:none">No se encontraron registros con la identidad ingresadda</span>
               </div>
             </div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-sm-8">
             <div class="form-group">
               <label for="inputEmail3" class="col-sm-4 control-label">Número de Expediente Clínico</label>
               <div class="col-sm-8">
@@ -49,13 +44,7 @@
                 <input type="hidden" class="form-control" id="boleta" name='boleta' readonly >
               </div>
             </div>
-          </div>
-        </div>
-
-        <div class="row">
-
-          <div class="col-sm-8">
-            {{formulario.fecha_solicitud|bootstrap_horizontal:'col-md-4'}}
+            {{formulario.fecha_solicitud|bootstrap_horizontal:'col-md-4'}}            
             {{formulario.numero_prueba|bootstrap_horizontal:'col-md-4'}}
             {{formulario.fecha_extraccion|bootstrap_horizontal:'col-md-4'}}
             {{formulario.fecha_muestra|bootstrap_horizontal:'col-md-4'}}
@@ -71,8 +60,20 @@
               {{formulario.fecha_refirio_prueba_confirmatoria|bootstrap_horizontal:'col-md-4'}}
             </div>
           </div>
-        </div>
-        
+
+          <div class="col-sm-1">
+          </div>
+          <div class="col-sm-1 pull-right">
+          </div>
+          <div class="col-sm-2">
+            <div class="small-box bg-aqua">
+              <div class="inner text-center">
+                <b><p id="resultado">SIN RESULTADO</p></b>
+              </div>
+              <p class="small-box-footer"><b>Resultado</b></p>
+            </div>
+          </div>
+        </div>        
     </div>
     <div class="box-footer">
       <div class="row">
@@ -124,7 +125,7 @@
     function(start, end, label) {
         var years = moment().diff(start, 'years');
         //alert("You are " + years + " years old.");
-    }).val('');
+    });
 
 
 
@@ -160,10 +161,44 @@
   });
 
   $('input[name=resultado_prueba_tamizaje]').change(function(){
+    confimatoria = $('input[name=resultado_prueba_confirmatoria]').val()
+    tamizaje = $(this).val()
+
+    if(confimatoria == 1 || tamizaje == 1){
+      $('#resultado').text('POSITIVO')
+    }
+    if(confimatoria == 1 || tamizaje != 1){
+      $('#resultado').text('NO CONCLUYENTE')
+    }
+    if(confimatoria != 1 || tamizaje == 1){
+      $('#resultado').text('NO CONCLUYENTE')
+    }
+    if(confimatoria != 1 || tamizaje != 1){
+      $('#resultado').text('NEGATIVO')
+    }
+
     if ($(this).val() == 1){
       $('#prueba_positiva').show()
     }else{
       $('#prueba_positiva').hide()
+    }
+  })
+
+   $('input[name=resultado_prueba_confirmatoria]').change(function(){
+    tamizaje = $('input[name=resultado_prueba_tamizaje]').val()
+    confimatoria = $(this).val()
+
+    if(confimatoria == 1 & tamizaje == 1){
+      $('#resultado').text('POSITIVO')
+    }
+    if(confimatoria == 1 & tamizaje != 1){
+      $('#resultado').text('NO CONCLUYENTE')
+    }
+    if(confimatoria != 1 & tamizaje == 1){
+      $('#resultado').text('NO CONCLUYENTE')
+    }
+    if(confimatoria != 1 & tamizaje != 1){
+      $('#resultado').text('NEGATIVO')
     }
   })
 </script>

@@ -18,7 +18,7 @@
 
 <div class="box box-primary">
   <div class="box-header with-border">
-    <h3 class="box-title">Creacion de Usuario</h3>
+    <h3 class="box-title">Consejería Post Prueba </h3>
   </div>
   <form  class="form-horizontal" role="form"  method="POST">
     {% csrf_token %}
@@ -36,14 +36,9 @@
               <label for="inputEmail3" class="col-sm-4 control-label">Identidad</label>
               <div class="col-sm-8 form-inline">
                 <input type="text" class="form-control" id='identidad' name="identidad" data-inputmask='"mask": "9999-9999-99999"' data-mask>
-                <span class="label label-danger "  id='error_identidad' style="display:none">No se encontraron registros con la identidad ingresadda</span>
+                <span class="label label-danger "  id='error_identidad' style="display:none">No se encontraron registros con la identidad ingresada</span>
               </div>
             </div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-sm-8">
             <div class="form-group">
               <label for="inputEmail3" class="col-sm-4 control-label">Número de Expediente Clínico</label>
               <div class="col-sm-8">
@@ -51,16 +46,31 @@
                 <input type="hidden" class="form-control" id="boleta" name='boleta' readonly >
               </div>
             </div>
+          {{formulario.fecha_consejeria|bootstrap_horizontal:'col-md-4'}}
+          {{formulario.referido|bootstrap_horizontal:'col-md-4'}}
+          
+          </div>
+
+          <div class="col-sm-1">
+          </div>
+          <div class="col-sm-1 pull-right">
+          </div>
+          <div class="col-sm-2">
+            <div class="small-box bg-aqua">
+              <div class="inner text-center">
+                <b><p id="resultado">SIN RESULTADO</p></b>
+              </div>
+              <p class="small-box-footer"><b>Resultado</b></p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-11">
+            {{formulario.observaciones|bootstrap_horizontal:'col-md-3'}}
           </div>
         </div>
 
-        <div class="row">
-          <div class="col-sm-8">
-          {{formulario.fecha_consejeria|bootstrap_horizontal:'col-md-4'}}
-          {{formulario.referido|bootstrap_horizontal:'col-md-4'}}
-          {{formulario.observaciones|bootstrap_horizontal:'col-md-4'}}
-          </div>
-        </div>
+      </div>
         
     </div>
     <div class="box-footer">
@@ -110,7 +120,7 @@
     function(start, end, label) {
         var years = moment().diff(start, 'years');
         //alert("You are " + years + " years old.");
-    }).val('');
+    });
 
 
 
@@ -133,24 +143,41 @@
               $('#error_identidad').show()
               $('#expediente,#id_fecha_consejeria, #id_observaciones, #id_referido').val('')
             }else{
-              console.log(data.boleta.pk, data.boleta)
+              console.log(data.boleta.boleta__pk, data.boleta)
               $('#error_identidad').hide()
-              $('#boleta').val(data.boleta.pk)
+              $('#boleta').val(data.boleta.boleta__pk)
               $('#expediente').val(data.expediente)
 
-              if(data.boleta.edad_anios <= 18){
-                if(data.boleta.nombre_madre != ''){
-                  $('#id_referido').val(data.boleta.nombre_madre)
-                }else if(data.boleta.nombre_padre != ''){ 
-                  $('#id_referido').val(data.boleta.nombre_padre)
-                }else if(data.boleta.nombre_tutor != ''){
-                  $('#id_referido').val(data.boleta.nombre_tutor)
+              tamizaje = data.boleta.resultado_prueba_tamizaje 
+              confimatoria = data.boleta.resultado_prueba_confirmatoria
+
+                if(confimatoria == 1 & tamizaje == 1){
+                  $('#resultado').text('POSITIVO')
+                }
+                if(confimatoria == 1 & tamizaje != 1){
+                  $('#resultado').text('NO CONCLUYENTE')
+                }
+                if(confimatoria != 1 & tamizaje == 1){
+                  $('#resultado').text('NO CONCLUYENTE')
+                }
+                if(confimatoria != 1 & tamizaje != 1){
+                  $('#resultado').text('NEGATIVO')
+                }
+
+              //SI ES MENOR DE EDAD, SON LOS TUTORES QUE VA EN EL CAMPO DE REFERIDO
+              if(data.boleta.boleta__edad_anios <= 18){
+                if(data.boleta.boleta__nombre_madre != ''){
+                  $('#id_referido').val(data.boleta.boleta__nombre_madre)
+                }else if(data.boleta.boleta__nombre_padre != ''){ 
+                  $('#id_referido').val(data.boleta.boleta__nombre_padre)
+                }else if(data.boleta.boleta__nombre_tutor != ''){
+                  $('#id_referido').val(data.boleta.boleta__nombre_tutor)
                 }else{
-                  $('#id_referido').val(data.boleta.primer_nombre + ' ' + data.boleta.segundo_nombre + ' ' + data.boleta.primer_apellido + ' ' + data.boleta.segundo_apellido)
+                  $('#id_referido').val(data.boleta.boleta__primer_nombre + ' ' + data.boleta.boleta__segundo_nombre + ' ' + data.boleta.boleta__primer_apellido + ' ' + data.boleta.boleta__segundo_apellido)
                 }
                 
               }else{
-                $('#id_referido').val(data.boleta.primer_nombre + ' ' + data.boleta.segundo_nombre + ' ' + data.boleta.primer_apellido + ' ' + data.boleta.segundo_apellido)
+                $('#id_referido').val(data.boleta.boleta__primer_nombre + ' ' + data.boleta.boleta__segundo_nombre + ' ' + data.boleta.boleta__primer_apellido + ' ' + data.boleta.boleta__segundo_apellido)
               }
               
             }

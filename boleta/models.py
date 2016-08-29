@@ -94,8 +94,8 @@ class Boletas(models.Model):
 
 class BoletasConsejeria(models.Model):
 	boleta = models.ForeignKey(Boletas)
-	fecha_consejeria = models.CharField(max_length=10, blank=True, null=True, verbose_name='Fecha de Consejería Pre Prueba')
 	periodicidad = models.IntegerField(blank=True, null=True)
+	fecha_consejeria = models.CharField(max_length=10, blank=True, null=True, verbose_name='Fecha de Consejería Pre Prueba')
 	nombre_persona_solicitante = models.CharField(max_length=150, blank=True, null=True, verbose_name='Nombre de la Persona Solicitante/Encargada/Responsable')
 	nombre_consejero = models.CharField(max_length=150, blank=True, null=True)
 	creado_por = models.ForeignKey(User, related_name='creado_por_boleta_consejeria')

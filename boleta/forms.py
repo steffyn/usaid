@@ -35,6 +35,9 @@ class BoletaConsejeriaForm(ModelForm):
 		model = BoletasConsejeria
 		fields = "__all__"
 		exclude = ['actualizado_por', 'nombre_persona_solicitante', 'nombre_consejero', 'creado_por', 'fecha_creacion', 'fecha_actualizacion', 'boleta']
+		widgets = {
+			'periodicidad': TextInput(attrs={'readonly': 'readonly', 'type': 'text', 'value': '1'}),
+		}
 
 class BoletasConsejeriaPostPruebaForm(ModelForm):
 	class Meta:
