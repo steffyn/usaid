@@ -32,6 +32,31 @@ TIPO_ESTABLECIMIENTO = (
 	(2, "Segundo Nivel"),
 )
 
+LUGARES = (
+	(1, "San Pedro Sula"),
+	(2, "La Ceiba"),
+	(3, "Tegucigalpa"),
+	(4, "Puerto Cortes"),
+	(5, "Tela"),
+)
+
+TIPO_POBLACION = (
+	(1, "MTS"),
+	(2, "HSH/TG"),
+)
+
+TIPO_INTERVENCION = (
+	(1, "Proveer o referir a Servicios de Consejeria y Prueba"),
+	(2, "Promocion y Distribucion de Condones y Lubricantes"),
+	(3, "Referencia a Tamizaje, Prevencion y Tratamiento de ITS"),
+	(4, "Difusion/Alcance y Empoderamiento"),
+	(5, "Abordaje para IEC"),
+	(6, "Referencia Salud Reproductiva (Planificacion Familiar)"),
+)
+
+ 
+
+
 #ESTA VA PARA BOLETAS
 class Condiciones(models.Model):
 	nombre = models.CharField(max_length=255)
@@ -156,3 +181,27 @@ class BoletasPruebas(models.Model):
 	fecha_actualizacion = models.DateTimeField(auto_now=True)
 	def __unicode__(self):
 		return u'%s' % (self.boleta.identidad)
+
+class Asistencia(models.Model):
+	establecimiento = models.ForeignKey(Establecimientos)
+	fecha = models.DateField()
+	lugar = models.IntegerField(choices=LUGARES)
+	actividad = models.CharField(max_length=200)
+	poblacion = models.IntegerField(choices=TIPO_POBLACION)
+	intervencion = models.IntegerField(choices=TIPO_INTERVENCION)
+	responsable = models.CharField(max_length=100,blank=True, null=True)
+	coordinador = models.CharField(max_length=100,blank=True, null=True)
+
+	creado_por = models.ForeignKey(User, related_name='creado_por_asistencia')
+	fecha_creacion = models.DateTimeField(auto_now_add=True)
+	actualizado_por = models.ForeignKey(User, related_name='actualizado_por_asistencia')
+	fecha_actualizacion = models.DateTimeField(auto_now=True)
+
+class ListadoAsistencia(models.Model):
+	asistencia = models.ForeignKey(Asistencia)
+	identidad = models.CharField(max_length=13)
+	nombres = models.CharField(max_length=255)
+	correo_electronico = models.CharField(max_length=150, blank=True, null=True)
+	edad = models.IntegerField()
+	telefono = models.CharField(max_length=10)
+	cantidad_condones = models.IntegerField()

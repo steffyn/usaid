@@ -301,3 +301,17 @@ def ajax(request):
 		elif tabla == 'barrio':
 			data = list(Barrios.objects.values('id', 'codigo', 'nombre').filter(ciudad=valor))
 		return HttpResponse(json.dumps(data, default=date_handler), content_type='application/json')
+
+@login_required()
+def listado_asistencia(request):
+	responsable = usuario(request.user.pk)
+	exito = False
+	#GET
+	if request.method == 'GET':
+		formulario = AsistenciaForm()
+		ctx = {
+			'formulario' : formulario,
+			'exito': exito,
+			'responsable': responsable,
+		}
+		return render(request, 'listado_asistencia.html', ctx)

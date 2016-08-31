@@ -16,6 +16,13 @@ RESULTADOS = (
 	(1, "Positivo"),
 	(2, "Negativo"),
 )
+
+TIPO_POBLACION = (
+	(1, "MTS"),
+	(2, "HSH/TG"),
+)
+
+
 class BoletaForm(ModelForm):
 	class Meta:
 		model = Boletas
@@ -59,3 +66,11 @@ class BoletaPruebaForm(ModelForm):
 		exclude = ['actualizado_por', 'nombre_persona_solicitante', 'nombre_consejero', 'creado_por', 'fecha_creacion', 'fecha_actualizacion', 'boleta']
 	resultado_prueba_tamizaje =  forms.ChoiceField(choices=RESULTADOS, widget=RadioSelect)
 	resultado_prueba_confirmatoria =  forms.ChoiceField(choices=RESULTADOS, widget=RadioSelect)
+
+
+class AsistenciaForm(ModelForm):
+	class Meta:
+		model = Asistencia
+		fields = "__all__"
+		exclude = ['actualizado_por', 'creado_por', 'fecha_creacion', 'fecha_actualizacion']
+	poblacion =  forms.ChoiceField(choices=TIPO_POBLACION, widget=RadioSelect)
