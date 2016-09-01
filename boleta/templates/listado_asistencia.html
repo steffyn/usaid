@@ -22,7 +22,14 @@
   </div>
   <!-- /.box-header -->
   <!-- form start -->
-  <form role="form" class="form-horizontal"  method="POST">
+    <br>
+    <div class="text-center" > 
+      <img src="{% static 'img/logo-linkages.jpg' %}"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+      <img src="{% static 'img/logo-pepfar.jpg' %}"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+      <img src="{% static 'img/logo-usaid.jpg' %}">
+    </div>
+    <br>
+  <form role="form" class="form-horizontal"  method="POST" id='formulario'>
     {% csrf_token %}
     <div class="box-body">
         {% if exito %}
@@ -32,22 +39,26 @@
         {% endif %}
         
         <div class="row">
-          <div class="col-sm-6">
+          <div class="col-sm-10">
           {{formulario|bootstrap_horizontal:'col-md-4'}}
           </div>
         </div>
         <div class="well">
           <div class="row text-center">
-            <div class="col-md-4">Identidad <br><input class="form-control" type="text" id="id_identidad" name=""></div>
-            <div class="col-md-4">Nombre<br> <input class="form-control" type="text" id="id_nombre" name=""> </div>
+            <div class="col-md-3">Identidad <br><input class="form-control" type="text" id="id_identidad" name=""></div>
+            <div class="col-md-5">Nombre<br> <input class="form-control" type="text" id="id_nombre" name=""> </div>
             <div class="col-md-4">Correo<br> <input class="form-control" type="text" id="id_correo" name=""> </div>
           </div>
 
           <div class="row text-center">
             <div class="col-md-3">Edad<br> <input class="form-control" type="number" id="id_edad" name=""> </div>
             <div class="col-md-3">Telefono <br><input class="form-control" type="text" id="id_telefono" name=""> </div>
-            <div class="col-md-3">Cantidad Condones<br> <input class="form-control" type="number" id="id_cantidad" name=""></div>
+            <div class="col-md-3">Cantidad de Condones que recibio<br> <input class="form-control" type="number" id="id_cantidad" name=""></div>
             <div class="col-md-3"><br> <button type="button" id="agregar_participante" class="btn btn-warning">Agregar Participante</button></div>
+          </div>
+
+          <div class="label label-danger" style="display:none" role="alert" id='validacion_participante'> 
+            Error! Los campos Identidad, Nombre, Edad, Telefono y Cantidad de Condones Recibidos son <b> Obligatorios, por favor revise dichos campos. </b>
           </div>
         </div>
 
@@ -60,7 +71,7 @@
                   <th>Correo</th>
                   <th>Edad</th>
                   <th>Telefono</th>
-                  <th>Cantidad Condones</th>
+                  <th>Cantidad de Condones que recibio</th>
                 </tr>
               </table>
             </div>
@@ -87,23 +98,30 @@
   }
 
   $('#agregar_participante').click(function(){
-    console.log('ppasdojskjasdhkasj')
+    if($("#id_nombre").val()== '' || $("#id_identidad").val()=='' || $("#id_edad").val()=='' || $("#id_telefono").val()=='' || $("#id_cantidad").val()==''){
+      $('#validacion_participante').fadeIn().delay(4000).fadeOut()
+      console.log('asdasdasdasd')
+    }else{
+      console.log('ppasdojskjasdhkasj')
+      $('#validacion_participante').hide()
 
-    identidad = $("#id_identidad").val().replace('-', '');
-    identidad = identidad.replace('-', '')
+      identidad = $("#id_identidad").val().replace('-', '');
+      identidad = identidad.replace('-', '')
 
-    str = "<tr id=" + identidad + ">"
-    str += "<td> <button type='button' class='btn btn-danger btn-xs' onclick='quitar(" + identidad + ")'> - </button> </td>"
-    str += "<td>" + identidad + "</td>"
-    str += "<td>" + $("#id_nombre").val() + "</td>"
-    str += "<td>" + $("#id_correo").val() + "</td>"
-    str += "<td>" + $("#id_edad").val() + "</td>"
-    str += "<td>" + $("#id_telefono").val() + "</td>"
-    str += "<td>" + $("#id_cantidad").val() + "</td>"
-    str += "</tr>"
-    $("#tabla").append(str)
+      str = "<tr id=" + identidad + ">"
+      str += "<td> <button type='button' class='btn btn-danger btn-xs' onclick='quitar(" + identidad + ")'> - </button> </td>"
+      str += "<td>" + identidad + " <input type='hidden' name='identidad[]' value='" + identidad + "'> </td>"
+      str += "<td>" + $("#id_nombre").val() + " <input type='hidden' name='nombre[" + identidad + "]' value='" +  $("#id_nombre").val() + "'> </td>"
+      str += "<td>" + $("#id_correo").val() + " <input type='hidden' name='correo[" + identidad + "]' value='" +  $("#id_correo").val() + "'> </td>"
+      str += "<td>" + $("#id_edad").val() + " <input type='hidden' name='edad[" + identidad + "]' value='" +  $("#id_edad").val() + "'> </td>"
+      str += "<td>" + $("#id_telefono").val() + " <input type='hidden' name='telefono[" + identidad + "]' value='" +  $("#id_telefono").val() + "'> </td>"
+      str += "<td>" + $("#id_cantidad").val() + " <input type='hidden' name='cantidad[" + identidad + "]' value='" +  $("#id_cantidad").val() + "'> </td>"
+      str += "</tr>"
+      $("#tabla").append(str)
 
-    $("#id_identidad, #id_nombre, #id_correo, #id_edad, #id_telefono, #id_cantidad").val('')
+      $("#id_identidad, #id_nombre, #id_correo, #id_edad, #id_telefono, #id_cantidad").val('')
+    }
+    
 
   })
   //LOS PLUGINS
@@ -147,147 +165,7 @@
 
   $("#id_identidad").attr('maxlength', 20).inputmask("9999-9999-99999");
 
-  //BUSQUEDA DE IDENTIDAD
-  $('#identidad').keypress(function (e) {
-      event.preventDefault();
-      identidad = $(this).val().replace('-', '');
-      identidad = identidad.replace('-', '')
-
-      expediente = identidad + '-' + $('#id_fecha_nacimiento').val() + '-' + $('input[name=sexo]').val()
-      $('.identidad').val($(this).val())
-      $('#expediente').text(btoa(expediente))
-      $('#input_expediente, .expediente').val(btoa(expediente))
-
-      var key = e.which;
-      if(key == 13){
-        $.ajax({
-          url: "{% url 'pre_prueba_vih' %}",
-          data: { 
-                  identidad: identidad
-                }
-        })
-          .done(function( persona ) {
-            if (persona==false){
-              $('#error_identidad').show().delay(4000).fadeOut()
-              $('#id_primer_nombre, #id_segundo_nombre, #id_primer_apellido, #id_segundo_apellido, #id_fecha_nacimiento').prop('readonly', false).val('')
-              $('#id_fecha_nacimiento, input[name=sexo]').prop('disabled',false).val('')
-
-
-            }else{
-              $('#error_identidad').hide()
-              $('#id_primer_nombre').val(persona.primer_nombre).prop('readonly', true)
-              $('#id_segundo_nombre').val(persona.segundo_nombre).prop('readonly', true)
-              $('#id_primer_apellido').val(persona.primer_apellido).prop('readonly', true)
-              $('#id_segundo_apellido').val(persona.segundo_apellido).prop('readonly', true)
-              $('#id_fecha_nacimiento').val(persona.fecha_nacimiento).prop('readonly', true).prop('disabled', true)
-              
-              $('input[name=sexo]').prop('disabled',true).val('')
-              $('#id_sexo_'+(persona.sexo-1)).prop('checked', true)
-
-              //ESA ONDA DE EMBARADA
-              if (persona.sexo == 1){
-                $("#id_condiciones option[value='"+ embarazada_id +"']").remove();
-              }else{
-                $("#id_condiciones").append('<option value="'+ embarazada_id +'">Embarazada</option>');
-              }
-
-              //CALCULO DE EDAD
-              edad = $('#id_fecha_nacimiento').val().split("-");
-              var mes = edad[1];
-              var anio = edad[0];
-              var anio_actual = new Date().getFullYear();
-              var edad_anios = anio_actual - anio;
-              var mes_actual = new Date().getMonth()+1;
-              var edad_mes = mes_actual - mes;
-                
-              if (edad_mes < 0){
-                  if (edad_mes > 0){
-                     edad_anios = edad_anios-1
-                     edad_mes = ((12-mes)+mes_actual)
-                  }
-                }
-
-              $('#id_edad_anios').val(edad_anios)
-              $('#id_edad_meses').val(Math.abs(edad_mes))
-
-              if(parseInt(edad_anios)<18){
-                $('#encargados').show().fadeIn();
-              }else{
-                $('#encargados').hide().fadeOut();
-              }
-
-              expediente = identidad + '-' + persona.fecha_nacimiento + '-' + persona.sexo
-              $('#expediente').text(btoa(expediente))
-              $('#input_expediente, .expediente').val(btoa(expediente))
-            }
-          });
-      }
-  }); 
-
-//NO IDENTIDAD
-$('#no_identidad').change(function(){
-  no_identidad = $(this).prop('checked')
-  if (no_identidad == true){
-    rand = Math.floor(Math.random()*99999999999999+1);
-    $('#identidad').val(rand)
-    $('#id_primer_nombre').prop('readonly', false).val('')
-    $('#id_segundo_nombre').prop('readonly', false).val('')
-    $('#id_primer_apellido').prop('readonly', false).val('')
-    $('#id_segundo_apellido').prop('readonly', false).val('')
-    $('#id_fecha_nacimiento').prop('disabled', false).val('')
-    $('#id_edad_anios').val('')
-    $('#id_edad_meses').val('')
-    $('#expediente').text('')
-
-  }else{
-    $('#identidad').val('')
-    $('#id_primer_nombre').prop('readonly', true).val('')
-    $('#id_segundo_nombre').prop('readonly', true).val('')
-    $('#id_primer_apellido').prop('readonly', true).val('')
-    $('#id_segundo_apellido').prop('readonly', true).val('')
-    $('#id_fecha_nacimiento').prop('disabled', true).val('')
-    $('#id_edad_anios').val('')
-    $('#id_edad_meses').val('')
-    $('#expediente').text('')
-  }
-  
-})
-
-var embarazada_id = {{embarazada.pk}}
-
-//NO IDENTIDAD
-$('input[name=sexo]').change(function(){
-  genero = $(this).val()
-
-  //EXPEDIENTE
-  identidad = $('#identidad').val().replace('-', '');
-  identidad = identidad.replace('-', '')
-  expediente = identidad + '-' + $('#id_fecha_nacimiento').val() + '-' + $('input[name=sexo]').val()
-  $('#expediente').text(btoa(expediente))
-  $('#input_expediente, .expediente').val(btoa(expediente))
-  
-
-  if (genero == '1'){
-    $("#id_condiciones option[value='"+ embarazada_id +"']").remove();
-    $('#embarazada').hide()
-  }else{
-    $("#id_condiciones").append('<option value="'+ embarazada_id +'">Embarazada</option>');
-  }
-  
-})
-
-
-//EMBARAZADA
-$('#id_condiciones').change(function(){
-  valores = $(this).val()
-  embarazada = jQuery.inArray( embarazada_id.toString(), valores )
-  if( embarazada >= 0) {
-    console.log('PASO POR AQUI')
-    $('#embarazada').show()
-  }else{
-    $('#embarazada').hide()
-  }
-})
+ 
 </script>
 
 {% endblock %}

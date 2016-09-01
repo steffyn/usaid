@@ -3,14 +3,16 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render
 from django.http import *
+from django.urls import reverse
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login as auth_login, logout
-from django.urls import reverse
 from django.db.models import Count
+from django.db import transaction, IntegrityError
 
 from general.forms import *
 from boleta.forms import *
+
 
 import json
 
@@ -302,6 +304,7 @@ def ajax(request):
 			data = list(Barrios.objects.values('id', 'codigo', 'nombre').filter(ciudad=valor))
 		return HttpResponse(json.dumps(data, default=date_handler), content_type='application/json')
 
+@transaction.atomic
 @login_required()
 def listado_asistencia(request):
 	responsable = usuario(request.user.pk)
@@ -314,4 +317,41 @@ def listado_asistencia(request):
 			'exito': exito,
 			'responsable': responsable,
 		}
+		return render(request, 'listado_asistencia.html', ctx)
+	if request.method == 'POST':
+		try:
+			with transaction.atomic():
+				identidades = request.POST.getlist('identidad[]')
+				formulario = AsistenciaForm(request.POST)
+				if formulario.is_valid():
+					registro = formulario.save(commit=False)
+					registro.creado_por = request.user
+					registro.actualizado_por = request.user
+					registro.save()
+
+					for identidad in identidades:
+						asistencia = ListadoAsistencia()
+						asistencia.asistencia = registro
+						asistencia.identidad = identidad
+						asistencia.nombres = request.POST['nombre[' + identidad + ']']
+						asistencia.correo_electronico = request.POST['correo[' + identidad+']']
+						asistencia.edad = request.POST['edad['+identidad+']']
+						asistencia.telefono = request.POST['telefono['+identidad+']']
+						asistencia.cantidad_condones = request.POST['cantidad['+identidad+']']
+
+						asistencia.save()
+
+					formulario = AsistenciaForm()
+					exito = True
+				else:
+					pass
+
+				
+		except Exception, e:
+			print 'ERROR', e
+		ctx = {
+			'formulario' : formulario,
+			'exito': exito,
+			'responsable': responsable,
+		}	
 		return render(request, 'listado_asistencia.html', ctx)

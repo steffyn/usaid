@@ -45,6 +45,24 @@ TIPO_POBLACION = (
 	(2, "HSH/TG"),
 )
 
+SI_NO = (
+	(1, "SI"),
+	(2, "NO"),
+)
+
+ESTADO_INMUNOLOGICO = (
+	(1, "CD4<200"),
+	(2, "CD4=200-499"),
+	(3, "CD4>=500"),
+	(4, "N/A"),
+)
+
+ESTADIO_CLINICO = (
+	("A", "A"),
+	("B", "B"),
+	("C", "C"),
+)
+
 TIPO_INTERVENCION = (
 	(1, "Proveer o referir a Servicios de Consejeria y Prueba"),
 	(2, "Promocion y Distribucion de Condones y Lubricantes"),
@@ -183,14 +201,14 @@ class BoletasPruebas(models.Model):
 		return u'%s' % (self.boleta.identidad)
 
 class Asistencia(models.Model):
-	establecimiento = models.ForeignKey(Establecimientos)
+	establecimiento = models.ForeignKey(Establecimientos, verbose_name='ONG Implementadora')
 	fecha = models.DateField()
 	lugar = models.IntegerField(choices=LUGARES)
-	actividad = models.CharField(max_length=200)
-	poblacion = models.IntegerField(choices=TIPO_POBLACION)
-	intervencion = models.IntegerField(choices=TIPO_INTERVENCION)
-	responsable = models.CharField(max_length=100,blank=True, null=True)
-	coordinador = models.CharField(max_length=100,blank=True, null=True)
+	actividad = models.CharField(max_length=200, verbose_name='Actividad/Tema')
+	poblacion = models.IntegerField(choices=TIPO_POBLACION, verbose_name='Tipo de Población Clave Atendida')
+	intervencion = models.IntegerField(choices=TIPO_INTERVENCION, verbose_name='Tipo de Intervensión')
+	responsable = models.CharField(max_length=100,blank=True, null=True, verbose_name='Nombre del/la Responsable de la Actividad')
+	coordinador = models.CharField(max_length=100,blank=True, null=True, verbose_name='Nombre del/la Coordinador de Proyecto')
 
 	creado_por = models.ForeignKey(User, related_name='creado_por_asistencia')
 	fecha_creacion = models.DateTimeField(auto_now_add=True)
@@ -205,3 +223,32 @@ class ListadoAsistencia(models.Model):
 	edad = models.IntegerField()
 	telefono = models.CharField(max_length=10)
 	cantidad_condones = models.IntegerField()
+
+class BoletaClinica(models.Model):
+	boleta = models.ForeignKey(Boletas)
+	relaciones_mismo_sexo = models.IntegerField(choices=SI_NO, blank=True, null=True)
+	dinero_por_relaciones = models.IntegerField(choices=SI_NO, blank=True, null=True)
+	identificacion_genero = models.IntegerField(choices=SI_NO, blank=True, null=True)
+	embarazada_vih = models.IntegerField(choices=SI_NO, blank=True, null=True)
+	fecha_ultima_menstruacion = models.DateField(blank=True, null=True)
+	semanas_gestiacion = models.IntegerField(blank=True, null=True)
+	evaluacion_go = models.IntegerField(choices=SI_NO, blank=True, null=True)
+	programacion_cesaria = models.IntegerField(choices=SI_NO, blank=True, null=True)
+	fecha_cesaria = models.DateField(blank=True, null=True)
+	afiliacion_seguridad_social = models.IntegerField(choices=SI_NO, blank=True, null=True)
+	clase_afiliacion =  models.CharField(max_length=200, verbose_name='Clase de Afiliacion')
+	seguro_privado = models.IntegerField(choices=SI_NO, blank=True, null=True)
+	nombre_aseguradora = models.CharField(max_length=200, verbose_name='Nombre de la Aseguradora Social')
+	fecha_diagnostico = models.DateField(blank=True, null=True)
+	fecha_primera_consulta = models.DateField(blank=True, null=True)
+	fecha_proxima_cita = models.DateField(blank=True, null=True)
+	cita_medica = models.CharField(max_length=200, blank=True, null=True)
+	retiro_medicamento = models.CharField(max_length=200, blank=True, null=True)
+	talla = models.CharField(max_length=3, blank=True, null=True)
+	peso = models.CharField(max_length=3, blank=True, null=True)
+	imc = models.CharField(max_length=3, blank=True, null=True)
+	estado_inmunologico = models.IntegerField(choices=ESTADO_INMUNOLOGICO, blank=True, null=True)
+	estado_clinico = models.IntegerField(choices=ESTADO_CLINICO, blank=True, null=True)
+	estadio_infeccion = models.CharField(max_length=2, blank=True, null=True)
+
+
