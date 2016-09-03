@@ -355,3 +355,114 @@ def listado_asistencia(request):
 			'responsable': responsable,
 		}	
 		return render(request, 'listado_asistencia.html', ctx)
+
+
+@transaction.atomic
+@login_required()
+def boleta_clinica(request):
+	responsable = usuario(request.user.pk)
+	embarazada = Condiciones.objects.get(nombre='Embarazada')
+	exito = False
+	#AJAX
+	if request.is_ajax():
+		identidad = request.GET['identidad']
+		try:
+			persona = dict(
+				Boletas.objects.values(
+					'primer_nombre', 
+					'segundo_nombre', 
+					'primer_apellido', 
+					'segundo_apellido', 
+					'sexo', 
+					'fecha_nacimiento',
+					'edad_anios',
+					'edad_meses',
+					'pseudonimo',
+					'estado_civil',
+					'telefono_fijo',
+					'telefono_celular',
+					'ocupacion__pk',
+					'departamento__pk',
+					'municipio__pk',
+					'calle',
+					'bloque',
+					'numero_casa',
+					'referencias',
+					'grupo_etnico__pk',
+					'otro_grupo_etnico',
+					'identidad_madre',
+					'nombre_madre',
+					'telefono_madre',
+					'identidad_padre',
+					'nombre_padre',
+					'telefono_padre',
+					'identidad_tutor',
+					'nombre_tutor',
+					'telefono_tutor',
+					'direccion_tutor',
+					'poblacion__pk',
+					'actividad_economica__pk',
+					'fecha_ultima_menstruacion',
+					'ciudad__pk',
+					'barrio__pk',
+					'condiciones',
+					'otro_condicion',
+				).get(identidad=identidad)
+			)
+		except Exception, e:
+			print e
+			try:
+				persona = dict(RPN.objects.values('primer_nombre', 'segundo_nombre', 'primer_apellido', 'segundo_apellido', 'sexo', 'fecha_nacimiento').get(identidad=identidad))
+			except Exception, e:
+				persona = False
+
+		return HttpResponse(json.dumps(persona, default=date_handler), content_type='application/json')
+	#GET
+	elif request.method == 'GET':
+		formulario = RPNForm()
+		formulario2 = BoletaForm()
+		formulario3 = BoletaClinicaForm()
+		ctx = {
+			'formulario' : formulario,
+			'formulario2' : formulario2,
+			'formulario3' : formulario3,
+			'exito': exito,
+			'responsable': responsable,
+			'embarazada': embarazada,
+		}
+		return render(request, 'boleta_clinica.html', ctx)
+	if request.method == 'POST':
+		try:
+			with transaction.atomic():
+				identidades = request.POST.getlist('identidad[]')
+				formulario = AsistenciaForm(request.POST)
+				if formulario.is_valid():
+					registro = formulario.save(commit=False)
+					registro.creado_por = request.user
+					registro.actualizado_por = request.user
+					registro.save()
+
+					for identidad in identidades:
+						asistencia = ListadoAsistencia()
+						asistencia.asistencia = registro
+						asistencia.identidad = identidad
+						asistencia.nombres = request.POST['nombre[' + identidad + ']']
+						asistencia.correo_electronico = request.POST['correo[' + identidad+']']
+						asistencia.edad = request.POST['edad['+identidad+']']
+						asistencia.telefono = request.POST['telefono['+identidad+']']
+						asistencia.cantidad_condones = request.POST['cantidad['+identidad+']']
+
+						asistencia.save()
+
+					formulario = AsistenciaForm()
+					exito = True
+				else:
+					pass
+		except Exception, e:
+			print 'ERROR', e
+		ctx = {
+			'formulario' : formulario,
+			'exito': exito,
+			'responsable': responsable,
+		}	
+		return render(request, 'boleta_clinica.html', ctx)

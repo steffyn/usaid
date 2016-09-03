@@ -1,0 +1,1530 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load bootstrap %}
+
+
+{% block contenido %}
+<link rel="stylesheet" href="{% static 'plugins/daterangepicker/daterangepicker.css' %}">
+<link rel="stylesheet" href="{% static 'plugins/select2/select2.min.css' %}">
+<link rel="stylesheet" href="{% static 'plugins/select2/select2-bootstrap.min.css' %}">
+
+<script src="{% static 'plugins/input-mask/jquery.inputmask.js' %}"></script>
+<script src="{% static 'plugins/input-mask/jquery.inputmask.date.extensions.js' %}"></script>
+<script src="{% static 'plugins/input-mask/jquery.inputmask.extensions.js' %}"></script>
+<script src="{% static 'plugins/daterangepicker/moment.min.js' %}"></script>
+<script src="{% static 'plugins/daterangepicker/daterangepicker.js' %}"></script>
+<script src="{% static 'plugins/select2/select2.min.js' %}"></script>
+
+<style>
+.font-style {
+   font-family: consolas, monaco, "Lucida Console", monospace;
+   color: #00159E;
+   font-size: 34;
+   padding: 0;
+   font-weight: bold;
+}
+
+.sub-style {
+   font-family: Tahoma, Verdana, Segoe, sans-serif;
+   color: #269AFF;
+   font-size: 12;
+   font-weight: bold;
+}
+</style>
+
+<div class="box box-primary">
+   <div class="box-header with-border">
+      <h3 class="box-title">Ficha Clínica para Paciente Adulto y Adolescente con el Virus de la Inmunodeﬁciencia Humana (VIH)</h3>
+   </div>
+<!-- /.box-header -->
+<!-- form start -->
+   <form role="form" class=""  method="POST" id='formulario'>
+      {% csrf_token %}
+      <div class="box-body">
+         {% if exito %}
+            <div class="alert alert-success" role="alert"> 
+               Se guardaron los datos correctamente 
+            </div>
+         {% endif %}
+         
+         <div class="form-horizontal"> 
+            <div class="row">
+               <div class="col-sm-7">
+                  {{formulario2.establecimiento|bootstrap_horizontal:'col-md-5'  }}
+               </div>
+            </div>
+            <p class="page-header"></p>
+            <h4 class="text-center font-style">
+               [PARTE I] DATOS GENERALES DE LA PERSONA USUARIA DE LOS SERVICIOS
+            </h4>
+            <p class="page-header"></p>
+
+            <div class="row">
+               <div class="col-sm-12">
+                  <div class="well text-center">
+                     <b> Número de Expediente Clínico o Código Identificador Único  <br> <span id="expediente">  </span>  </b>
+                  </div>
+               </div>
+            </div>
+
+            <div class="row">
+               <div class="col-sm-7">
+                  <div class="form-group">
+                     <label class="control-label col-md-5 " for="identidad">Identidad</label>
+                     <div class=" col-md-7 ">
+                        <input type="text" name="identidad" class="form-control" id='identidad' data-inputmask='"mask": "9999-9999-99999"' data-mask required>
+                        <input type="checkbox" id="no_identidad"> No tiene Identidad
+                        <input type="hidden" class="form-control" id='input_expediente' name='expediente'>
+                        <span class="label label-danger "  id='error_identidad' style="display:none">No se encontraron registros con la identidad ingresadda</span>
+                     </div>
+                  </div>
+
+                  {{formulario.fecha_nacimiento|bootstrap_horizontal:'col-md-5'  }}
+                  {{formulario.primer_nombre|bootstrap_horizontal:'col-md-5'  }}
+                  {{formulario.segundo_nombre|bootstrap_horizontal:'col-md-5'  }}
+                  {{formulario.primer_apellido|bootstrap_horizontal:'col-md-5'  }}
+                  {{formulario.segundo_apellido|bootstrap_horizontal:'col-md-5'  }}
+                  {{formulario.sexo|bootstrap_horizontal:'col-md-5'  }}
+               </div>
+            </div>
+            <div class="row">
+               <div class="col-sm-2">
+                  <label class="control-label pull-right">Edad</label>
+               </div>
+               <div class="col-sm-2">
+                  {{formulario2.edad_anios|bootstrap_horizontal:'col-md-5' }}
+               </div>
+               <div class="col-sm-2">
+                  {{formulario2.edad_meses|bootstrap_horizontal:'col-md-5' }}
+               </div>
+            </div>
+
+            <p class="page-header"></p>
+            <div class="row">
+               <div class="col-sm-7">
+                  {{formulario2.pseudonimo|bootstrap_horizontal:'col-md-5'  }}
+                  {{formulario2.telefono_fijo|bootstrap_horizontal:'col-md-5'  }}
+                  {{formulario2.telefono_celular|bootstrap_horizontal:'col-md-5'  }}
+                  {{formulario2.estado_civil|bootstrap_horizontal:'col-md-5'  }}
+                  {{formulario2.ocupacion|bootstrap_horizontal:'col-md-5'  }}
+                  {{formulario2.actividad_economica|bootstrap_horizontal:'col-md-5'  }}
+               </div>
+            </div>
+
+
+
+            <p class="page-header"></p>
+            <p class="text-center sub-style">
+            DIRECCION ACTUAL
+            </p>
+            <p class="page-header"></p>
+
+            <div class="row">
+               <div class="col-sm-7">
+                  {{formulario2.departamento|bootstrap_horizontal:'col-md-5'  }}
+                  <div class="form-group">
+                     <label for="id_municipio" class="col-md-5 control-label">Municipio</label>
+                  <div class="col-md-7">
+                     <select class="form-control" id="id_municipio" name="municipio">
+                        <option value="">---------------</option>
+                     </select>
+                     {{ formulario2.municipio.errors }}
+                  </div>
+                  </div>
+
+               <div class="form-group">
+                  <label for="id_ciudad" class="col-md-5 control-label">Ciudad</label>
+                  <div class="col-md-7">
+                     <select class="form-control" id="id_ciudad" name="ciudad">
+                        <option value="">---------------</option>
+                     </select>
+                     {{ formulario2.aldea.errors }}
+                  </div>
+               </div>
+
+               <div class="form-group">
+                  <label for="id_barrio" class="col-md-5 control-label">Barrio</label>
+                  <div class="col-md-7">
+                     <select class="form-control" id="id_barrio" name="barrio">
+                        <option value="">---------------</option>
+                     </select>
+                     {{ formulario2.barrio.errors }}
+                  </div>
+               </div>
+
+               {{formulario2.calle|bootstrap_horizontal:'col-md-5'  }}
+               {{formulario2.bloque|bootstrap_horizontal:'col-md-5'  }}
+               {{formulario2.numero_casa|bootstrap_horizontal:'col-md-5'  }}
+               {{formulario2.referencias|bootstrap_horizontal:'col-md-5'  }}
+               </div>
+            </div>
+            
+            <p class="page-header"></p>
+            <div class="row">
+               <div class="col-sm-7">
+               {{formulario3.relaciones_mismo_sexo|bootstrap_horizontal:'col-md-5'}}
+               {{formulario3.dinero_por_relaciones|bootstrap_horizontal:'col-md-5'}}
+               {{formulario3.identificacion_genero|bootstrap_horizontal:'col-md-5'}}
+
+               {{formulario2.grupo_etnico|bootstrap_horizontal:'col-md-5'  }}
+               {{formulario2.otro_grupo_etnico|bootstrap_horizontal:'col-md-5'  }}
+               {{formulario2.condiciones|bootstrap_horizontal:'col-md-5'  }}
+               {{formulario2.otro_condicion|bootstrap_horizontal:'col-md-5'  }}
+
+               <div id='embarazada' style="display:none">
+                  {{formulario3.embarazada_vih|bootstrap_horizontal:'col-md-5'  }}
+                  {{formulario3.fecha_ultima_menstruacion|bootstrap_horizontal:'col-md-5'  }}
+                  {{formulario3.semanas_gestacion|bootstrap_horizontal:'col-md-5'  }}
+                  {{formulario3.evaluacion_go|bootstrap_horizontal:'col-md-5'  }}
+                  {{formulario3.programacion_cesaria|bootstrap_horizontal:'col-md-5'  }}
+                  {{formulario3.fecha_cesaria|bootstrap_horizontal:'col-md-5'  }}
+               </div>
+
+               </div>
+            </div>
+
+            <div id="encargados" style='display: none'>
+               <p class="page-header"></p>
+               <h4 class="text-center sub-style">
+                  <b> DATOS PADRES Y/O TUTOR </b>
+               </h4>
+               <p class="page-header"></p>
+
+               <div class="row">
+                  <div class="col-sm-7">
+                     <label class="control-label">DATOS MADRE</label>
+                     <br>
+                     <br>
+                     {{formulario2.identidad_madre|bootstrap_horizontal:'col-md-5'  }}
+                     {{formulario2.nombre_madre|bootstrap_horizontal:'col-md-5'  }}
+                     {{formulario2.telefono_madre|bootstrap_horizontal:'col-md-5'  }}
+
+                     <label class="control-label">DATOS PADRE</label>
+                     <br>
+                     <br>
+                     {{formulario2.identidad_padre|bootstrap_horizontal:'col-md-5'  }}
+                     {{formulario2.nombre_padre|bootstrap_horizontal:'col-md-5'  }}
+                     {{formulario2.telefono_padre|bootstrap_horizontal:'col-md-5'  }}
+
+                     <label class="control-label">DATOS ENCARGADO</label>
+                     <br>
+                     <br>
+                     {{formulario2.identidad_tutor|bootstrap_horizontal:'col-md-5'  }}
+                     {{formulario2.nombre_tutor|bootstrap_horizontal:'col-md-5'  }}
+                     {{formulario2.telefono_tutor|bootstrap_horizontal:'col-md-5'  }}
+                     {{formulario2.direccion_tutor|bootstrap_horizontal:'col-md-5'  }}  
+                  </div>
+               </div>
+            </div>
+
+
+            <div class="row">
+               <div class="col-sm-7">
+                  {{formulario3.afiliacion_seguridad_social|bootstrap_horizontal:'col-md-5'  }} 
+                  {{formulario3.clase_afiliacion|bootstrap_horizontal:'col-md-5'  }} 
+                  {{formulario3.seguro_privado|bootstrap_horizontal:'col-md-5'  }} 
+                  {{formulario3.nombre_aseguradora|bootstrap_horizontal:'col-md-5'  }} 
+               </div>
+            </div>
+         </div>
+
+         <p class="page-header"></p>
+         <h4 class="text-center font-style">
+            [PARTE II] DATOS DE LA CONSULTA</b>
+         </h4>
+         <p class="page-header"></p>
+
+         <div class="row">
+            <div class="col-sm-4">
+               {{formulario3.fecha_diagnostico|bootstrap}}
+            </div>
+            <div class="col-sm-5">
+               {{formulario3.fecha_primera_consulta|bootstrap}}
+            </div>
+            <div class="col-sm-3">
+               {{formulario3.fecha_proxima_cita|bootstrap}}
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-6">
+               {{formulario3.cita_medica|bootstrap}}
+            </div>
+            <div class="col-sm-6">
+               {{formulario3.retiro_medicamento|bootstrap}}
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-2">
+               {{formulario3.talla|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.peso|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.imc|bootstrap}}
+            </div>
+            <div class="col-sm-6 form-inline">
+               {{formulario3.estado_inmunologico|bootstrap}}
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-2 form-inline">
+               {{formulario3.estado_clinico|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.estadio_infeccion|bootstrap}}
+            </div>
+         </div>
+
+         <p class="page-header"></p>
+         <h4 class="text-center font-style">
+            [PARTE III] RESULTADOS DE EVALUACION LABORATORIAL INICIAL
+         </h4>
+         <p class="page-header"></p>
+
+         <p class="text-center sub-style">INMUNOLOGIA</p>
+
+         <div class="row">
+            <div class="col-sm-2  form-inline">
+               {{formulario3.lic4|bootstrap}}
+            </div>
+            <div class="col-sm-5">
+               {{formulario3.lic4_resultado|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.lic4_fecha_realizacion|bootstrap}}
+            </div>
+            <div class="col-sm-3  form-inline">
+               {{formulario3.lic4_ordenado_consulta|bootstrap}}
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-2 form-inline">
+               {{formulario3.caviral|bootstrap}}
+            </div>
+            <div class="col-sm-5">
+               {{formulario3.caviral_resultado|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.caviral_fecha_realizacion|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.caviral_ordenado_consulta|bootstrap}}
+            </div>
+         </div>
+
+         <p class="page-header"></p>
+         <p class="text-center sub-style">SEROLOGIA</p>
+
+         <div class="row">
+            <div class="col-sm-2 form-inline">
+               {{formulario3.hepb|bootstrap}}
+            </div>
+            <div class="col-sm-5">
+               {{formulario3.hepb_resultado|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.hepb_fecha_realizacion|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.hepb_ordenado_consulta|bootstrap}}
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-2 form-inline">
+               {{formulario3.hepc|bootstrap}}
+            </div>
+            <div class="col-sm-5">
+               {{formulario3.hepc_resultado|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.hepc_fecha_realizacion|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.hepc_ordenado_consulta|bootstrap}}
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-2 form-inline">
+               {{formulario3.rpr|bootstrap}}
+            </div>
+            <div class="col-sm-5">
+               {{formulario3.rpr_resultado|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.rpr_fecha_realizacion|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.rpr_ordenado_consulta|bootstrap}}
+            </div>
+         </div>
+
+         <p class="page-header"></p>
+         <p class="text-center sub-style">ESTUDIOS PARA TB</p>
+
+         <div class="row">
+            <div class="col-sm-2 form-inline">
+               {{formulario3.rpr|bootstrap}}
+            </div>
+            <div class="col-sm-5">
+               {{formulario3.rpr_resultado|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.rpr_fecha_realizacion|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.rpr_ordenado_consulta|bootstrap}}
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-2 form-inline">
+               {{formulario3.rxtorax|bootstrap}}
+            </div>
+            <div class="col-sm-5">
+               {{formulario3.rxtorax_resultado|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.rxtorax_fecha_realizacion|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.rxtorax_ordenado_consulta|bootstrap}}
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-2 form-inline">
+               {{formulario3.sespu|bootstrap}}
+            </div>
+            <div class="col-sm-5">
+               {{formulario3.sespu_resultado|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.sespu_fecha_realizacion|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.sespu_ordenado_consulta|bootstrap}}
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-2 form-inline">
+               {{formulario3.ppd|bootstrap}}
+            </div>
+            <div class="col-sm-5">
+               {{formulario3.ppd_resultado|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.ppd_fecha_realizacion|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.ppd_ordenado_consulta|bootstrap}}
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-2 form-inline">
+               {{formulario3.cultivo|bootstrap}}
+            </div>
+            <div class="col-sm-5">
+               {{formulario3.cultivo_resultado|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.cultivo_fecha_realizacion|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.cultivo_ordenado_consulta|bootstrap}}
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-2 form-inline">
+               {{formulario3.usg|bootstrap}}
+            </div>
+            <div class="col-sm-5">
+               {{formulario3.usg_resultado|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.usg_fecha_realizacion|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.usg_ordenado_consulta|bootstrap}}
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-2 form-inline">
+               {{formulario3.biopsia|bootstrap}}
+            </div>
+            <div class="col-sm-5">
+               {{formulario3.biopsia_resultado|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.biopsia_fecha_realizacion|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.biopsia_ordenado_consulta|bootstrap}}
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-2 form-inline">
+               {{formulario3.otro|bootstrap}}
+            </div>
+            <div class="col-sm-5">
+               {{formulario3.otro_resultado|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.otro_fecha_realizacion|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.otro_ordenado_consulta|bootstrap}}
+            </div>
+         </div>
+
+
+         <p class="page-header"></p>
+         <h4 class="text-center font-style">
+         [PARTE IV] MANEJO Y DIAGNOSTISCO DE INFECCIONES OPORTUNISTAS
+         </h4>
+         <p class="page-header"></p>
+
+         <p class="text-center sub-style">SISTEMA RESPIRATORIO</p>
+         <div class="row">
+            <div class="col-sm-4 form-inline">
+               {{formulario3.tupu|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.tupu_diag|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.tupu_initrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.tupu_fecha_initrat|bootstrap}}
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-4 form-inline">
+               {{formulario3.tupu_entrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.tupu_entrat_diag|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.tupu_entrat_fintrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.tupu_entrat_fecha_fintrat|bootstrap}}
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-4 form-inline">
+               {{formulario3.tupu_intrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.tupu_intrat_diag|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.tupu_intrat_reitrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.tupu_intrat_fecha_reitrat|bootstrap}}
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-12 form-inline">
+               {{formulario3.tupu_trat|bootstrap}}
+            </div>
+            
+         </div>
+
+      <p class="page-header"></p>
+      <p class="text-center sub-style">AFECCION SISTEMATICA</p>
+         <div class="row">
+            <div class="col-sm-4 form-inline">
+               {{formulario3.tudi|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.tudi_diag|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.tudi_initrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.tudi_fecha_initrat|bootstrap}}
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-4 form-inline">
+               {{formulario3.tudi_entrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.tudi_entrat_diag|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.tudi_entrat_fintrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.tudi_entrat_fecha_fintrat|bootstrap}}
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-4 form-inline">
+               {{formulario3.tudi_intrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.tudi_intrat_diag|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.tudi_intrat_reitrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.tudi_intrat_fecha_reitrat|bootstrap}}
+            </div>
+         </div>
+
+         <p class="page-header"></p>
+         <div class="row">
+            <div class="col-sm-4 form-inline">
+               {{formulario3.hepb|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.hepb_diag|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.hepb_initrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.hepb_fecha_initrat|bootstrap}}
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-4 form-inline">
+               {{formulario3.hepb_entrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.hepb_entrat_diag|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.hepb_entrat_fintrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.hepb_entrat_fecha_fintrat|bootstrap}}
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-4 form-inline">
+               {{formulario3.hepb_intrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.hepb_intrat_diag|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.hepb_intrat_reitrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.hepb_intrat_fecha_reitrat|bootstrap}}
+            </div>
+         </div>
+
+         <p class="page-header"></p>
+         <div class="row">
+            <div class="col-sm-4 form-inline">
+               {{formulario3.hepc|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.hepc_diag|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.hepc_initrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.hepc_fecha_initrat|bootstrap}}
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-4 form-inline">
+               {{formulario3.hepc_entrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.hepc_entrat_diag|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.hepc_entrat_fintrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.hepc_entrat_fecha_fintrat|bootstrap}}
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-4 form-inline">
+               {{formulario3.hepc_intrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.hepc_intrat_diag|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.hepc_intrat_reitrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.hepc_intrat_fecha_reitrat|bootstrap}}
+            </div>
+         </div>
+
+         <p class="page-header"></p>
+         <p class="text-center sub-style">INFECCIONES DE TRANSMISION SEXUAL</p>
+         <div class="row">
+            <div class="col-sm-4 form-inline">
+               {{formulario3.ulg|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.ulg_diag|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.ulg_initrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.ulg_fecha_initrat|bootstrap}}
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-4 form-inline">
+               {{formulario3.ulg_entrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.ulg_entrat_diag|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.ulg_entrat_fintrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.ulg_entrat_fecha_fintrat|bootstrap}}
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-4 form-inline">
+               {{formulario3.ulg_intrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.ulg_intrat_diag|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.ulg_intrat_reitrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.ulg_intrat_fecha_reitrat|bootstrap}}
+            </div>
+         </div>
+
+         <p class="page-header"></p>
+         <div class="row">
+            <div class="col-sm-4 form-inline">
+               {{formulario3.secure|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.secure_diag|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.secure_initrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.secure_fecha_initrat|bootstrap}}
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-4 form-inline">
+               {{formulario3.secure_entrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.secure_entrat_diag|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.secure_entrat_fintrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.secure_entrat_fecha_fintrat|bootstrap}}
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-4 form-inline">
+               {{formulario3.secure_intrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.secure_intrat_diag|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.secure_intrat_reitrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.secure_intrat_fecha_reitrat|bootstrap}}
+            </div>
+         </div>
+
+         <p class="page-header"></p>
+         <div class="row">
+            <div class="col-sm-4 form-inline">
+               {{formulario3.fluva|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.fluva_diag|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.fluva_initrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.fluva_fecha_initrat|bootstrap}}
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-4 form-inline">
+               {{formulario3.fluva_entrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.fluva_entrat_diag|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.fluva_entrat_fintrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.fluva_entrat_fecha_fintrat|bootstrap}}
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-4 form-inline">
+               {{formulario3.fluva_intrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.fluva_intrat_diag|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.fluva_intrat_reitrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.fluva_intrat_fecha_reitrat|bootstrap}}
+            </div>
+         </div>
+
+         <p class="page-header"></p>
+         <div class="row">
+            <div class="col-sm-4 form-inline">
+               {{formulario3.buin|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.buin_diag|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.buin_initrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.buin_fecha_initrat|bootstrap}}
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-4 form-inline">
+               {{formulario3.buin_entrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.buin_entrat_diag|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.buin_entrat_fintrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.buin_entrat_fecha_fintrat|bootstrap}}
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-4 form-inline">
+               {{formulario3.buin_intrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.buin_intrat_diag|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.buin_intrat_reitrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.buin_intrat_fecha_reitrat|bootstrap}}
+            </div>
+         </div>
+
+         <p class="page-header"></p>
+         <div class="row">
+            <div class="col-sm-4 form-inline">
+               {{formulario3.edes|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.edes_diag|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.edes_initrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.edes_fecha_initrat|bootstrap}}
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-4 form-inline">
+               {{formulario3.edes_entrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.edes_entrat_diag|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.edes_entrat_fintrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.edes_entrat_fecha_fintrat|bootstrap}}
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-4 form-inline">
+               {{formulario3.edes_intrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.edes_intrat_diag|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.edes_intrat_reitrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.edes_intrat_fecha_reitrat|bootstrap}}
+            </div>
+         </div>
+
+         <p class="page-header"></p>
+         <div class="row">
+            <div class="col-sm-4 form-inline">
+               {{formulario3.verge|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.verge_diag|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.verge_initrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.verge_fecha_initrat|bootstrap}}
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-4 form-inline">
+               {{formulario3.verge_entrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.verge_entrat_diag|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.verge_entrat_fintrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.verge_entrat_fecha_fintrat|bootstrap}}
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-4 form-inline">
+               {{formulario3.verge_intrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.verge_intrat_diag|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.verge_intrat_reitrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.verge_intrat_fecha_reitrat|bootstrap}}
+            </div>
+         </div>
+
+         <p class="page-header"></p>
+         <div class="row">
+            <div class="col-sm-4 form-inline">
+               {{formulario3.trasex|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.trasex_diag|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.trasex_initrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.trasex_fecha_initrat|bootstrap}}
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-4 form-inline">
+               {{formulario3.trasex_entrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.trasex_entrat_diag|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.trasex_entrat_fintrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.trasex_entrat_fecha_fintrat|bootstrap}}
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-4 form-inline">
+               {{formulario3.trasex_intrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.trasex_intrat_diag|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.trasex_intrat_reitrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.trasex_intrat_fecha_reitrat|bootstrap}}
+            </div>
+         </div>
+
+         <p class="page-header"></p>
+         <div class="row">
+            <div class="col-sm-4 form-inline">
+               {{formulario3.proc|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.proc_diag|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.proc_initrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.proc_fecha_initrat|bootstrap}}
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-4 form-inline">
+               {{formulario3.proc_entrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.proc_entrat_diag|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.proc_entrat_fintrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.proc_entrat_fecha_fintrat|bootstrap}}
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-4 form-inline">
+               {{formulario3.proc_intrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.proc_intrat_diag|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.proc_intrat_reitrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.proc_intrat_fecha_reitrat|bootstrap}}
+            </div>
+         </div>
+
+         <p class="page-header"></p>
+         <div class="row">
+            <div class="col-sm-4 form-inline">
+               {{formulario3.infpel|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.infpel_diag|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.infpel_initrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.infpel_fecha_initrat|bootstrap}}
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-4 form-inline">
+               {{formulario3.infpel_entrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.infpel_entrat_diag|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.infpel_entrat_fintrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.infpel_entrat_fecha_fintrat|bootstrap}}
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-4 form-inline">
+               {{formulario3.infpel_intrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.infpel_intrat_diag|bootstrap}}
+            </div>
+            <div class="col-sm-3 form-inline">
+               {{formulario3.infpel_intrat_reitrat|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.infpel_intrat_fecha_reitrat|bootstrap}}
+            </div>
+         </div>
+
+      </div>
+      <!-- /.box-body -->
+      <div class="box-footer">
+         <div class="row">
+            <div class="col-xs-12 no-print">
+               <button type="submit" id="button" class="btn btn-primary">Guardar Registro</button>
+            </div>
+         </div>
+      </div>
+   </form>
+</div>
+
+
+<script type="text/javascript">
+$("#id_fecha_nacimiento, input[name=sexo]").prop('disabled', true)
+
+$('#button').click(function(){
+   $("#id_fecha_nacimiento, input[name=sexo]").prop('disabled', false)
+   return true
+})
+//LOS PLUGINS
+$(":input").inputmask();
+$("select").select2();
+$("#id_ocupacion").select2('val',1)
+$('#id_fecha_nacimiento').daterangepicker({
+   //autoUpdateInput: false,
+   singleDatePicker: true,
+   showDropdowns: true,
+   maxDate: moment(),
+   locale: {
+      format: 'YYYY-MM-DD',
+      daysOfWeek: [
+         "Do",
+         "Lu",
+         "Ma",
+         "Mi",
+         "Ju",
+         "Vi",
+         "Sa"
+      ],
+      monthNames: [
+         "Enero",
+         "Febrero",
+         "Marzo",
+         "Abril",
+         "Mayo",
+         "Junio",
+         "Julio",
+         "Agosto",
+         "Septiembre",
+         "Octubre",
+         "Noviembre",
+         "Diciembre"
+      ],
+   },
+},
+function(start, end, label) {
+   console.log(start.format('YYYY-MM-DD'))
+   edad = start.format('YYYY-MM-DD').split("-");
+   var mes = edad[1];
+   var anio = edad[0];
+   var anio_actual = new Date().getFullYear();
+   var edad_anios = anio_actual - anio;
+   var mes_actual = new Date().getMonth()+1;
+   var edad_mes = mes_actual - mes;
+
+   if (edad_mes < 0){
+      if (edad_mes > 0){
+         edad_anios = edad_anios-1
+         edad_mes = ((12-mes)+mes_actual)
+      }
+   }
+
+   $('#id_edad_anios').val(edad_anios)
+   $('#id_edad_meses').val(Math.abs(edad_mes))
+
+   if(parseInt(edad_anios)<18){
+      $('#encargados').show().fadeIn();
+   }else{
+      $('#encargados').hide().fadeOut();
+   }
+
+   //EXPEDIENTE
+   identidad = $('#identidad').val().replace('-', '');
+   identidad = identidad.replace('-', '')
+
+   expediente = identidad + '-' + start.format('YYYY-MM-DD') + '-' + $('input[name=sexo]').val()
+   console.log(expediente)
+   $('#expediente').text(btoa(expediente))
+   $('#input_expediente, .expediente').val(btoa(expediente))
+}).val('');
+
+vars = '#id_fecha_consejeria, #id_fecha_ultima_menstruacion, #id_fecha_cesaria, '
+vars += '#id_fecha_diagnostico, #id_fecha_primera_consulta, #id_fecha_proxima_cita, '
+vars += '#id_lic4_fecha_realizacion, #id_caviral_fecha_realizacion, #id_hepb_fecha_realizacion, '
+vars += '#id_hepc_fecha_realizacion, #id_rpr_fecha_realizacion, #id_rxtorax_fecha_realizacion, '
+vars += '#id_sespu_fecha_realizacion, #id_ppd_fecha_realizacion, #id_cultivo_fecha_realizacion, '
+vars += '#id_usg_fecha_realizacion, #id_biopsia_fecha_realizacion, #id_otro_fecha_realizacion, '
+vars += '#id_tupu_diag, #id_tupu_fecha_initrat, #id_tupu_entrat_diag, #id_tupu_entrat_fecha_fintrat, #id_tupu_intrat_diag, #id_tupu_intrat_fecha_reitrat, '
+vars += '#id_tudi_diag, #id_tudi_fecha_initrat, #id_tudi_entrat_diag, #id_tudi_entrat_fecha_fintrat, #id_tudi_intrat_diag, #id_tudi_intrat_fecha_reitrat, '
+vars += '#id_hepb_diag, #id_hepb_fecha_initrat, #id_hepb_entrat_diag, #id_hepb_entrat_fecha_fintrat, #id_hepb_intrat_diag, #id_hepb_intrat_fecha_reitrat, '
+vars += '#id_hepc_diag, #id_hepc_fecha_initrat, #id_hepc_entrat_diag, #id_hepc_entrat_fecha_fintrat, #id_hepc_intrat_diag, #id_hepc_intrat_fecha_reitrat, '
+vars += '#id_ulg_diag, #id_ulg_fecha_initrat, #id_ulg_entrat_diag, #id_ulg_entrat_fecha_fintrat, #id_ulg_intrat_diag, #id_ulg_intrat_fecha_reitrat, '
+vars += '#id_secure_diag, #id_secure_fecha_initrat, #id_secure_entrat_diag, #id_secure_entrat_fecha_fintrat, #id_secure_intrat_diag, #id_secure_intrat_fecha_reitrat, '
+vars += '#id_fluva_diag, #id_fluva_fecha_initrat, #id_fluva_entrat_diag, #id_fluva_entrat_fecha_fintrat, #id_fluva_intrat_diag, #id_fluva_intrat_fecha_reitrat, '
+vars += '#id_buin_diag, #id_buin_fecha_initrat, #id_buin_entrat_diag, #id_buin_entrat_fecha_fintrat, #id_buin_intrat_diag, #id_buin_intrat_fecha_reitrat, '
+vars += '#id_edes_diag, #id_edes_fecha_initrat, #id_edes_entrat_diag, #id_edes_entrat_fecha_fintrat, #id_edes_intrat_diag, #id_edes_intrat_fecha_reitrat, '
+vars += '#id_verge_diag, #id_verge_fecha_initrat, #id_verge_entrat_diag, #id_verge_entrat_fecha_fintrat, #id_verge_intrat_diag, #id_verge_intrat_fecha_reitrat, '
+vars += '#id_trasex_diag, #id_trasex_fecha_initrat, #id_trasex_entrat_diag, #id_trasex_entrat_fecha_fintrat, #id_trasex_intrat_diag, #id_trasex_intrat_fecha_reitrat, '
+vars += '#id_proc_diag, #id_proc_fecha_initrat, #id_proc_entrat_diag, #id_proc_entrat_fecha_fintrat, #id_proc_intrat_diag, #id_proc_intrat_fecha_reitrat, '
+vars += '#id_infpel_diag, #id_infpel_fecha_initrat, #id_infpel_entrat_diag, #id_infpel_entrat_fecha_fintrat, #id_infpel_intrat_diag, #id_infpel_intrat_fecha_reitrat'
+
+$(vars).daterangepicker({
+   //autoUpdateInput: false,
+   singleDatePicker: true,
+   showDropdowns: true,
+   maxDate: moment(),
+   locale: {
+      format: 'YYYY-MM-DD',
+      daysOfWeek: [
+         "Do",
+         "Lu",
+         "Ma",
+         "Mi",
+         "Ju",
+         "Vi",
+         "Sa"
+      ],
+      monthNames: [
+         "Enero",
+         "Febrero",
+         "Marzo",
+         "Abril",
+         "Mayo",
+         "Junio",
+         "Julio",
+         "Agosto",
+         "Septiembre",
+         "Octubre",
+         "Noviembre",
+         "Diciembre"
+      ],
+   },
+}).val('');
+
+
+
+//ESTA SECCION ES DE LOS SELECT DE DEPTO; MUNICIPIO; DEPARTAMENTO DE CONCURSO
+function ajaxsace(tabla, valor, select){
+   $('#' + select).empty();
+   $('#' + select).append("<option value=''>---------------</option>");
+   valor= $('#'+valor).val()
+   $.ajax({
+      type: "GET",
+      data:
+         { tabla: tabla, valor: valor },
+      url: "/boleta/ajax/",
+      success: function(msg){
+         $.each(msg, function(key, val){
+            $('#' + select).append("<option value="+val.id+">" + '' + val.codigo + ' | ' + val.nombre + "</option>");
+         });
+            $('#' + select).trigger("chosen:updated");
+      }
+   });
+}
+
+if ($('#id_departamento').val() != ''){
+   ajaxsace('municipio', 'id_departamento', 'id_municipio' )
+}
+
+$('#id_departamento').change(function(){
+   ajaxsace('municipio', 'id_departamento', 'id_municipio' )
+})
+
+$('#id_municipio').change(function(){
+   ajaxsace('ciudad', 'id_municipio', 'id_ciudad' )
+})
+
+$('#id_ciudad').change(function(){
+   ajaxsace('barrio', 'id_ciudad', 'id_barrio' )
+})
+
+
+
+$("#id_telefono_fijo, #id_telefono_celular, #id_telefono_madre, #id_telefono_padre, #id_telefono_tutor").inputmask("9999-9999");
+
+$("#id_identidad_madre, #id_identidad_padre, #id_identidad_tutor").attr('maxlength', 20).inputmask("9999-9999-99999");
+
+//BUSQUEDA DE IDENTIDAD
+$('#identidad').keypress(function (e) {
+   event.preventDefault();
+   identidad = $(this).val().replace('-', '');
+   identidad = identidad.replace('-', '')
+
+   expediente = identidad + '-' + $('#id_fecha_nacimiento').val() + '-' + $('input[name=sexo]').val()
+   $('.identidad').val($(this).val())
+   $('#expediente').text(btoa(expediente))
+   $('#input_expediente, .expediente').val(btoa(expediente))
+
+   var key = e.which;
+   if(key == 13){
+      $.ajax({
+      url: "{% url 'boleta_clinica' %}",
+      data: { 
+      identidad: identidad
+   }
+})
+   .done(function( persona ) {
+      if (persona==false){
+         $('#error_identidad').show().delay(4000).fadeOut()
+         $('#id_primer_nombre, #id_segundo_nombre, #id_primer_apellido, #id_segundo_apellido, #id_fecha_nacimiento').prop('readonly', false).val('')
+         $('#id_fecha_nacimiento, input[name=sexo]').prop('disabled',false).val('')
+
+
+      }else{
+         console.log(persona)
+         if(persona.edad_anios){
+            console.log('lkasjdalskdjalsk', persona.ocupacion__pk)
+            $('#id_edad_anios').val(persona.edad_anios)
+            $('#id_edad_meses').val(persona.edad_meses)
+            $('#id_pseudonimo').val(persona.pseudonimo)
+            $('#id_estado_civil_'+(persona.estado_civil-1)).prop('checked', true)
+            $('#id_telefono_fijo').val(persona.telefono_fijo)
+            $('#id_telefono_celular').val(persona.telefono_celular)
+            $("#id_departamento").select2('val', String(persona.departamento__pk))
+            $("#id_departamento").val(persona.departamento__pk)
+            $("#id_ocupacion").select2('val', String(persona.ocupacion__pk))
+            $('#id_calle').val(persona.calle)
+            $('#id_bloque').val(persona.bloque)
+            $('#id_numero_casa').val(persona.numero_casa)
+            $('#id_referencias').val(persona.referencias)
+            $('#id_grupo_etnico_'+(persona.grupo_etnico__pk-1)).prop('checked', true)
+            $('#id_otro_grupo_etnico').val(persona.otro_grupo_etnico)
+            $('#id_identidad_madre').val(persona.identidad_madre)
+            $('#id_nombre_madre').val(persona.nombre_madre)
+            $('#id_telefono_madre').val(persona.telefono_madre)
+            $('#id_identidad_padre').val(persona.identidad_padre)
+            $('#id_nombre_padre').val(persona.nombre_padre)
+            $('#id_telefono_padre').val(persona.telefono_padre)
+            $('#id_identidad_tutor').val(persona.identidad_tutor)
+            $('#id_nombre_tutor').val(persona.nombre_tutor)
+            $('#id_telefono_tutor').val(persona.telefono_tutor)
+            $('#id_direccion_tutor').val(persona.direccion_tutor)
+            $('#id_poblacion').val(persona.poblacion)
+            $('#id_actividad_economica').select2('val', String(persona.actividad_economica__pk))
+            $('#id_fecha_ultima_menstruacion').val(persona.fecha_ultima_menstruacion)
+            $('#id_condiciones').val(persona.condiciones)
+            $('#id_otro_condicion').val(persona.otro_condicion)
+
+            setTimeout(function(){
+               $("#id_municipio").select2('val', String(persona.municipio__pk))
+            }, 2000);
+
+            setTimeout(function(){
+               $("#id_ciudad").select2('val', String(persona.ciudad__pk))
+            }, 4000);
+
+            setTimeout(function(){
+               $("#id_barrio").select2('val', String(persona.barrio__pk))
+            }, 6000);
+
+
+         }else{
+            $('#id_edad_anios').val('')
+            $('#id_edad_meses').val('')
+            $('#id_pseudonimo').val('')
+            $('#id_estado_civil_1').prop('checked', true)
+            $('#id_telefono_fijo').val('')
+            $('#id_telefono_celular').val('')
+            $("#id_ocupacion").select2('val','')
+            $("#id_ocupacion").val('')
+            $('#id_departamento').val('')
+            $('#id_municipio').val('')
+            $('#id_calle').val('')
+            $('#id_bloque').val('')
+            $('#id_numero_casa').val('')
+            $('#id_referencias').val('')
+            $('#id_grupo_etnico').val('')
+            $('#id_otro_grupo_etnico').val('')
+            $('#id_identidad_madre').val('')
+            $('#id_nombre_madre').val('')
+            $('#id_telefono_madre').val('')
+            $('#id_identidad_padre').val('')
+            $('#id_nombre_padre').val('')
+            $('#id_telefono_padre').val('')
+            $('#id_identidad_tutor').val('')
+            $('#id_nombre_tutor').val('')
+            $('#id_telefono_tutor').val('')
+            $('#id_direccion_tutor').val('')
+            $('#id_poblacion').val('')
+            $('#id_actividad_economica').val('')
+            $('#id_fecha_ultima_menstruacion').val('')
+            $('#id_ciudad').val('')
+            $('#id_barrio').val('')
+            $('#id_condiciones').val('')
+            $('#id_otro_condicion').val('')
+         }
+         $('#error_identidad').hide()
+         $('#id_primer_nombre').val(persona.primer_nombre).prop('readonly', true)
+         $('#id_segundo_nombre').val(persona.segundo_nombre).prop('readonly', true)
+         $('#id_primer_apellido').val(persona.primer_apellido).prop('readonly', true)
+         $('#id_segundo_apellido').val(persona.segundo_apellido).prop('readonly', true)
+         $('#id_fecha_nacimiento').val(persona.fecha_nacimiento).prop('readonly', true).prop('disabled', true)
+
+         $('input[name=sexo]').prop('disabled',true).val('')
+         $('#id_sexo_'+(persona.sexo-1)).prop('checked', true)
+
+         //ESA ONDA DE EMBARADA
+         if (persona.sexo == 1){
+            $("#id_condiciones option[value='"+ embarazada_id +"']").remove();
+            $('#embarazada').hide()
+         }else{
+
+            $('#embarazada').show()
+            $("#id_condiciones").append('<option value="'+ embarazada_id +'">Embarazada</option>');
+         }
+
+         //CALCULO DE EDAD
+         edad = $('#id_fecha_nacimiento').val().split("-");
+         var mes = edad[1];
+         var anio = edad[0];
+         var anio_actual = new Date().getFullYear();
+         var edad_anios = anio_actual - anio;
+         var mes_actual = new Date().getMonth()+1;
+         var edad_mes = mes_actual - mes;
+
+         if (edad_mes < 0){
+            if (edad_mes > 0){
+               edad_anios = edad_anios-1
+               edad_mes = ((12-mes)+mes_actual)
+            }
+         }
+
+         $('#id_edad_anios').val(edad_anios)
+         $('#id_edad_meses').val(Math.abs(edad_mes))
+
+         if(parseInt(edad_anios)<18){
+            $('#encargados').show().fadeIn();
+         }else{
+            $('#encargados').hide().fadeOut();
+         }
+
+         expediente = identidad + '-' + persona.fecha_nacimiento + '-' + persona.sexo
+         $('#expediente').text(btoa(expediente))
+         $('#input_expediente, .expediente').val(btoa(expediente))
+      }
+   });
+   }
+}); 
+
+
+//NO IDENTIDAD
+$('#no_identidad').change(function(){
+   no_identidad = $(this).prop('checked')
+   if (no_identidad == true){
+      rand = Math.floor(Math.random()*99999999999999+1);
+      $('#identidad').val(rand)
+      $('#formulario').trigger("reset");
+      $(this).prop('checked', true)
+      $('#id_fecha_nacimiento').prop('readonly', false).prop('disabled', false).val('')
+      $('#expediente').text('')
+      $('#id_fecha_nacimiento, input[name=sexo]').prop('disabled',false).val('')
+      
+      $("#id_departamento,#id_municipio, #id_barrio, #id_ciudad ").select2('val', null)
+   }else{
+      $('#identidad').val('')
+      $('#formulario').trigger("reset");
+      $('#id_primer_nombre').prop('readonly', true).val('')
+      $('#id_segundo_nombre').prop('readonly', true).val('')
+      $('#id_primer_apellido').prop('readonly', true).val('')
+      $('#id_segundo_apellido').prop('readonly', true).val('')
+      $('#id_fecha_nacimiento').prop('readonly', false).prop('disabled', true).val('')
+      $('#id_edad_anios').val('')
+      $('#id_edad_meses').val('')
+      $('#expediente').text('')
+      $('#id_fecha_nacimiento, input[name=sexo]').prop('disabled',true).val('')
+
+      $("#id_departamento,#id_municipio, #id_barrio, #id_ciudad ").select2('val', '')
+   }
+
+})
+
+
+var embarazada_id = {{embarazada.pk}}
+$("#id_condiciones option[value="+ embarazada_id +"]").remove();
+
+//NO IDENTIDAD
+$('input[name=sexo]').change(function(){
+   genero = $("#id_sexo_1").prop("checked")
+
+   if (genero == true){
+      $('#embarazada').show()
+      $("#id_condiciones").append('<option value="'+ embarazada_id +'">Embarazada</option>');
+      sexo = 2
+   }else{
+      $("#id_condiciones option[value='"+ embarazada_id +"']").remove();
+      $('#embarazada').hide()
+      sexo = 1
+   }
+
+   //EXPEDIENTE
+   identidad = $('#identidad').val().replace('-', '');
+   identidad = identidad.replace('-', '')
+   expediente = identidad + '-' + $('#id_fecha_nacimiento').val() + '-' + sexo
+   $('#expediente').text(btoa(expediente))
+   $('#input_expediente, .expediente').val(btoa(expediente))
+
+
+   
+})
+
+
+//EMBARAZADA
+$('#id_condiciones').change(function(){
+   valores = $(this).val()
+   embarazada = jQuery.inArray( embarazada_id.toString(), valores )
+   if( embarazada >= 0) {
+      console.log('PASO POR AQUI')
+      $('#embarazada').show()
+   }else{
+      $('#embarazada').hide()
+   }
+})
+</script>
+
+{% endblock %}
