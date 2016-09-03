@@ -1,0 +1,4 @@
+boleta/migrations
+general/migrations
+usaid/settings.py
+usaid/wsgi.py
