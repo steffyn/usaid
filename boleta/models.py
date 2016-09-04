@@ -96,7 +96,7 @@ class Condiciones(models.Model):
 		return u'%s' % (self.nombre)
 
 class Boletas(models.Model):
-	establecimiento = models.IntegerField(choices=TIPO_ESTABLECIMIENTO)
+	establecimiento = models.ForeignKey(Establecimientos, blank=True, null=True)
 	identidad = models.CharField(max_length=13)
 	expediente = models.CharField(max_length=50, blank=True, null=True, verbose_name="Número de Expediente Clínico o Código Identificador Único:")
 	primer_nombre = models.CharField(max_length=50, blank=True, null=True, verbose_name="")
