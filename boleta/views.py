@@ -17,7 +17,7 @@ from boleta.forms import *
 import json
 
 def usuario(id):
-	return Responsables.objects.get(usuario=id)
+	return Responsables.objects.get(usuario_sistema__id=id)
 
 @login_required()
 def principal(request):
