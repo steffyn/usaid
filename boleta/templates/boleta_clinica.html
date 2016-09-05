@@ -46,14 +46,7 @@
                Se guardaron los datos correctamente 
             </div>
          {% endif %}
-         
          <div class="form-horizontal"> 
-            <div class="row">
-               <div class="col-sm-7">
-                  {{formulario2.establecimiento|bootstrap_horizontal:'col-md-5'  }}
-               </div>
-            </div>
-            <p class="page-header"></p>
             <h4 class="text-center font-style">
                [PARTE I] DATOS GENERALES DE LA PERSONA USUARIA DE LOS SERVICIOS
             </h4>
@@ -368,20 +361,6 @@
          <p class="page-header"></p>
          <p class="text-center sub-style">ESTUDIOS PARA TB</p>
 
-         <div class="row">
-            <div class="col-sm-2 form-inline">
-               {{formulario3.rpr|bootstrap}}
-            </div>
-            <div class="col-sm-5">
-               {{formulario3.rpr_resultado|bootstrap}}
-            </div>
-            <div class="col-sm-2">
-               {{formulario3.rpr_fecha_realizacion|bootstrap}}
-            </div>
-            <div class="col-sm-3 form-inline">
-               {{formulario3.rpr_ordenado_consulta|bootstrap}}
-            </div>
-         </div>
 
          <div class="row">
             <div class="col-sm-2 form-inline">
@@ -1525,6 +1504,649 @@ $('#id_condiciones').change(function(){
       $('#embarazada').hide()
    }
 })
+
+//LOS RADIOSBUTTONS SI NO
+$('input[name=lic4]').change(function(){
+   opcion = $("#id_lic4_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_lic4_resultado, #id_lic4_fecha_realizacion, input[name=lic4_ordenado_consulta]').prop('disabled', true)
+   }else{
+      $('#id_lic4_resultado, #id_lic4_fecha_realizacion, input[name=lic4_ordenado_consulta]').prop('disabled', false)
+   }
+})
+
+$('input[name=caviral]').change(function(){
+   opcion = $("#id_caviral_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_caviral_resultado, #id_caviral_fecha_realizacion, input[name=caviral_ordenado_consulta]').prop('disabled', true)
+   }else{
+      $('#id_caviral_resultado, #id_caviral_fecha_realizacion, input[name=caviral_ordenado_consulta]').prop('disabled', false)
+   }
+})
+
+$('input[name=hepb]').change(function(){
+   opcion = $("#id_hepb_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_hepb_resultado, #id_hepb_fecha_realizacion, input[name=hepb_ordenado_consulta]').prop('disabled', true)
+   }else{
+      $('#id_hepb_resultado, #id_hepb_fecha_realizacion, input[name=hepb_ordenado_consulta]').prop('disabled', false)
+   }
+})
+
+$('input[name=hepc]').change(function(){
+   opcion = $("#id_hepc_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_hepc_resultado, #id_hepc_fecha_realizacion, input[name=hepc_ordenado_consulta]').prop('disabled', true)
+   }else{
+      $('#id_hepc_resultado, #id_hepc_fecha_realizacion, input[name=hepc_ordenado_consulta]').prop('disabled', false)
+   }
+})
+
+$('input[name=hepc]').change(function(){
+   opcion = $("#id_hepc_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_hepc_resultado, #id_hepc_fecha_realizacion, input[name=hepc_ordenado_consulta]').prop('disabled', true)
+   }else{
+      $('#id_hepc_resultado, #id_hepc_fecha_realizacion, input[name=hepc_ordenado_consulta]').prop('disabled', false)
+   }
+})
+
+$('input[name=rpr]').change(function(){
+   opcion = $("#id_rpr_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_rpr_resultado, #id_rpr_fecha_realizacion, input[name=rpr_ordenado_consulta]').prop('disabled', true)
+   }else{
+      $('#id_rpr_resultado, #id_rpr_fecha_realizacion, input[name=rpr_ordenado_consulta]').prop('disabled', false)
+   }
+})
+
+$('input[name=rxtorax]').change(function(){
+   opcion = $("#id_rxtorax_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_rxtorax_resultado, #id_rxtorax_fecha_realizacion, input[name=rxtorax_ordenado_consulta]').prop('disabled', true)
+   }else{
+      $('#id_rxtorax_resultado, #id_rxtorax_fecha_realizacion, input[name=rxtorax_ordenado_consulta]').prop('disabled', false)
+   }
+})
+
+$('input[name=sespu]').change(function(){
+   opcion = $("#id_sespu_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_sespu_resultado, #id_sespu_fecha_realizacion, input[name=sespu_ordenado_consulta]').prop('disabled', true)
+   }else{
+      $('#id_sespu_resultado, #id_sespu_fecha_realizacion, input[name=sespu_ordenado_consulta]').prop('disabled', false)
+   }
+})
+
+$('input[name=ppd]').change(function(){
+   opcion = $("#id_ppd_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_ppd_resultado, #id_ppd_fecha_realizacion, input[name=ppd_ordenado_consulta]').prop('disabled', true)
+   }else{
+      $('#id_ppd_resultado, #id_ppd_fecha_realizacion, input[name=ppd_ordenado_consulta]').prop('disabled', false)
+   }
+})
+
+$('input[name=cultivo]').change(function(){
+   opcion = $("#id_cultivo_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_cultivo_resultado, #id_cultivo_fecha_realizacion, input[name=cultivo_ordenado_consulta]').prop('disabled', true)
+   }else{
+      $('#id_cultivo_resultado, #id_cultivo_fecha_realizacion, input[name=cultivo_ordenado_consulta]').prop('disabled', false)
+   }
+})
+
+$('input[name=usg]').change(function(){
+   opcion = $("#id_usg_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_usg_resultado, #id_usg_fecha_realizacion, input[name=usg_ordenado_consulta]').prop('disabled', true)
+   }else{
+      $('#id_usg_resultado, #id_usg_fecha_realizacion, input[name=usg_ordenado_consulta]').prop('disabled', false)
+   }
+})
+
+$('input[name=biopsia]').change(function(){
+   opcion = $("#id_biopsia_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_biopsia_resultado, #id_biopsia_fecha_realizacion, input[name=biopsia_ordenado_consulta]').prop('disabled', true)
+   }else{
+      $('#id_biopsia_resultado, #id_biopsia_fecha_realizacion, input[name=biopsia_ordenado_consulta]').prop('disabled', false)
+   }
+})
+
+$('input[name=otro]').change(function(){
+   opcion = $("#id_otro_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_otro_resultado, #id_otro_fecha_realizacion, input[name=otro_ordenado_consulta]').prop('disabled', true)
+   }else{
+      $('#id_otro_resultado, #id_otro_fecha_realizacion, input[name=otro_ordenado_consulta]').prop('disabled', false)
+   }
+})
+
+//----------------------------------------------------------------------------------------------
+//TUBORCULOSIS
+$('input[name=tupu]').change(function(){
+   opcion = $("#id_tupu_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_tupu_diag, #id_tupu_fecha_initrat, input[name=tupu_initrat], input[name=tupu_trat], #id_tupu_entrat_diag, input[name=tupu_entrat], #id_tupu_entrat_fecha_fintrat, input[name=tupu_entrat_fintrat], input[name=tupu_intrat], #id_tupu_intrat_diag, #id_tupu_intrat_fecha_reitrat, input[name=tupu_intrat_reitrat]').prop('disabled', true)
+   }else{
+      $('#id_tupu_diag, #id_tupu_fecha_initrat, input[name=tupu_initrat], input[name=tupu_trat], input[name=tupu_entrat], input[name=tupu_intrat]').prop('disabled', false)
+      
+      if ($("#id_tupu_entrat_1").prop("checked") != true){
+         $('#id_tupu_entrat_diag, #id_tupu_entrat_fecha_fintrat, input[name=tupu_entrat_fintrat]').prop('disabled', false)
+      }
+      if ($("#id_tupu_intrat_1").prop("checked") != true){
+      $('#id_tupu_intrat_diag, #id_tupu_intrat_fecha_reitrat, input[name=tupu_intrat_reitrat]').prop('disabled', false)
+      }
+   }
+})
+
+$('input[name=tupu_entrat]').change(function(){
+   opcion = $("#id_tupu_entrat_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_tupu_entrat_diag, #id_tupu_entrat_fecha_fintrat, input[name=tupu_entrat_fintrat]').prop('disabled', true)
+   }else{
+      $('#id_tupu_entrat_diag, #id_tupu_entrat_fecha_fintrat, input[name=tupu_entrat_fintrat]').prop('disabled', false)
+   }
+})
+
+$('input[name=tupu_intrat]').change(function(){
+   opcion = $("#id_tupu_intrat_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_tupu_intrat_diag, #id_tupu_intrat_fecha_reitrat, input[name=tupu_intrat_reitrat]').prop('disabled', true)
+   }else{
+      $('#id_tupu_intrat_diag, #id_tupu_intrat_fecha_reitrat, input[name=tupu_intrat_reitrat]').prop('disabled', false)
+   }
+})
+
+
+//----------------------------------------------------------------------------------------------
+//TUBORCULOSIS PULMONAR
+$('input[name=tudi]').change(function(){
+   opcion = $("#id_tudi_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_tudi_diag, #id_tudi_fecha_initrat, input[name=tudi_initrat], input[name=tudi_trat], #id_tudi_entrat_diag, input[name=tudi_entrat], #id_tudi_entrat_fecha_fintrat, input[name=tudi_entrat_fintrat], input[name=tudi_intrat], #id_tudi_intrat_diag, #id_tudi_intrat_fecha_reitrat, input[name=tudi_intrat_reitrat]').prop('disabled', true)
+   }else{
+      $('#id_tudi_diag, #id_tudi_fecha_initrat, input[name=tudi_initrat], input[name=tudi_trat], input[name=tudi_entrat], input[name=tudi_intrat]').prop('disabled', false)
+      
+      if ($("#id_tudi_entrat_1").prop("checked") != true){
+         $('#id_tudi_entrat_diag, #id_tudi_entrat_fecha_fintrat, input[name=tudi_entrat_fintrat]').prop('disabled', false)
+      }
+      if ($("#id_tudi_intrat_1").prop("checked") != true){
+      $('#id_tudi_intrat_diag, #id_tudi_intrat_fecha_reitrat, input[name=tudi_intrat_reitrat]').prop('disabled', false)
+      }
+   }
+})
+
+$('input[name=tudi_entrat]').change(function(){
+   opcion = $("#id_tudi_entrat_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_tudi_entrat_diag, #id_tudi_entrat_fecha_fintrat, input[name=tudi_entrat_fintrat]').prop('disabled', true)
+   }else{
+      $('#id_tudi_entrat_diag, #id_tudi_entrat_fecha_fintrat, input[name=tudi_entrat_fintrat]').prop('disabled', false)
+   }
+})
+
+$('input[name=tudi_intrat]').change(function(){
+   opcion = $("#id_tudi_intrat_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_tudi_intrat_diag, #id_tudi_intrat_fecha_reitrat, input[name=tudi_intrat_reitrat]').prop('disabled', true)
+   }else{
+      $('#id_tudi_intrat_diag, #id_tudi_intrat_fecha_reitrat, input[name=tudi_intrat_reitrat]').prop('disabled', false)
+   }
+})
+
+//----------------------------------------------------------------------------------------------
+//HEPATITIS B
+$('input[name=hepb]').change(function(){
+   opcion = $("#id_hepb_1").prop("checked")
+
+   if ($(this).val() == 2){
+      $('#id_hepb_diag, #id_hepb_fecha_initrat, input[name=hepb_initrat], input[name=hepb_trat], #id_hepb_entrat_diag, input[name=hepb_entrat], #id_hepb_entrat_fecha_fintrat, input[name=hepb_entrat_fintrat], input[name=hepb_intrat], #id_hepb_intrat_diag, #id_hepb_intrat_fecha_reitrat, input[name=hepb_intrat_reitrat]').prop('disabled', true)
+   }else{
+      $('#id_hepb_diag, #id_hepb_fecha_initrat, input[name=hepb_initrat], input[name=hepb_trat], input[name=hepb_entrat], input[name=hepb_intrat]').prop('disabled', false)
+      
+      if ($("#id_hepb_entrat_1").prop("checked") != true){
+         $('#id_hepb_entrat_diag, #id_hepb_entrat_fecha_fintrat, input[name=hepb_entrat_fintrat]').prop('disabled', false)
+      }
+      if ($("#id_hepb_intrat_1").prop("checked") != true){
+      $('#id_hepb_intrat_diag, #id_hepb_intrat_fecha_reitrat, input[name=hepb_intrat_reitrat]').prop('disabled', false)
+      }
+   }
+})
+
+$('input[name=hepb_entrat]').change(function(){
+   opcion = $("#id_hepb_entrat_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_hepb_entrat_diag, #id_hepb_entrat_fecha_fintrat, input[name=hepb_entrat_fintrat]').prop('disabled', true)
+   }else{
+      $('#id_hepb_entrat_diag, #id_hepb_entrat_fecha_fintrat, input[name=hepb_entrat_fintrat]').prop('disabled', false)
+   }
+})
+
+$('input[name=hepb_intrat]').change(function(){
+   opcion = $("#id_hepb_intrat_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_hepb_intrat_diag, #id_hepb_intrat_fecha_reitrat, input[name=hepb_intrat_reitrat]').prop('disabled', true)
+   }else{
+      $('#id_hepb_intrat_diag, #id_hepb_intrat_fecha_reitrat, input[name=hepb_intrat_reitrat]').prop('disabled', false)
+   }
+})
+
+//----------------------------------------------------------------------------------------------
+//HEPATITIS C
+$('input[name=hepc]').change(function(){
+   opcion = $("#id_hepb_1").prop("checked")
+
+   if ($(this).val() == 2){
+      $('#id_hepc_diag, #id_hepc_fecha_initrat, input[name=hepc_initrat], input[name=hepc_trat], #id_hepc_entrat_diag, input[name=hepc_entrat], #id_hepc_entrat_fecha_fintrat, input[name=hepc_entrat_fintrat], input[name=hepc_intrat], #id_hepc_intrat_diag, #id_hepc_intrat_fecha_reitrat, input[name=hepc_intrat_reitrat]').prop('disabled', true)
+   }else{
+      $('#id_hepc_diag, #id_hepc_fecha_initrat, input[name=hepc_initrat], input[name=hepc_trat], input[name=hepc_entrat], input[name=hepc_intrat]').prop('disabled', false)
+      
+      if ($("#id_hepc_entrat_1").prop("checked") != true){
+         $('#id_hepc_entrat_diag, #id_hepc_entrat_fecha_fintrat, input[name=hepc_entrat_fintrat]').prop('disabled', false)
+      }
+      if ($("#id_hepc_intrat_1").prop("checked") != true){
+      $('#id_hepc_intrat_diag, #id_hepc_intrat_fecha_reitrat, input[name=hepc_intrat_reitrat]').prop('disabled', false)
+      }
+   }
+})
+
+$('input[name=hepc_entrat]').change(function(){
+   opcion = $("#id_hepc_entrat_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_hepc_entrat_diag, #id_hepc_entrat_fecha_fintrat, input[name=hepc_entrat_fintrat]').prop('disabled', true)
+   }else{
+      $('#id_hepc_entrat_diag, #id_hepc_entrat_fecha_fintrat, input[name=hepc_entrat_fintrat]').prop('disabled', false)
+   }
+})
+
+$('input[name=hepc_intrat]').change(function(){
+   opcion = $("#id_hepc_intrat_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_ulg_diag, #id_ulg_fecha_initrat, input[name=ulg_initrat], input[name=ulg_trat], #id_ulg_entrat_diag, input[name=ulg_entrat], #id_ulg_entrat_fecha_fintrat, input[name=ulg_entrat_fintrat], input[name=ulg_intrat], #id_ulg_intrat_diag, #id_ulg_intrat_fecha_reitrat, input[name=ulg_intrat_reitrat]').prop('disabled', true)
+   }else{
+      $('#id_ulg_diag, #id_ulg_fecha_initrat, input[name=ulg_initrat], input[name=ulg_trat], input[name=ulg_entrat], #id_ulg_entrat_diag, #id_ulg_entrat_fecha_fintrat, input[name=ulg_entrat_fintrat], input[name=ulg_intrat], #id_ulg_intrat_diag, #id_ulg_intrat_fecha_reitrat, input[name=ulg_intrat_reitrat]').prop('disabled', false)
+   }
+})
+
+//----------------------------------------------------------------------------------------------
+//ULCERA  GENITAL
+$('input[name=ulg]').change(function(){
+   opcion = $("#id_ulg_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_ulg_diag, #id_ulg_fecha_initrat, input[name=ulg_initrat], input[name=ulg_trat], #id_ulg_entrat_diag, input[name=ulg_entrat], #id_ulg_entrat_fecha_fintrat, input[name=ulg_entrat_fintrat], input[name=ulg_intrat], #id_ulg_intrat_diag, #id_ulg_intrat_fecha_reitrat, input[name=ulg_intrat_reitrat]').prop('disabled', true)
+   }else{
+      $('#id_ulg_diag, #id_ulg_fecha_initrat, input[name=ulg_initrat], input[name=ulg_trat], input[name=ulg_entrat], input[name=ulg_intrat]').prop('disabled', false)
+      
+      if ($("#id_ulg_entrat_1").prop("checked") != true){
+         $('#id_ulg_entrat_diag, #id_ulg_entrat_fecha_fintrat, input[name=ulg_entrat_fintrat]').prop('disabled', false)
+      }
+      if ($("#id_ulg_intrat_1").prop("checked") != true){
+      $('#id_ulg_intrat_diag, #id_ulg_intrat_fecha_reitrat, input[name=ulg_intrat_reitrat]').prop('disabled', false)
+      }
+   }
+})
+
+$('input[name=ulg_entrat]').change(function(){
+   opcion = $("#id_ulg_entrat_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_ulg_entrat_diag, #id_ulg_entrat_fecha_fintrat, input[name=ulg_entrat_fintrat]').prop('disabled', true)
+   }else{
+      $('#id_ulg_entrat_diag, #id_ulg_entrat_fecha_fintrat, input[name=ulg_entrat_fintrat]').prop('disabled', false)
+   }
+})
+
+$('input[name=ulg_intrat]').change(function(){
+   opcion = $("#id_ulg_intrat_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_ulg_intrat_diag, #id_ulg_intrat_fecha_reitrat, input[name=ulg_intrat_reitrat]').prop('disabled', true)
+   }else{
+      $('#id_ulg_intrat_diag, #id_ulg_intrat_fecha_reitrat, input[name=ulg_intrat_reitrat]').prop('disabled', false)
+   }
+})
+
+
+//----------------------------------------------------------------------------------------------
+//SECRECION URETAL
+$('input[name=secure]').change(function(){
+   opcion = $("#id_secure_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_secure_diag, #id_secure_fecha_initrat, input[name=secure_initrat], input[name=secure_trat], #id_secure_entrat_diag, input[name=secure_entrat], #id_secure_entrat_fecha_fintrat, input[name=secure_entrat_fintrat], input[name=secure_intrat], #id_secure_intrat_diag, #id_secure_intrat_fecha_reitrat, input[name=secure_intrat_reitrat]').prop('disabled', true)
+   }else{
+      $('#id_secure_diag, #id_secure_fecha_initrat, input[name=secure_initrat], input[name=secure_trat], input[name=secure_entrat], input[name=secure_intrat]').prop('disabled', false)
+      
+      if ($("#id_secure_entrat_1").prop("checked") != true){
+         $('#id_secure_entrat_diag, #id_secure_entrat_fecha_fintrat, input[name=secure_entrat_fintrat]').prop('disabled', false)
+      }
+      if ($("#id_secure_intrat_1").prop("checked") != true){
+      $('#id_secure_intrat_diag, #id_secure_intrat_fecha_reitrat, input[name=secure_intrat_reitrat]').prop('disabled', false)
+      }
+   }
+})
+
+$('input[name=secure_entrat]').change(function(){
+   opcion = $("#id_secure_entrat_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_secure_entrat_diag, #id_secure_entrat_fecha_fintrat, input[name=secure_entrat_fintrat]').prop('disabled', true)
+   }else{
+      $('#id_secure_entrat_diag, #id_secure_entrat_fecha_fintrat, input[name=secure_entrat_fintrat]').prop('disabled', false)
+   }
+})
+
+$('input[name=secure_intrat]').change(function(){
+   opcion = $("#id_secure_intrat_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_secure_intrat_diag, #id_secure_intrat_fecha_reitrat, input[name=secure_intrat_reitrat]').prop('disabled', true)
+   }else{
+      $('#id_secure_intrat_diag, #id_secure_intrat_fecha_reitrat, input[name=secure_intrat_reitrat]').prop('disabled', false)
+   }
+})
+
+//----------------------------------------------------------------------------------------------
+//FLUJO VAGINAL
+$('input[name=fluva]').change(function(){
+   opcion = $("#id_fluva_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_fluva_diag, #id_fluva_fecha_initrat, input[name=fluva_initrat], input[name=fluva_trat], #id_fluva_entrat_diag, input[name=fluva_entrat], #id_fluva_entrat_fecha_fintrat, input[name=fluva_entrat_fintrat], input[name=fluva_intrat], #id_fluva_intrat_diag, #id_fluva_intrat_fecha_reitrat, input[name=fluva_intrat_reitrat]').prop('disabled', true)
+   }else{
+      $('#id_fluva_diag, #id_fluva_fecha_initrat, input[name=fluva_initrat], input[name=fluva_trat], input[name=fluva_entrat], input[name=fluva_intrat]').prop('disabled', false)
+      
+      if ($("#id_fluva_entrat_1").prop("checked") != true){
+         $('#id_fluva_entrat_diag, #id_fluva_entrat_fecha_fintrat, input[name=fluva_entrat_fintrat]').prop('disabled', false)
+      }
+      if ($("#id_fluva_intrat_1").prop("checked") != true){
+      $('#id_fluva_intrat_diag, #id_fluva_intrat_fecha_reitrat, input[name=fluva_intrat_reitrat]').prop('disabled', false)
+      }
+   }})
+
+$('input[name=fluva_entrat]').change(function(){
+   opcion = $("#id_fluva_entrat_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_fluva_entrat_diag, #id_fluva_entrat_fecha_fintrat, input[name=fluva_entrat_fintrat]').prop('disabled', true)
+   }else{
+      $('#id_fluva_entrat_diag, #id_fluva_entrat_fecha_fintrat, input[name=fluva_entrat_fintrat]').prop('disabled', false)
+   }
+})
+
+$('input[name=fluva_intrat]').change(function(){
+   opcion = $("#id_fluva_intrat_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_fluva_intrat_diag, #id_fluva_intrat_fecha_reitrat, input[name=fluva_intrat_reitrat]').prop('disabled', true)
+   }else{
+      $('#id_fluva_intrat_diag, #id_fluva_intrat_fecha_reitrat, input[name=fluva_intrat_reitrat]').prop('disabled', false)
+   }
+})
+
+//----------------------------------------------------------------------------------------------
+//BUBON INGUINAL
+$('input[name=buin]').change(function(){
+   opcion = $("#id_buin_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_buin_diag, #id_buin_fecha_initrat, input[name=buin_initrat], input[name=buin_trat], #id_buin_entrat_diag, input[name=buin_entrat], #id_buin_entrat_fecha_fintrat, input[name=buin_entrat_fintrat], input[name=buin_intrat], #id_buin_intrat_diag, #id_buin_intrat_fecha_reitrat, input[name=buin_intrat_reitrat]').prop('disabled', true)
+   }else{
+      $('#id_buin_diag, #id_buin_fecha_initrat, input[name=buin_initrat], input[name=buin_trat], input[name=buin_entrat], input[name=buin_intrat]').prop('disabled', false)
+      
+      if ($("#id_buin_entrat_1").prop("checked") != true){
+         $('#id_buin_entrat_diag, #id_buin_entrat_fecha_fintrat, input[name=buin_entrat_fintrat]').prop('disabled', false)
+      }
+      if ($("#id_buin_intrat_1").prop("checked") != true){
+      $('#id_buin_intrat_diag, #id_buin_intrat_fecha_reitrat, input[name=buin_intrat_reitrat]').prop('disabled', false)
+      }
+   }
+})
+
+$('input[name=buin_entrat]').change(function(){
+   opcion = $("#id_buin_entrat_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_buin_entrat_diag, #id_buin_entrat_fecha_fintrat, input[name=buin_entrat_fintrat]').prop('disabled', true)
+   }else{
+      $('#id_buin_entrat_diag, #id_buin_entrat_fecha_fintrat, input[name=buin_entrat_fintrat]').prop('disabled', false)
+   }
+})
+
+$('input[name=buin_intrat]').change(function(){
+   opcion = $("#id_buin_intrat_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_buin_intrat_diag, #id_buin_intrat_fecha_reitrat, input[name=buin_intrat_reitrat]').prop('disabled', true)
+   }else{
+      $('#id_buin_intrat_diag, #id_buin_intrat_fecha_reitrat, input[name=buin_intrat_reitrat]').prop('disabled', false)
+   }
+})
+
+//----------------------------------------------------------------------------------------------
+//EDEMA DE ESCROTO
+$('input[name=edes]').change(function(){
+   opcion = $("#id_edes_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_edes_diag, #id_edes_fecha_initrat, input[name=edes_initrat], input[name=edes_trat], #id_edes_entrat_diag, input[name=edes_entrat], #id_edes_entrat_fecha_fintrat, input[name=edes_entrat_fintrat], input[name=edes_intrat], #id_edes_intrat_diag, #id_edes_intrat_fecha_reitrat, input[name=edes_intrat_reitrat]').prop('disabled', true)
+   }else{
+      $('#id_edes_diag, #id_edes_fecha_initrat, input[name=edes_initrat], input[name=edes_trat], input[name=edes_entrat], input[name=edes_intrat]').prop('disabled', false)
+      
+      if ($("#id_edes_entrat_1").prop("checked") != true){
+         $('#id_edes_entrat_diag, #id_edes_entrat_fecha_fintrat, input[name=edes_entrat_fintrat]').prop('disabled', false)
+      }
+      if ($("#id_edes_intrat_1").prop("checked") != true){
+      $('#id_edes_intrat_diag, #id_edes_intrat_fecha_reitrat, input[name=edes_intrat_reitrat]').prop('disabled', false)
+      }
+   }
+})
+
+$('input[name=edes_entrat]').change(function(){
+   opcion = $("#id_edes_entrat_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_edes_entrat_diag, #id_edes_entrat_fecha_fintrat, input[name=edes_entrat_fintrat]').prop('disabled', true)
+   }else{
+      $('#id_edes_entrat_diag, #id_edes_entrat_fecha_fintrat, input[name=edes_entrat_fintrat]').prop('disabled', false)
+   }
+})
+
+$('input[name=edes_intrat]').change(function(){
+   opcion = $("#id_edes_intrat_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_edes_intrat_diag, #id_edes_intrat_fecha_reitrat, input[name=edes_intrat_reitrat]').prop('disabled', true)
+   }else{
+      $('#id_edes_intrat_diag, #id_edes_intrat_fecha_reitrat, input[name=edes_intrat_reitrat]').prop('disabled', false)
+   }
+})
+
+
+//----------------------------------------------------------------------------------------------
+//VERRUGAS GENITALES
+$('input[name=verge]').change(function(){
+   opcion = $("#id_verge_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_verge_diag, #id_verge_fecha_initrat, input[name=verge_initrat], input[name=verge_trat], #id_verge_entrat_diag, input[name=verge_entrat], #id_verge_entrat_fecha_fintrat, input[name=verge_entrat_fintrat], input[name=verge_intrat], #id_verge_intrat_diag, #id_verge_intrat_fecha_reitrat, input[name=verge_intrat_reitrat]').prop('disabled', true)
+   }else{
+      $('#id_verge_diag, #id_verge_fecha_initrat, input[name=verge_initrat], input[name=verge_trat], input[name=verge_entrat], input[name=verge_intrat]').prop('disabled', false)
+      
+      if ($("#id_verge_entrat_1").prop("checked") != true){
+         $('#id_verge_entrat_diag, #id_verge_entrat_fecha_fintrat, input[name=verge_entrat_fintrat]').prop('disabled', false)
+      }
+      if ($("#id_verge_intrat_1").prop("checked") != true){
+      $('#id_verge_intrat_diag, #id_verge_intrat_fecha_reitrat, input[name=verge_intrat_reitrat]').prop('disabled', false)
+      }
+   }
+})
+
+$('input[name=verge_entrat]').change(function(){
+   opcion = $("#id_verge_entrat_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_verge_entrat_diag, #id_verge_entrat_fecha_fintrat, input[name=verge_entrat_fintrat]').prop('disabled', true)
+   }else{
+      $('#id_verge_entrat_diag, #id_verge_entrat_fecha_fintrat, input[name=verge_entrat_fintrat]').prop('disabled', false)
+   }
+})
+
+$('input[name=verge_intrat]').change(function(){
+   opcion = $("#id_verge_intrat_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_verge_intrat_diag, #id_verge_intrat_fecha_reitrat, input[name=verge_intrat_reitrat]').prop('disabled', true)
+   }else{
+      $('#id_verge_intrat_diag, #id_verge_intrat_fecha_reitrat, input[name=verge_intrat_reitrat]').prop('disabled', false)
+   }
+})
+
+
+//----------------------------------------------------------------------------------------------
+//FARINGITIS
+$('input[name=trasex]').change(function(){
+   opcion = $("#id_trasex_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_trasex_diag, #id_trasex_fecha_initrat, input[name=trasex_initrat], input[name=trasex_trat], #id_trasex_entrat_diag, input[name=trasex_entrat], #id_trasex_entrat_fecha_fintrat, input[name=trasex_entrat_fintrat], input[name=trasex_intrat], #id_trasex_intrat_diag, #id_trasex_intrat_fecha_reitrat, input[name=trasex_intrat_reitrat]').prop('disabled', true)
+   }else{
+      $('#id_trasex_diag, #id_trasex_fecha_initrat, input[name=trasex_initrat], input[name=trasex_trat], input[name=trasex_entrat], input[name=trasex_intrat]').prop('disabled', false)
+      
+      if ($("#id_trasex_entrat_1").prop("checked") != true){
+         $('#id_trasex_entrat_diag, #id_trasex_entrat_fecha_fintrat, input[name=trasex_entrat_fintrat]').prop('disabled', false)
+      }
+      if ($("#id_trasex_intrat_1").prop("checked") != true){
+      $('#id_trasex_intrat_diag, #id_trasex_intrat_fecha_reitrat, input[name=trasex_intrat_reitrat]').prop('disabled', false)
+      }
+   }
+})
+
+$('input[name=trasex_entrat]').change(function(){
+   opcion = $("#id_trasex_entrat_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_trasex_entrat_diag, #id_trasex_entrat_fecha_fintrat, input[name=trasex_entrat_fintrat]').prop('disabled', true)
+   }else{
+      $('#id_trasex_entrat_diag, #id_trasex_entrat_fecha_fintrat, input[name=trasex_entrat_fintrat]').prop('disabled', false)
+   }
+})
+
+$('input[name=trasex_intrat]').change(function(){
+   opcion = $("#id_trasex_intrat_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_trasex_intrat_diag, #id_trasex_intrat_fecha_reitrat, input[name=trasex_intrat_reitrat]').prop('disabled', true)
+   }else{
+      $('#id_trasex_intrat_diag, #id_trasex_intrat_fecha_reitrat, input[name=trasex_intrat_reitrat]').prop('disabled', false)
+   }
+})
+
+
+//----------------------------------------------------------------------------------------------
+//PROCTITITS
+$('input[name=proc]').change(function(){
+   opcion = $("#id_proc_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_proc_diag, #id_proc_fecha_initrat, input[name=proc_initrat], input[name=proc_trat], #id_proc_entrat_diag, input[name=proc_entrat], #id_proc_entrat_fecha_fintrat, input[name=proc_entrat_fintrat], input[name=proc_intrat], #id_proc_intrat_diag, #id_proc_intrat_fecha_reitrat, input[name=proc_intrat_reitrat]').prop('disabled', true)
+   }else{
+      $('#id_proc_diag, #id_proc_fecha_initrat, input[name=proc_initrat], input[name=proc_trat], input[name=proc_entrat], input[name=proc_intrat]').prop('disabled', false)
+      
+      if ($("#id_proc_entrat_1").prop("checked") != true){
+         $('#id_proc_entrat_diag, #id_proc_entrat_fecha_fintrat, input[name=proc_entrat_fintrat]').prop('disabled', false)
+      }
+      if ($("#id_proc_intrat_1").prop("checked") != true){
+      $('#id_proc_intrat_diag, #id_proc_intrat_fecha_reitrat, input[name=proc_intrat_reitrat]').prop('disabled', false)
+      }
+   }
+})
+
+$('input[name=proc_entrat]').change(function(){
+   opcion = $("#id_proc_entrat_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_proc_entrat_diag, #id_proc_entrat_fecha_fintrat, input[name=proc_entrat_fintrat]').prop('disabled', true)
+   }else{
+      $('#id_proc_entrat_diag, #id_proc_entrat_fecha_fintrat, input[name=proc_entrat_fintrat]').prop('disabled', false)
+   }
+})
+
+$('input[name=proc_intrat]').change(function(){
+   opcion = $("#id_proc_intrat_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_proc_intrat_diag, #id_proc_intrat_fecha_reitrat, input[name=proc_intrat_reitrat]').prop('disabled', true)
+   }else{
+      $('#id_proc_intrat_diag, #id_proc_intrat_fecha_reitrat, input[name=proc_intrat_reitrat]').prop('disabled', false)
+   }
+})
+
+//----------------------------------------------------------------------------------------------
+//INFLAMATORIA PELVICA  
+$('input[name=infpel]').change(function(){
+   opcion = $("#id_infpel_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_infpel_diag, #id_infpel_fecha_initrat, input[name=infpel_initrat], input[name=infpel_trat], #id_infpel_entrat_diag, input[name=infpel_entrat], #id_infpel_entrat_fecha_fintrat, input[name=infpel_entrat_fintrat], input[name=infpel_intrat], #id_infpel_intrat_diag, #id_infpel_intrat_fecha_reitrat, input[name=infpel_intrat_reitrat]').prop('disabled', true)
+   }else{
+      $('#id_infpel_diag, #id_infpel_fecha_initrat, input[name=infpel_initrat], input[name=infpel_trat], input[name=infpel_entrat], input[name=infpel_intrat]').prop('disabled', false)
+      
+      if ($("#id_infpel_entrat_1").prop("checked") != true){
+         $('#id_infpel_entrat_diag, #id_infpel_entrat_fecha_fintrat, input[name=infpel_entrat_fintrat]').prop('disabled', false)
+      }
+      if ($("#id_infpel_intrat_1").prop("checked") != true){
+      $('#id_infpel_intrat_diag, #id_infpel_intrat_fecha_reitrat, input[name=infpel_intrat_reitrat]').prop('disabled', false)
+      }
+   }
+})
+
+$('input[name=infpel_entrat]').change(function(){
+   opcion = $("#id_infpel_entrat_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_infpel_entrat_diag, #id_infpel_entrat_fecha_fintrat, input[name=infpel_entrat_fintrat]').prop('disabled', true)
+   }else{
+      $('#id_infpel_entrat_diag, #id_infpel_entrat_fecha_fintrat, input[name=infpel_entrat_fintrat]').prop('disabled', false)
+   }
+})
+
+$('input[name=infpel_intrat]').change(function(){
+   opcion = $("#id_infpel_intrat_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_infpel_intrat_diag, #id_infpel_intrat_fecha_reitrat, input[name=infpel_intrat_reitrat]').prop('disabled', true)
+   }else{
+      $('#id_infpel_intrat_diag, #id_infpel_intrat_fecha_reitrat, input[name=infpel_intrat_reitrat]').prop('disabled', false)
+   }
+})
+
 </script>
 
 {% endblock %}

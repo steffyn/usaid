@@ -3,3 +3,5 @@ general/migrations
 usaid/settings.py
 usaid/wsgi.py
 *.pyc
+usaid/settings.pyc
+!settings.py

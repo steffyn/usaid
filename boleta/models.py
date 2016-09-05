@@ -488,4 +488,9 @@ class BoletasClinicas(models.Model):
 	infpel_intrat_diag = models.DateField(blank=True, null=True, verbose_name='Fecha')
 	infpel_intrat_reitrat = models.IntegerField(choices=SI_NO, blank=True, null=True, verbose_name='Reinicio Tratamiento')
 	infpel_intrat_fecha_reitrat = models.DateField(blank=True, null=True, verbose_name='Fecha')
+	
+	creado_por = models.ForeignKey(User, related_name='creado_por_clinica')
+	fecha_creacion = models.DateTimeField(auto_now_add=True)
+	actualizado_por = models.ForeignKey(User, related_name='actualizado_por_clinica')
+	fecha_actualizacion = models.DateTimeField(auto_now=True)
 
