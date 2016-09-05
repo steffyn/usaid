@@ -83,7 +83,7 @@ WSGI_APPLICATION = 'usaid.wsgi.application'
 
 DATABASES = {
     'default': {
-        'NAME': 'usaid',
+        'NAME': 'BiDSS$usaid',
         'ENGINE': 'django.db.backends.mysql',#'sql_server.pyodbc',
         'HOST': 'BiDSS.mysql.pythonanywhere-services.com', #'DESKTOP-83M0N9S',
         'USER': 'BiDSS', #'usaid',
