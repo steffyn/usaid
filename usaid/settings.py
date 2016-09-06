@@ -81,6 +81,8 @@ WSGI_APPLICATION = 'usaid.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
+os.environ["ODBCSYSINI"] = "/home/BiDSS"
+
 
 DATABASES = {
     'default': {
@@ -105,31 +107,6 @@ DATABASE_OPTIONS = {
         'host_is_server': False,
         'dsn': 'sqlserverdatasource',
 }
-
-
-# DATABASES = {
-#     'default': {
-#         'NAME': 'BiDSS$usaid',
-#         'ENGINE': 'django.db.backends.mysql',#'sql_server.pyodbc',
-#         'HOST': 'BiDSS.mysql.pythonanywhere-services.com', #'DESKTOP-83M0N9S',
-#         'USER': 'BiDSS', #'usaid',
-#         'PASSWORD': 'admin123', #'usaid',
-#     }
-# }
-
-# DATABASES = {
-#     'default': {
-#         'NAME': 'DB_A0641C_SEASA',
-#         'ENGINE':'sql_server.pyodbc',
-#         'HOST': 'SQL5027.Smarterasp.net', #'DESKTOP-83M0N9S',
-#         'USER': 'DB_A0641C_SEASA_admin', #'usaid',
-#         'PASSWORD': 'Motagua2016', #'usaid',
-#     }
-# }
-
-
-
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
