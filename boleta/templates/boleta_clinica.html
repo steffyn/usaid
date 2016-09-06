@@ -50,6 +50,7 @@
          {{formulario3.errors}}
          <div class="form-horizontal"> 
          <input type="hidden" name="persona" id='persona' value="" placeholder="">
+         <input type="text" name="sexo_persona" id='sexo_persona' value="" placeholder="">
             <h4 class="text-center font-style">
                [PARTE I] DATOS GENERALES DE LA PERSONA USUARIA DE LOS SERVICIOS
             </h4>
@@ -321,7 +322,7 @@
             <div class="col-sm-2 form-inline">
                {{formulario3.hepb|bootstrap}}
             </div>
-            <div class="col-sm-5">
+            <div class="col-sm-5 form-inline">
                {{formulario3.hepb_resultado|bootstrap}}
             </div>
             <div class="col-sm-2">
@@ -336,7 +337,7 @@
             <div class="col-sm-2 form-inline">
                {{formulario3.hepc|bootstrap}}
             </div>
-            <div class="col-sm-5">
+            <div class="col-sm-5 form-inline">
                {{formulario3.hepc_resultado|bootstrap}}
             </div>
             <div class="col-sm-2">
@@ -351,7 +352,7 @@
             <div class="col-sm-2 form-inline">
                {{formulario3.rpr|bootstrap}}
             </div>
-            <div class="col-sm-5">
+            <div class="col-sm-5 form-inline">
                {{formulario3.rpr_resultado|bootstrap}}
             </div>
             <div class="col-sm-2">
@@ -1099,9 +1100,9 @@
 
 
 <script type="text/javascript">
-$("#id_fecha_nacimiento, input[name=sexo]").prop('disabled', true)
 
 $('#button').click(function(){
+   $(this).delay(300)
    $("#id_fecha_nacimiento, input[name=sexo]").prop('disabled', false)
    $("#formulario:input").prop("disabled", false);
    return true
@@ -1172,10 +1173,8 @@ function(start, end, label) {
    identidad = $('#identidad').val().replace('-', '');
    identidad = identidad.replace('-', '')
 
-   expediente = identidad + '-' + start.format('YYYY-MM-DD') + '-' + $('input[name=sexo]').val()
-   console.log(expediente)
-   $('#expediente').text(btoa(expediente))
-   $('#input_expediente, .expediente').val(btoa(expediente))
+   $('#expediente').text(btoa(identidad) + '-'+ start.format('YYYY-MM-DD') + '-' + $('input[name=sexo]').val())
+   $('#input_expediente, .expediente').val(btoa(identidad) + '-'+ start.format('YYYY-MM-DD') + '-' + $('input[name=sexo]').val())
 }).val('');
 
 vars = '#id_fecha_consejeria, #id_fecha_ultima_menstruacion, #id_fecha_cesaria, '
@@ -1196,7 +1195,8 @@ vars += '#id_edes_diag, #id_edes_fecha_initrat, #id_edes_entrat_diag, #id_edes_e
 vars += '#id_verge_diag, #id_verge_fecha_initrat, #id_verge_entrat_diag, #id_verge_entrat_fecha_fintrat, #id_verge_intrat_diag, #id_verge_intrat_fecha_reitrat, '
 vars += '#id_trasex_diag, #id_trasex_fecha_initrat, #id_trasex_entrat_diag, #id_trasex_entrat_fecha_fintrat, #id_trasex_intrat_diag, #id_trasex_intrat_fecha_reitrat, '
 vars += '#id_proc_diag, #id_proc_fecha_initrat, #id_proc_entrat_diag, #id_proc_entrat_fecha_fintrat, #id_proc_intrat_diag, #id_proc_intrat_fecha_reitrat, '
-vars += '#id_infpel_diag, #id_infpel_fecha_initrat, #id_infpel_entrat_diag, #id_infpel_entrat_fecha_fintrat, #id_infpel_intrat_diag, #id_infpel_intrat_fecha_reitrat'
+vars += '#id_infpel_diag, #id_infpel_fecha_initrat, #id_infpel_entrat_diag, #id_infpel_entrat_fecha_fintrat, #id_infpel_intrat_diag, #id_infpel_intrat_fecha_reitrat,'
+vars += '#id_cita_medica, #id_retiro_medicamento'
 
 $(vars).daterangepicker({
    //autoUpdateInput: false,
@@ -1282,8 +1282,8 @@ $('#identidad').keypress(function (e) {
 
    expediente = identidad + '-' + $('#id_fecha_nacimiento').val() + '-' + $('input[name=sexo]').val()
    $('.identidad').val($(this).val())
-   $('#expediente').text(btoa(expediente))
-   $('#input_expediente, .expediente').val(btoa(expediente))
+   $('#expediente').text(btoa(identidad) + '-'+ $('#id_fecha_nacimiento').val() + '-' + $('input[name=sexo]').val())
+   $('#input_expediente, .expediente').val(btoa(identidad) + '-'+ $('#id_fecha_nacimiento').val() + '-' + $('input[name=sexo]').val())
 
    var key = e.which;
    if(key == 13){
@@ -1298,7 +1298,7 @@ $('#identidad').keypress(function (e) {
 
          $('#persona').val(1)
          $('#error_identidad').show().delay(4000).fadeOut()
-         $('#id_primer_nombre, #id_segundo_nombre, #id_primer_apellido, #id_segundo_apellido, #id_fecha_nacimiento').prop('readonly', false).val('')
+         $('#id_primer_nombre, #id_segundo_nombre, #sexo_persona, #id_primer_apellido, #id_segundo_apellido, #id_fecha_nacimiento').prop('readonly', false).val('')
          $('#id_fecha_nacimiento, input[name=sexo]').prop('disabled',false).val('')
 
 
@@ -1396,6 +1396,7 @@ $('#identidad').keypress(function (e) {
 
          $('input[name=sexo]').prop('disabled',true).val('')
          $('#id_sexo_'+(persona.sexo-1)).prop('checked', true)
+         $('#sexo_persona').val(persona.sexo)
 
          //ESA ONDA DE EMBARADA
          if (persona.sexo == 1){
@@ -1433,8 +1434,8 @@ $('#identidad').keypress(function (e) {
          }
 
          expediente = identidad + '-' + persona.fecha_nacimiento + '-' + persona.sexo
-         $('#expediente').text(btoa(expediente))
-         $('#input_expediente, .expediente').val(btoa(expediente))
+         $('#expediente').text(btoa(identidad) + '-'+ $('#id_fecha_nacimiento').val() + '-' + $('input[name=sexo]').val())
+   $('#input_expediente, .expediente').val(btoa(identidad) + '-'+ $('#id_fecha_nacimiento').val() + '-' + $('input[name=sexo]').val())
       }
    });
    }
@@ -1483,10 +1484,12 @@ $('input[name=sexo]').change(function(){
    if (genero == true){
       $('#embarazada').show()
       $("#id_condiciones").append('<option value="'+ embarazada_id +'">Embarazada</option>');
+      $('#sexo_persona').val(2)
       sexo = 2
    }else{
       $("#id_condiciones option[value='"+ embarazada_id +"']").remove();
       $('#embarazada').hide()
+      $('#sexo_persona').val(1)
       sexo = 1
    }
 
@@ -1494,8 +1497,9 @@ $('input[name=sexo]').change(function(){
    identidad = $('#identidad').val().replace('-', '');
    identidad = identidad.replace('-', '')
    expediente = identidad + '-' + $('#id_fecha_nacimiento').val() + '-' + sexo
-   $('#expediente').text(btoa(expediente))
-   $('#input_expediente, .expediente').val(btoa(expediente))
+   
+   $('#expediente').text(btoa(identidad) + '-'+  $('#id_fecha_nacimiento').val() + '-' + sexo)
+   $('#input_expediente, .expediente').val(btoa(identidad) + '-'+ $('#id_fecha_nacimiento').val() + '-' + sexo)
 
 
    
@@ -1539,9 +1543,9 @@ $('input[name=hepb]').change(function(){
    opcion = $("#id_hepb_1").prop("checked")
 
    if (opcion == true){
-      $('#id_hepb_resultado, #id_hepb_fecha_realizacion, input[name=hepb_ordenado_consulta]').prop('disabled', true)
+      $('input[name=hepb_resultado], #id_hepb_fecha_realizacion, input[name=hepb_ordenado_consulta]').prop('disabled', true)
    }else{
-      $('#id_hepb_resultado, #id_hepb_fecha_realizacion, input[name=hepb_ordenado_consulta]').prop('disabled', false)
+      $('input[name=hepb_resultado], #id_hepb_fecha_realizacion, input[name=hepb_ordenado_consulta]').prop('disabled', false)
    }
 })
 
@@ -1549,19 +1553,9 @@ $('input[name=hepc]').change(function(){
    opcion = $("#id_hepc_1").prop("checked")
 
    if (opcion == true){
-      $('#id_hepc_resultado, #id_hepc_fecha_realizacion, input[name=hepc_ordenado_consulta]').prop('disabled', true)
+      $('input[name=hepc_resultado], #id_hepc_fecha_realizacion, input[name=hepc_ordenado_consulta]').prop('disabled', true)
    }else{
-      $('#id_hepc_resultado, #id_hepc_fecha_realizacion, input[name=hepc_ordenado_consulta]').prop('disabled', false)
-   }
-})
-
-$('input[name=hepc]').change(function(){
-   opcion = $("#id_hepc_1").prop("checked")
-
-   if (opcion == true){
-      $('#id_hepc_resultado, #id_hepc_fecha_realizacion, input[name=hepc_ordenado_consulta]').prop('disabled', true)
-   }else{
-      $('#id_hepc_resultado, #id_hepc_fecha_realizacion, input[name=hepc_ordenado_consulta]').prop('disabled', false)
+      $('input[name=hepc_resultado], #id_hepc_fecha_realizacion, input[name=hepc_ordenado_consulta]').prop('disabled', false)
    }
 })
 
@@ -1569,9 +1563,9 @@ $('input[name=rpr]').change(function(){
    opcion = $("#id_rpr_1").prop("checked")
 
    if (opcion == true){
-      $('#id_rpr_resultado, #id_rpr_fecha_realizacion, input[name=rpr_ordenado_consulta]').prop('disabled', true)
+      $('input[name=rpr_resultado], #id_rpr_fecha_realizacion, input[name=rpr_ordenado_consulta]').prop('disabled', true)
    }else{
-      $('#id_rpr_resultado, #id_rpr_fecha_realizacion, input[name=rpr_ordenado_consulta]').prop('disabled', false)
+      $('input[name=rpr_resultado], #id_rpr_fecha_realizacion, input[name=rpr_ordenado_consulta]').prop('disabled', false)
    }
 })
 
@@ -2153,6 +2147,17 @@ $('input[name=infpel_intrat]').change(function(){
       $('#id_infpel_intrat_diag, #id_infpel_intrat_fecha_reitrat, input[name=infpel_intrat_reitrat]').prop('disabled', true)
    }else{
       $('#id_infpel_intrat_diag, #id_infpel_intrat_fecha_reitrat, input[name=infpel_intrat_reitrat]').prop('disabled', false)
+   }
+})
+
+
+$('input[name=estado_inmunologico], input[name=estado_clinico]').change(function(){
+   console.log($('input[name=estado_inmunologico]:checked').val(), $('input[name=estado_clinico]:checked').val())
+   inmunologico = $('input[name=estado_inmunologico]:checked').val()
+   clinico = $('input[name=estado_clinico]:checked').val()
+
+   if(inmunologico && clinico){
+      $('#id_estadio_infeccion').val(inmunologico+clinico)
    }
 })
 

@@ -266,11 +266,11 @@ class BoletasClinicas(models.Model):
 	estadio_infeccion = models.CharField(max_length=2, blank=True, null=True, verbose_name='Estadio de la Infección')
 
 	lic4 = models.IntegerField(choices=SI_NO, blank=True, null=True, verbose_name='Linfocitos C4')
-	lic4_resultado = models.CharField(max_length=50, blank=True, null=True, verbose_name='Resultado')
+	lic4_resultado = models.CharField(max_length=50, blank=True, null=True, verbose_name='Resultado (Cel./mm)')
 	lic4_fecha_realizacion = models.DateField(blank=True, null=True, verbose_name='Fecha de Realización')
 	lic4_ordenado_consulta = models.IntegerField(choices=ORDENADOS_EN_CONSULTA, blank=True, null=True, verbose_name='')
 	caviral = models.IntegerField(choices=SI_NO, blank=True, null=True, verbose_name='')
-	caviral_resultado = models.CharField(max_length=50, blank=True, null=True, verbose_name='Resultado')
+	caviral_resultado = models.CharField(max_length=50, blank=True, null=True, verbose_name='Resultado (Copias/ml)')
 	caviral_fecha_realizacion = models.DateField(blank=True, null=True, verbose_name='Fecha de Realización')
 	caviral_ordenado_consulta = models.IntegerField(choices=ORDENADOS_EN_CONSULTA, blank=True, null=True, verbose_name='')
 	hepb = models.IntegerField(choices=SI_NO, blank=True, null=True, verbose_name='')
@@ -493,4 +493,7 @@ class BoletasClinicas(models.Model):
 	fecha_creacion = models.DateTimeField(auto_now_add=True)
 	actualizado_por = models.ForeignKey(User, related_name='actualizado_por_clinica')
 	fecha_actualizacion = models.DateTimeField(auto_now=True)
+	
+	def __unicode__(self):
+		return u'[%s] %s' % (self.boleta.expediente, self.boleta.identidad)
 
