@@ -5,3 +5,4 @@ usaid/wsgi.py
 *.pyc
 usaid/settings.pyc
 !settings.py
+usaid/settings.py
