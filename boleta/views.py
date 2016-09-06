@@ -24,10 +24,10 @@ def principal(request):
 	return render(request, 'principal.html')
 
 def date_handler(obj):
-    if hasattr(obj, 'isoformat'):
-        return obj.isoformat()
-    else:
-        raise TypeError
+	if hasattr(obj, 'isoformat'):
+		return obj.isoformat()
+	else:
+		raise TypeError
 
 @login_required()
 def pre_prueba_vih(request):
@@ -432,37 +432,106 @@ def boleta_clinica(request):
 		}
 		return render(request, 'boleta_clinica.html', ctx)
 	if request.method == 'POST':
+		ide = request.POST['identidad']
+		identidad = ide.replace("-", "")
 		try:
 			with transaction.atomic():
-				identidades = request.POST.getlist('identidad[]')
-				formulario = AsistenciaForm(request.POST)
-				if formulario.is_valid():
-					registro = formulario.save(commit=False)
-					registro.creado_por = request.user
-					registro.actualizado_por = request.user
-					registro.save()
+				tipo_persona = request.POST['persona']
+				print tipo_persona
+				
+				formulario = RPNForm(request.POST)
+				formulario2 = BoletaForm(request.POST)
+				formulario3 = BoletaClinicaForm(request.POST)
+				if  formulario2.is_valid() and formulario3.is_valid():
+					if str(tipo_persona) != '2':
+						print 'SIN BOLETA'
+						registro = formulario2.save(commit=False)
+						registro.expediente =  identidad +'-'+ request.POST['fecha_nacimiento'] +'-'+ request.POST['sexo']
+						registro.ciudad =  Ciudades.objects.get(pk=request.POST['ciudad'])
+						registro.barrio =  Ciudades.objects.get(pk=request.POST['barrio'])
+						registro.municipio =  Municipios.objects.get(pk=request.POST['municipio'])
+						registro.identidad =  identidad
+						registro.sexo =  request.POST['sexo']
+						registro.primer_nombre =  request.POST['primer_nombre']
+						registro.segundo_nombre =  request.POST['segundo_nombre']
+						registro.primer_apellido =  request.POST['primer_apellido']
+						registro.segundo_apellido =  request.POST['segundo_apellido']
+						registro.fecha_nacimiento =  request.POST['fecha_nacimiento']
+						registro.identidad_madre = request.POST['identidad_madre'].replace("-", "")
+						registro.identidad_padre = request.POST['identidad_padre'].replace("-", "")
+						registro.identidad_tutor = request.POST['identidad_tutor'].replace("-", "")
+						registro.rpn =  True
+						registro.creado_por = request.user
+						registro.actualizado_por = request.user
+						registro.save()
 
-					for identidad in identidades:
-						asistencia = ListadoAsistencia()
-						asistencia.asistencia = registro
-						asistencia.identidad = identidad
-						asistencia.nombres = request.POST['nombre[' + identidad + ']']
-						asistencia.correo_electronico = request.POST['correo[' + identidad+']']
-						asistencia.edad = request.POST['edad['+identidad+']']
-						asistencia.telefono = request.POST['telefono['+identidad+']']
-						asistencia.cantidad_condones = request.POST['cantidad['+identidad+']']
+						registro2 = formulario3.save(commit=False)
+						registro2.boleta = registro
+						registro2.nombre_persona_solicitante = '%s %s %s %s'%(request.POST['primer_nombre'],request.POST['segundo_nombre'], request.POST['primer_apellido'], request.POST['segundo_apellido'])
+						registro2.creado_por = request.user
+						registro2.actualizado_por = request.user
+						
+						try:
+							responsable = Responsables.objects.get(usuario_sistema=request.user)
+							registro2.nombre_consejero = responsable.nombres + ' ' + responsable.primer_apellido + ' ' + responsable.segundo_apellido
+						except Exception, e:
+							registro2.nombre_consejero = request.user.first_name + ' ' + request.user.last_name
+						
+						registro2.save()
+						exito = True
+					else:
+						print 'CON BOLETA'
+						instance = Boletas.objects.get(identidad=identidad)
+						formulario2 = BoletaForm(request.POST, instance=instance)
+						registro = formulario2.save(commit=False)
+						registro.expediente =  identidad +'-'+ request.POST['fecha_nacimiento'] +'-'+ request.POST['sexo']
+						registro.ciudad =  Ciudades.objects.get(pk=request.POST['ciudad'])
+						registro.barrio =  Ciudades.objects.get(pk=request.POST['barrio'])
+						registro.municipio =  Municipios.objects.get(pk=request.POST['municipio'])
+						registro.identidad =  identidad
+						registro.sexo =  request.POST['sexo']
+						registro.primer_nombre =  request.POST['primer_nombre']
+						registro.segundo_nombre =  request.POST['segundo_nombre']
+						registro.primer_apellido =  request.POST['primer_apellido']
+						registro.segundo_apellido =  request.POST['segundo_apellido']
+						registro.fecha_nacimiento =  request.POST['fecha_nacimiento']
+						registro.identidad_madre = request.POST['identidad_madre'].replace("-", "")
+						registro.identidad_padre = request.POST['identidad_padre'].replace("-", "")
+						registro.identidad_tutor = request.POST['identidad_tutor'].replace("-", "")
+						registro.rpn =  True
+						registro.actualizado_por = request.user
+						registro.save()
 
-						asistencia.save()
+					registro2 = formulario3.save(commit=False)
+					registro2.boleta = registro
+					registro2.actualizado_por = request.user
+					registro2.boleta = registro
+					try:
+						responsable = Responsables.objects.get(usuario_sistema=request.user)
+						registro2.establecimiento = responsable.establecimiento
+					except Exception, e:
+						registro2.establecimiento = responsable.establecimiento
 
-					formulario = AsistenciaForm()
-					exito = True
+					registro2.save()
+
+					formulario = RPNForm()
+					formulario.fields['sexo'].widget.attrs['disabled'] = True
+
+					formulario2 = BoletaForm()
+					formulario3 = BoletaClinicaForm()
+
 				else:
+					print 'AAAAAAAAAAAAAAAAAAAAAAAAA'
 					pass
 		except Exception, e:
+			raise e
 			print 'ERROR', e
 		ctx = {
 			'formulario' : formulario,
+			'formulario2' : formulario2,
+			'formulario3' : formulario3,
 			'exito': exito,
 			'responsable': responsable,
-		}	
+			'embarazada': embarazada,
+		}
 		return render(request, 'boleta_clinica.html', ctx)

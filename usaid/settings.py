@@ -83,13 +83,36 @@ WSGI_APPLICATION = 'usaid.wsgi.application'
 
 DATABASES = {
     'default': {
-        'NAME': 'BiDSS$usaid',
-        'ENGINE': 'django.db.backends.mysql',#'sql_server.pyodbc',
-        'HOST': 'BiDSS.mysql.pythonanywhere-services.com', #'DESKTOP-83M0N9S',
-        'USER': 'BiDSS', #'usaid',
-        'PASSWORD': 'admin123', #'usaid',
+        'NAME': 'usaid2',
+        'ENGINE': 'sql_server.pyodbc',
+        'HOST': 'DESKTOP-83M0N9S',
+        'USER': 'usaid',
+        'PASSWORD': 'usaid',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'NAME': 'BiDSS$usaid',
+#         'ENGINE': 'django.db.backends.mysql',#'sql_server.pyodbc',
+#         'HOST': 'BiDSS.mysql.pythonanywhere-services.com', #'DESKTOP-83M0N9S',
+#         'USER': 'BiDSS', #'usaid',
+#         'PASSWORD': 'admin123', #'usaid',
+#     }
+# }
+
+# DATABASES = {
+#     'default': {
+#         'NAME': 'DB_A0641C_SEASA',
+#         'ENGINE':'sql_server.pyodbc',
+#         'HOST': 'SQL5027.Smarterasp.net', #'DESKTOP-83M0N9S',
+#         'USER': 'DB_A0641C_SEASA_admin', #'usaid',
+#         'PASSWORD': 'Motagua2016', #'usaid',
+#     }
+# }
+
+
+
 
 
 # Password validation

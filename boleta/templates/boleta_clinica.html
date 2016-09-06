@@ -46,7 +46,10 @@
                Se guardaron los datos correctamente 
             </div>
          {% endif %}
+         {{formulario2.errors}}
+         {{formulario3.errors}}
          <div class="form-horizontal"> 
+         <input type="hidden" name="persona" id='persona' value="" placeholder="">
             <h4 class="text-center font-style">
                [PARTE I] DATOS GENERALES DE LA PERSONA USUARIA DE LOS SERVICIOS
             </h4>
@@ -159,6 +162,7 @@
                {{formulario3.dinero_por_relaciones|bootstrap_horizontal:'col-md-5'}}
                {{formulario3.identificacion_genero|bootstrap_horizontal:'col-md-5'}}
 
+               {{formulario2.poblacion|bootstrap_horizontal:'col-md-5'  }}
                {{formulario2.grupo_etnico|bootstrap_horizontal:'col-md-5'  }}
                {{formulario2.otro_grupo_etnico|bootstrap_horizontal:'col-md-5'  }}
                {{formulario2.condiciones|bootstrap_horizontal:'col-md-5'  }}
@@ -1099,6 +1103,7 @@ $("#id_fecha_nacimiento, input[name=sexo]").prop('disabled', true)
 
 $('#button').click(function(){
    $("#id_fecha_nacimiento, input[name=sexo]").prop('disabled', false)
+   $("#formulario:input").prop("disabled", false);
    return true
 })
 //LOS PLUGINS
@@ -1290,6 +1295,8 @@ $('#identidad').keypress(function (e) {
 })
    .done(function( persona ) {
       if (persona==false){
+
+         $('#persona').val(1)
          $('#error_identidad').show().delay(4000).fadeOut()
          $('#id_primer_nombre, #id_segundo_nombre, #id_primer_apellido, #id_segundo_apellido, #id_fecha_nacimiento').prop('readonly', false).val('')
          $('#id_fecha_nacimiento, input[name=sexo]').prop('disabled',false).val('')
@@ -1298,6 +1305,7 @@ $('#identidad').keypress(function (e) {
       }else{
          console.log(persona)
          if(persona.edad_anios){
+            $('#persona').val(2)
             console.log('lkasjdalskdjalsk', persona.ocupacion__pk)
             $('#id_edad_anios').val(persona.edad_anios)
             $('#id_edad_meses').val(persona.edad_meses)
@@ -1344,6 +1352,7 @@ $('#identidad').keypress(function (e) {
 
 
          }else{
+            $('#persona').val(3)
             $('#id_edad_anios').val('')
             $('#id_edad_meses').val('')
             $('#id_pseudonimo').val('')
