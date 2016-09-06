@@ -135,7 +135,7 @@ class Boletas(models.Model):
 	actividad_economica = models.ForeignKey(ActividadesEconomicas, blank=True, null=True, verbose_name='Actividad Económica')
 	fecha_ultima_menstruacion = models.CharField(max_length=10, blank=True, null=True) 
 	ciudad = models.ForeignKey(Ciudades, related_name='boleta_origen_ciudades')
-	barrio = models.ForeignKey(Ciudades, related_name='boleta_origen_barrios', blank=True, null=True, verbose_name='Barrio, Aldea, Colonia o Caserio')
+	barrio = models.CharField(max_length=150, blank=True, null=True, verbose_name='Barrio, Aldea, Colonia o Caserio')
 	rnp = models.NullBooleanField()
 	creado_por = models.ForeignKey(User, related_name='creado_por_boleta')
 	fecha_creacion = models.DateTimeField(auto_now_add=True)
@@ -143,6 +143,7 @@ class Boletas(models.Model):
 	fecha_actualizacion = models.DateTimeField(auto_now=True)
 	condiciones = models.ManyToManyField(Condiciones, verbose_name='Condición (marque todas las que apliquen)')
 	otro_condicion = models.CharField(max_length=50, blank=True, null=True, verbose_name='Otra Condición')
+	guardado = models.IntegerField(default=1)
 
 	def __unicode__(self):
 		return u'%s' % (self.identidad)
@@ -249,9 +250,9 @@ class BoletasClinicas(models.Model):
 	programacion_cesaria = models.IntegerField(choices=SI_NO, blank=True, null=True, verbose_name='Programación por Cesária')
 	fecha_cesaria = models.DateField(blank=True, null=True, verbose_name='Fecha de Eventual Cesária')
 	afiliacion_seguridad_social = models.IntegerField(choices=SI_NO, blank=True, null=True, verbose_name='Afiliación al Programa de Seguridad Social Nacional')
-	clase_afiliacion =  models.CharField(max_length=200, verbose_name='Clase de Afiliación (Si Aplica)')
+	clase_afiliacion =  models.CharField(max_length=200, verbose_name='Clase de Afiliación (Si Aplica)', null=True, blank=True)
 	seguro_privado = models.IntegerField(choices=SI_NO, blank=True, null=True, verbose_name='Seguro de Salud Privado')
-	nombre_aseguradora = models.CharField(max_length=200, verbose_name='Nombre de la Aseguradora Social')
+	nombre_aseguradora = models.CharField(max_length=200, verbose_name='Nombre de la Aseguradora Social', null=True, blank=True)
 	
 	fecha_diagnostico = models.DateField(blank=True, null=True, verbose_name='Fecha del Diagnóstico de VIH')
 	fecha_primera_consulta = models.DateField(blank=True, null=True, verbose_name='Fecha de 1era Consulta/Atención (Incorporación al SAI/ES)')

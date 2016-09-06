@@ -139,16 +139,7 @@
                   </div>
                </div>
 
-               <div class="form-group">
-                  <label for="id_barrio" class="col-md-5 control-label">Barrio</label>
-                  <div class="col-md-7">
-                     <select class="form-control" id="id_barrio" name="barrio">
-                        <option value="">---------------</option>
-                     </select>
-                     {{ formulario2.barrio.errors }}
-                  </div>
-               </div>
-
+               {{formulario2.barrio|bootstrap_horizontal:'col-md-5'  }}
                {{formulario2.calle|bootstrap_horizontal:'col-md-5'  }}
                {{formulario2.bloque|bootstrap_horizontal:'col-md-5'  }}
                {{formulario2.numero_casa|bootstrap_horizontal:'col-md-5'  }}
@@ -1264,11 +1255,6 @@ $('#id_municipio').change(function(){
    ajaxsace('ciudad', 'id_municipio', 'id_ciudad' )
 })
 
-$('#id_ciudad').change(function(){
-   ajaxsace('barrio', 'id_ciudad', 'id_barrio' )
-})
-
-
 
 $("#id_telefono_fijo, #id_telefono_celular, #id_telefono_madre, #id_telefono_padre, #id_telefono_tutor").inputmask("9999-9999");
 
@@ -1337,6 +1323,7 @@ $('#identidad').keypress(function (e) {
             $('#id_fecha_ultima_menstruacion').val(persona.fecha_ultima_menstruacion)
             $('#id_condiciones').val(persona.condiciones)
             $('#id_otro_condicion').val(persona.otro_condicion)
+            $('#id_barrio').val(persona.barrio)
 
             setTimeout(function(){
                $("#id_municipio").select2('val', String(persona.municipio__pk))
@@ -1345,11 +1332,6 @@ $('#identidad').keypress(function (e) {
             setTimeout(function(){
                $("#id_ciudad").select2('val', String(persona.ciudad__pk))
             }, 4000);
-
-            setTimeout(function(){
-               $("#id_barrio").select2('val', String(persona.barrio__pk))
-            }, 6000);
-
 
          }else{
             $('#persona').val(3)
@@ -1454,7 +1436,7 @@ $('#no_identidad').change(function(){
       $('#expediente').text('')
       $('#id_fecha_nacimiento, input[name=sexo]').prop('disabled',false).val('')
       
-      $("#id_departamento,#id_municipio, #id_barrio, #id_ciudad ").select2('val', null)
+      $("#id_departamento,#id_municipio, #id_ciudad ").select2('val', null)
    }else{
       $('#identidad').val('')
       $('#formulario').trigger("reset");
@@ -1468,7 +1450,7 @@ $('#no_identidad').change(function(){
       $('#expediente').text('')
       $('#id_fecha_nacimiento, input[name=sexo]').prop('disabled',true).val('')
 
-      $("#id_departamento,#id_municipio, #id_barrio, #id_ciudad ").select2('val', '')
+      $("#id_departamento,#id_municipio, #id_ciudad ").select2('val', '')
    }
 
 })

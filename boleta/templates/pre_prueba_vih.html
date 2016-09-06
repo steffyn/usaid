@@ -126,16 +126,7 @@
                 </div>
               </div>
 
-              <div class="form-group">
-                <label for="id_barrio" class="col-md-4 control-label">Barrio</label>
-                <div class="col-md-8">
-                    <select class="form-control" id="id_barrio" name="barrio">
-                        <option value="">---------------</option>
-                    </select>
-                    {{ formulario2.barrio.errors }}
-                </div>
-              </div>
-
+              {{formulario2.barrio|bootstrap_horizontal:'col-md-4'  }}
               {{formulario2.calle|bootstrap_horizontal:'col-md-4'  }}
               {{formulario2.bloque|bootstrap_horizontal:'col-md-4'  }}
               {{formulario2.numero_casa|bootstrap_horizontal:'col-md-4'  }}
@@ -461,10 +452,6 @@
 
     $('#id_municipio').change(function(){
       ajaxsace('ciudad', 'id_municipio', 'id_ciudad' )
-    })
-
-    $('#id_ciudad').change(function(){
-      ajaxsace('barrio', 'id_ciudad', 'id_barrio' )
     })
 
 //NO IDENTIDAD

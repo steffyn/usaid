@@ -81,7 +81,6 @@ def pre_prueba_vih(request):
 				registro = formulario2.save(commit=False)
 				registro.expediente =  request.POST['expediente']
 				registro.ciudad =  Ciudades.objects.get(pk=request.POST['ciudad'])
-				registro.barrio =  Ciudades.objects.get(pk=request.POST['barrio'])
 				registro.municipio =  Municipios.objects.get(pk=request.POST['municipio'])
 				registro.identidad =  identidad
 				registro.sexo =  request.POST['sexo']
@@ -300,8 +299,6 @@ def ajax(request):
 			data = list(Municipios.objects.values('id', 'codigo', 'nombre').filter(departamento=valor))
 		elif tabla == 'ciudad':
 			data = list(Ciudades.objects.values('id', 'codigo', 'nombre').filter(municipio=valor))
-		elif tabla == 'barrio':
-			data = list(Barrios.objects.values('id', 'codigo', 'nombre').filter(ciudad=valor))
 		return HttpResponse(json.dumps(data, default=date_handler), content_type='application/json')
 
 @transaction.atomic
@@ -404,13 +401,13 @@ def boleta_clinica(request):
 					'actividad_economica__pk',
 					'fecha_ultima_menstruacion',
 					'ciudad__pk',
-					'barrio__pk',
+					'barrio',
 					'condiciones',
 					'otro_condicion',
 				).get(identidad=identidad)
 			)
 		except Exception, e:
-			print e
+			print e, 'ERROR'
 			try:
 				persona = dict(RPN.objects.values('primer_nombre', 'segundo_nombre', 'primer_apellido', 'segundo_apellido', 'sexo', 'fecha_nacimiento').get(identidad=identidad))
 			except Exception, e:
@@ -451,7 +448,6 @@ def boleta_clinica(request):
 					registro = formulario2.save(commit=False)
 					registro.expediente =  identidad +'-'+ request.POST['fecha_nacimiento'] +'-'+ request.POST['sexo_persona']
 					registro.ciudad =  Ciudades.objects.get(pk=request.POST['ciudad'])
-					registro.barrio =  Ciudades.objects.get(pk=request.POST['barrio'])
 					registro.municipio =  Municipios.objects.get(pk=request.POST['municipio'])
 					registro.identidad =  identidad
 					registro.sexo = request.POST['sexo_persona']
@@ -476,8 +472,6 @@ def boleta_clinica(request):
 					registro.expediente =  identidad +'-'+ request.POST['fecha_nacimiento'] +'-'+ request.POST['sexo_persona']
 					registro.municipio =  Municipios.objects.get(pk=request.POST['municipio'])
 					registro.ciudad =  Ciudades.objects.get(pk=request.POST['ciudad'])
-					registro.barrio =  Ciudades.objects.get(pk=request.POST['barrio'])
-					registro.municipio =  Municipios.objects.get(pk=request.POST['municipio'])
 					registro.identidad_madre = request.POST['identidad_madre'].replace("-", "")
 					registro.identidad_padre = request.POST['identidad_padre'].replace("-", "")
 					registro.identidad_tutor = request.POST['identidad_tutor'].replace("-", "")
@@ -486,11 +480,7 @@ def boleta_clinica(request):
 						registro.ciudad =  Ciudades.objects.get(pk=request.POST['ciudad'])
 					except Exception, e:
 						pass
-						
-					try:
-						registro.barrio =  Ciudades.objects.get(pk=request.POST['barrio'])
-					except Exception, e:
-						pass
+
 					registro.actualizado_por = request.user
 					registro.save()
 
