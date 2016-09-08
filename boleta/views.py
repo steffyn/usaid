@@ -141,7 +141,10 @@ def pre_prueba_vih(request):
 @login_required()
 def prueba_vih(request):
 	exito = False
-	responsable = usuario(request.user.pk)
+	try:
+		responsable = usuario(request.user.pk)
+	except Exception, e:
+		responsable = ''
 	#AJAX
 	if request.is_ajax():
 		identidad = request.GET['identidad']
@@ -219,7 +222,10 @@ def prueba_vih(request):
 @login_required()
 def post_prueba_vih(request):
 	exito = False
-	responsable = usuario(request.user.pk)
+	try:
+		responsable = usuario(request.user.pk)
+	except Exception, e:
+		responsable = ''
 	#AJAX
 	if request.is_ajax():
 		identidad = request.GET['identidad']
@@ -311,7 +317,10 @@ def ajax(request):
 @transaction.atomic
 @login_required()
 def listado_asistencia(request):
-	responsable = usuario(request.user.pk)
+	try:
+		responsable = usuario(request.user.pk)
+	except Exception, e:
+		responsable = ''
 	exito = False
 	#GET
 	if request.method == 'GET':
@@ -364,8 +373,15 @@ def listado_asistencia(request):
 @transaction.atomic
 @login_required()
 def boleta_clinica(request):
-	responsable = usuario(request.user.pk)
-	embarazada = Condiciones.objects.get(nombre='Embarazada')
+	try:
+		responsable = usuario(request.user.pk)
+	except Exception, e:
+		responsable = ''
+
+	try:
+		embarazada = Condiciones.objects.get(nombre='Embarazada')
+	except Exception, e:
+		embarazada = ''
 	exito = False
 	#AJAX
 	if request.is_ajax():
