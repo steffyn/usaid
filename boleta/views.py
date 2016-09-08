@@ -32,8 +32,15 @@ def date_handler(obj):
 @login_required()
 def pre_prueba_vih(request):
 	exito = False
-	responsable = usuario(request.user.pk)
-	embarazada = Condiciones.objects.get(nombre='Embarazada')
+	try:
+		responsable = usuario(request.user.pk)
+	except Exception, e:
+		responsable = ''
+
+	try:
+		embarazada = Condiciones.objects.get(nombre='Embarazada')
+	except Exception, e:
+		embarazada = ''
 	#AJAX
 	if request.is_ajax():
 		identidad = request.GET['identidad']
