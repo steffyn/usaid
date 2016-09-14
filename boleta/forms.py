@@ -148,7 +148,7 @@ class BoletaClinicaForm(ModelForm):
 	hepc_resultado =  forms.ChoiceField(widget=RadioSelect, choices=RESULTADOS, label='Resultado', required=False, initial=None)
 	rpr_resultado =  forms.ChoiceField(widget=RadioSelect, choices=RESULTADOS, label='Resultado', required=False, initial=None)
 	
-	actualmente_tarv =  forms.ChoiceField(widget=RadioSelect, choices=SI_NO, label='Resultado', required=False, initial=None)
+	actualmente_tarv =  forms.ChoiceField(widget=RadioSelect, choices=SI_NO, label='Actualmente TARV', required=False, initial=None)
 	estatus_actual_tarv =  forms.ChoiceField(widget=RadioSelect, choices=STATUS_TARV, label='Resultado', required=False, initial=None)
 
 	lic4 =  forms.ChoiceField(widget=RadioSelect, choices=SI_NO, label='Linfocitos C4', required=False, initial=None)
