@@ -86,6 +86,13 @@ TUPU_TRATAMIENTO = (
 	("Estreptomicina", "Estreptomicina"),
 )
 
+STATUS_TARV = (
+	(1, "Activo"),
+	(2, "Abandono"),
+	(3, "Reinicio"),
+	(4, "Fallecido"),
+	(5, "Sin Dato"),
+)
 
 #ESTA VA PARA BOLETAS
 class Condiciones(models.Model):
@@ -253,6 +260,10 @@ class BoletasClinicas(models.Model):
 	clase_afiliacion =  models.CharField(max_length=200, verbose_name='Clase de Afiliación (Si Aplica)', null=True, blank=True)
 	seguro_privado = models.IntegerField(choices=SI_NO, blank=True, null=True, verbose_name='Seguro de Salud Privado')
 	nombre_aseguradora = models.CharField(max_length=200, verbose_name='Nombre de la Aseguradora Social', null=True, blank=True)
+	
+	actualmente_tarv = models.IntegerField(choices=SI_NO, blank=True, null=True, verbose_name='Actualmente TARV')
+	fecha_inicio_tarv = models.DateField(blank=True, null=True, verbose_name='Fecha Inicio TARV')
+	estatus_actual_tarv = models.IntegerField(choices=STATUS_TARV, blank=True, null=True, verbose_name='Estatus Actual')
 	
 	fecha_diagnostico = models.DateField(blank=True, null=True, verbose_name='Fecha del Diagnóstico de VIH')
 	fecha_primera_consulta = models.DateField(blank=True, null=True, verbose_name='Fecha de 1era Consulta/Atención (Incorporación al SAI/ES)')

@@ -61,6 +61,15 @@ GENERO = (
 	(2, "Mujer"),
 )
 
+
+STATUS_TARV = (
+	(1, "Activo"),
+	(2, "Abandono"),
+	(3, "Reinicio"),
+	(4, "Fallecido"),
+	(5, "Sin Dato"),
+)
+
 class BoletaForm(ModelForm):
 	class Meta:
 		model = Boletas
@@ -135,9 +144,12 @@ class BoletaClinicaForm(ModelForm):
 	dinero_por_relaciones =  forms.ChoiceField(widget=RadioSelect, choices=SI_NO, label='¿Ha aceptado/acepta dinero, bienes o servicios a cambio de relaciones sexuales en los últmos meses?', required=False, initial=None)
 	identificacion_genero =  forms.ChoiceField(widget=RadioSelect, choices=GENERO, label='¿Cómo se identifica: Hombre o Mujer?', required=False, initial=None)
 	
-	hepb_resultado =  forms.ChoiceField(widget=RadioSelect, choices=SI_NO, label='Resultado', required=False, initial=None)
-	hepc_resultado =  forms.ChoiceField(widget=RadioSelect, choices=SI_NO, label='Resultado', required=False, initial=None)
-	rpr_resultado =  forms.ChoiceField(widget=RadioSelect, choices=SI_NO, label='Resultado', required=False, initial=None)
+	hepb_resultado =  forms.ChoiceField(widget=RadioSelect, choices=RESULTADOS, label='Resultado', required=False, initial=None)
+	hepc_resultado =  forms.ChoiceField(widget=RadioSelect, choices=RESULTADOS, label='Resultado', required=False, initial=None)
+	rpr_resultado =  forms.ChoiceField(widget=RadioSelect, choices=RESULTADOS, label='Resultado', required=False, initial=None)
+	
+	actualmente_tarv =  forms.ChoiceField(widget=RadioSelect, choices=SI_NO, label='Resultado', required=False, initial=None)
+	estatus_actual_tarv =  forms.ChoiceField(widget=RadioSelect, choices=STATUS_TARV, label='Resultado', required=False, initial=None)
 
 	lic4 =  forms.ChoiceField(widget=RadioSelect, choices=SI_NO, label='Linfocitos C4', required=False, initial=None)
 	lic4_ordenado_consulta =  forms.ChoiceField(widget=RadioSelect, choices=ORDENADOS_EN_CONSULTA, label='Ordenados en esta consulta', required=False, initial=None)

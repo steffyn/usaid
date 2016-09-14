@@ -8,9 +8,6 @@
 <link rel="stylesheet" href="{% static 'plugins/select2/select2.min.css' %}">
 <link rel="stylesheet" href="{% static 'plugins/select2/select2-bootstrap.min.css' %}">
 
-<script src="{% static 'plugins/input-mask/jquery.inputmask.js' %}"></script>
-<script src="{% static 'plugins/input-mask/jquery.inputmask.date.extensions.js' %}"></script>
-<script src="{% static 'plugins/input-mask/jquery.inputmask.extensions.js' %}"></script>
 <script src="{% static 'plugins/daterangepicker/moment.min.js' %}"></script>
 <script src="{% static 'plugins/daterangepicker/daterangepicker.js' %}"></script>
 <script src="{% static 'plugins/select2/select2.min.js' %}"></script>
@@ -68,8 +65,9 @@
                <div class="col-sm-7">
                   <div class="form-group">
                      <label class="control-label col-md-5 " for="identidad">Identidad</label>
-                     <div class=" col-md-7 ">
-                        <input type="text" name="identidad" class="form-control" id='identidad' data-inputmask='"mask": "9999-9999-99999"' data-mask required>
+                     <div class=" col-md-7 form-inline">
+                        <input type="text" name="identidad" class="form-control" id='identidad' required> 
+                        <button type="button" class="btn btn-primary" id="search_identidad"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button><br>
                         <input type="checkbox" id="no_identidad"> No tiene Identidad
                         <input type="hidden" class="form-control" id='input_expediente' name='expediente'>
                         <span class="label label-danger "  id='error_identidad' style="display:none">No se encontraron registros con la identidad ingresadda</span>
@@ -265,6 +263,15 @@
             </div>
             <div class="col-sm-2">
                {{formulario3.estadio_infeccion|bootstrap}}
+            </div>
+            <div class="col-sm-1 form-inline">
+               {{formulario3.actualmente_tarv|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario3.fecha_inicio_tarv|bootstrap}}
+            </div>
+            <div class="col-sm-5 form-inline">
+               {{formulario3.estatus_actual_tarv|bootstrap}}
             </div>
          </div>
 
@@ -1099,7 +1106,6 @@ $('#button').click(function(){
    return true
 })
 //LOS PLUGINS
-$(":input").inputmask();
 $("select").select2();
 $("#id_ocupacion").select2('val',1)
 $('#id_fecha_nacimiento').daterangepicker({
@@ -1161,8 +1167,7 @@ function(start, end, label) {
    }
 
    //EXPEDIENTE
-   identidad = $('#identidad').val().replace('-', '');
-   identidad = identidad.replace('-', '')
+   identidad = $('#identidad').val();
 
    $('#expediente').text(btoa(identidad) + '-'+ start.format('YYYY-MM-DD') + '-' + $('input[name=sexo]').val())
    $('#input_expediente, .expediente').val(btoa(identidad) + '-'+ start.format('YYYY-MM-DD') + '-' + $('input[name=sexo]').val())
@@ -1187,7 +1192,7 @@ vars += '#id_verge_diag, #id_verge_fecha_initrat, #id_verge_entrat_diag, #id_ver
 vars += '#id_trasex_diag, #id_trasex_fecha_initrat, #id_trasex_entrat_diag, #id_trasex_entrat_fecha_fintrat, #id_trasex_intrat_diag, #id_trasex_intrat_fecha_reitrat, '
 vars += '#id_proc_diag, #id_proc_fecha_initrat, #id_proc_entrat_diag, #id_proc_entrat_fecha_fintrat, #id_proc_intrat_diag, #id_proc_intrat_fecha_reitrat, '
 vars += '#id_infpel_diag, #id_infpel_fecha_initrat, #id_infpel_entrat_diag, #id_infpel_entrat_fecha_fintrat, #id_infpel_intrat_diag, #id_infpel_intrat_fecha_reitrat,'
-vars += '#id_cita_medica, #id_retiro_medicamento'
+vars += '#id_cita_medica, #id_retiro_medicamento, #id_fecha_inicio_tarv'
 
 $(vars).daterangepicker({
    //autoUpdateInput: false,
@@ -1256,15 +1261,19 @@ $('#id_municipio').change(function(){
 })
 
 
-$("#id_telefono_fijo, #id_telefono_celular, #id_telefono_madre, #id_telefono_padre, #id_telefono_tutor").inputmask("9999-9999");
+$("#id_telefono_fijo, #id_telefono_celular, #id_telefono_madre, #id_telefono_padre, #id_telefono_tutor").attr({
+   onKeyDown:"if(this.value.length==8 && event.keyCode!=8 && event.keyCode!=13) return false;"
+});
 
-$("#id_identidad_madre, #id_identidad_padre, #id_identidad_tutor").attr('maxlength', 20).inputmask("9999-9999-99999");
+$("#id_identidad_madre, #id_identidad_padre, #id_identidad_tutor").attr({
+   onKeyDown:"if(this.value.length==15 && event.keyCode!=8 && event.keyCode!=13) return false;"
+});
 
 //BUSQUEDA DE IDENTIDAD
-$('#identidad').keypress(function (e) {
-   event.preventDefault();
-   identidad = $(this).val().replace('-', '');
-   identidad = identidad.replace('-', '')
+$('#identidad').attr({
+   onKeyDown:"if(this.value.length==15 && event.keyCode!=8 && event.keyCode!=13) return false;"
+}).keypress(function (e) {
+   identidad = $(this).val();
 
    expediente = identidad + '-' + $('#id_fecha_nacimiento').val() + '-' + $('input[name=sexo]').val()
    $('.identidad').val($(this).val())
@@ -1273,12 +1282,13 @@ $('#identidad').keypress(function (e) {
 
    var key = e.which;
    if(key == 13){
+      event.preventDefault();
       $.ajax({
       url: "{% url 'boleta_clinica' %}",
       data: { 
       identidad: identidad
    }
-})
+   })
    .done(function( persona ) {
       if (persona==false){
 
@@ -1423,6 +1433,163 @@ $('#identidad').keypress(function (e) {
    }
 }); 
 
+$('#search_identidad').click(function (e) {
+   identidad = $('#identidad').val();
+
+   expediente = identidad + '-' + $('#id_fecha_nacimiento').val() + '-' + $('input[name=sexo]').val()
+   $('.identidad').val($('#identidad').val())
+   $('#expediente').text(btoa(identidad) + '-'+ $('#id_fecha_nacimiento').val() + '-' + $('input[name=sexo]').val())
+   $('#input_expediente, .expediente').val(btoa(identidad) + '-'+ $('#id_fecha_nacimiento').val() + '-' + $('input[name=sexo]').val())
+
+      $.ajax({
+      url: "{% url 'boleta_clinica' %}",
+      data: { 
+      identidad: identidad
+   }
+   })
+   .done(function( persona ) {
+      if (persona==false){
+
+         $('#persona').val(1)
+         $('#error_identidad').show().delay(4000).fadeOut()
+         $('#id_primer_nombre, #id_segundo_nombre, #sexo_persona, #id_primer_apellido, #id_segundo_apellido, #id_fecha_nacimiento').prop('readonly', false).val('')
+         $('#id_fecha_nacimiento, input[name=sexo]').prop('disabled',false).val('')
+
+
+      }else{
+         console.log(persona)
+         if(persona.edad_anios){
+            $('#persona').val(2)
+            console.log('lkasjdalskdjalsk', persona.ocupacion__pk)
+            $('#id_edad_anios').val(persona.edad_anios)
+            $('#id_edad_meses').val(persona.edad_meses)
+            $('#id_pseudonimo').val(persona.pseudonimo)
+            $('#id_estado_civil_'+(persona.estado_civil-1)).prop('checked', true)
+            $('#id_telefono_fijo').val(persona.telefono_fijo)
+            $('#id_telefono_celular').val(persona.telefono_celular)
+            $("#id_departamento").select2('val', String(persona.departamento__pk))
+            $("#id_departamento").val(persona.departamento__pk)
+            $("#id_ocupacion").select2('val', String(persona.ocupacion__pk))
+            $('#id_calle').val(persona.calle)
+            $('#id_bloque').val(persona.bloque)
+            $('#id_numero_casa').val(persona.numero_casa)
+            $('#id_referencias').val(persona.referencias)
+            $('#id_grupo_etnico_'+(persona.grupo_etnico__pk-1)).prop('checked', true)
+            $('#id_otro_grupo_etnico').val(persona.otro_grupo_etnico)
+            $('#id_identidad_madre').val(persona.identidad_madre)
+            $('#id_nombre_madre').val(persona.nombre_madre)
+            $('#id_telefono_madre').val(persona.telefono_madre)
+            $('#id_identidad_padre').val(persona.identidad_padre)
+            $('#id_nombre_padre').val(persona.nombre_padre)
+            $('#id_telefono_padre').val(persona.telefono_padre)
+            $('#id_identidad_tutor').val(persona.identidad_tutor)
+            $('#id_nombre_tutor').val(persona.nombre_tutor)
+            $('#id_telefono_tutor').val(persona.telefono_tutor)
+            $('#id_direccion_tutor').val(persona.direccion_tutor)
+            $('#id_poblacion').val(persona.poblacion)
+            $('#id_actividad_economica').select2('val', String(persona.actividad_economica__pk))
+            $('#id_fecha_ultima_menstruacion').val(persona.fecha_ultima_menstruacion)
+            $('#id_condiciones').val(persona.condiciones)
+            $('#id_otro_condicion').val(persona.otro_condicion)
+            $('#id_barrio').val(persona.barrio)
+
+            setTimeout(function(){
+               $("#id_municipio").select2('val', String(persona.municipio__pk))
+            }, 2000);
+
+            setTimeout(function(){
+               $("#id_ciudad").select2('val', String(persona.ciudad__pk))
+            }, 4000);
+
+         }else{
+            $('#persona').val(3)
+            $('#id_edad_anios').val('')
+            $('#id_edad_meses').val('')
+            $('#id_pseudonimo').val('')
+            $('#id_estado_civil_1').prop('checked', true)
+            $('#id_telefono_fijo').val('')
+            $('#id_telefono_celular').val('')
+            $("#id_ocupacion").select2('val','')
+            $("#id_ocupacion").val('')
+            $('#id_departamento').val('')
+            $('#id_municipio').val('')
+            $('#id_calle').val('')
+            $('#id_bloque').val('')
+            $('#id_numero_casa').val('')
+            $('#id_referencias').val('')
+            $('#id_grupo_etnico').val('')
+            $('#id_otro_grupo_etnico').val('')
+            $('#id_identidad_madre').val('')
+            $('#id_nombre_madre').val('')
+            $('#id_telefono_madre').val('')
+            $('#id_identidad_padre').val('')
+            $('#id_nombre_padre').val('')
+            $('#id_telefono_padre').val('')
+            $('#id_identidad_tutor').val('')
+            $('#id_nombre_tutor').val('')
+            $('#id_telefono_tutor').val('')
+            $('#id_direccion_tutor').val('')
+            $('#id_poblacion').val('')
+            $('#id_actividad_economica').val('')
+            $('#id_fecha_ultima_menstruacion').val('')
+            $('#id_ciudad').val('')
+            $('#id_barrio').val('')
+            $('#id_condiciones').val('')
+            $('#id_otro_condicion').val('')
+         }
+         $('#error_identidad').hide()
+         $('#id_primer_nombre').val(persona.primer_nombre).prop('readonly', true)
+         $('#id_segundo_nombre').val(persona.segundo_nombre).prop('readonly', true)
+         $('#id_primer_apellido').val(persona.primer_apellido).prop('readonly', true)
+         $('#id_segundo_apellido').val(persona.segundo_apellido).prop('readonly', true)
+         $('#id_fecha_nacimiento').val(persona.fecha_nacimiento).prop('readonly', true).prop('disabled', true)
+
+         $('input[name=sexo]').prop('disabled',true).val('')
+         $('#id_sexo_'+(persona.sexo-1)).prop('checked', true)
+         $('#sexo_persona').val(persona.sexo)
+
+         //ESA ONDA DE EMBARADA
+         if (persona.sexo == 1){
+            $("#id_condiciones option[value='"+ embarazada_id +"']").remove();
+            $('#embarazada').hide()
+         }else{
+
+            $('#embarazada').show()
+            $("#id_condiciones").append('<option value="'+ embarazada_id +'">Embarazada</option>');
+         }
+
+         //CALCULO DE EDAD
+         edad = $('#id_fecha_nacimiento').val().split("-");
+         var mes = edad[1];
+         var anio = edad[0];
+         var anio_actual = new Date().getFullYear();
+         var edad_anios = anio_actual - anio;
+         var mes_actual = new Date().getMonth()+1;
+         var edad_mes = mes_actual - mes;
+
+         if (edad_mes < 0){
+            if (edad_mes > 0){
+               edad_anios = edad_anios-1
+               edad_mes = ((12-mes)+mes_actual)
+            }
+         }
+
+         $('#id_edad_anios').val(edad_anios)
+         $('#id_edad_meses').val(Math.abs(edad_mes))
+
+         if(parseInt(edad_anios)<18){
+            $('#encargados').show().fadeIn();
+         }else{
+            $('#encargados').hide().fadeOut();
+         }
+
+         expediente = identidad + '-' + persona.fecha_nacimiento + '-' + persona.sexo
+         $('#expediente').text(btoa(identidad) + '-'+ $('#id_fecha_nacimiento').val() + '-' + $('input[name=sexo]').val())
+   $('#input_expediente, .expediente').val(btoa(identidad) + '-'+ $('#id_fecha_nacimiento').val() + '-' + $('input[name=sexo]').val())
+      }
+   });
+}); 
+
 
 //NO IDENTIDAD
 $('#no_identidad').change(function(){
@@ -1476,8 +1643,7 @@ $('input[name=sexo]').change(function(){
    }
 
    //EXPEDIENTE
-   identidad = $('#identidad').val().replace('-', '');
-   identidad = identidad.replace('-', '')
+   identidad = $('#identidad').val();
    expediente = identidad + '-' + $('#id_fecha_nacimiento').val() + '-' + sexo
    
    $('#expediente').text(btoa(identidad) + '-'+  $('#id_fecha_nacimiento').val() + '-' + sexo)

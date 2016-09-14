@@ -7,10 +7,6 @@
 <link rel="stylesheet" href="{% static 'plugins/select2/select2.css' %}">
 <link rel="stylesheet" href="{% static 'plugins/daterangepicker/daterangepicker.css' %}">
 
-
-<script src="{% static 'plugins/input-mask/jquery.inputmask.js' %}"></script>
-<script src="{% static 'plugins/input-mask/jquery.inputmask.date.extensions.js' %}"></script>
-<script src="{% static 'plugins/input-mask/jquery.inputmask.extensions.js' %}"></script>
 <script src="{% static 'plugins/select2/select2.min.js' %}"></script>
 <script src="{% static 'plugins/daterangepicker/moment.min.js' %}"></script>
 <script src="{% static 'plugins/daterangepicker/daterangepicker.js' %}"></script>
@@ -53,10 +49,12 @@
           <div class="col-sm-7">
             <div class="form-group">
               <label class="control-label col-md-4 " for="identidad">Identidad</label>
-              <div class=" col-md-8 ">
-                <input type="text" name="identidad" class="form-control" id='identidad' data-inputmask='"mask": "9999-9999-99999"' data-mask required>
+              <div class=" col-md-8 form-inline ">
+                <input type="text" name="identidad" class="form-control" id='identidad' required>
+                <button type="button" class="btn btn-primary" id="search_identidad"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button><br>
                 <input type="checkbox" id="no_identidad"> No tiene Identidad
                 <input type="hidden" class="form-control" id='input_expediente' name='expediente'>
+                <input type="hidden" name="sexo_persona" id='sexo_persona' value="" placeholder="">
                 <span class="label label-danger "  id='error_identidad' style="display:none">No se encontraron registros con la identidad ingresadda</span>
 
               </div>
@@ -235,7 +233,6 @@
     return true
   })
   //LOS PLUGINS
-  $(":input").inputmask();
   $("select").select2();
   $('#id_fecha_nacimiento').daterangepicker({
         //autoUpdateInput: false,
@@ -296,13 +293,12 @@
       }
 
       //EXPEDIENTE
-      identidad = $('#identidad').val().replace('-', '');
-      identidad = identidad.replace('-', '')
+      identidad = $('#identidad').val();
 
       expediente = identidad + '-' + start.format('YYYY-MM-DD') + '-' + $('input[name=sexo]').val()
       console.log(expediente)
-      $('#expediente').text(btoa(expediente))
-      $('#input_expediente, .expediente').val(btoa(expediente))
+      $('#expediente').text(expediente)
+      $('#input_expediente, .expediente').val(expediente)
     }).val('');
 
    $('#id_fecha_consejeria, #id_fecha_ultima_menstruacion').daterangepicker({
@@ -339,23 +335,25 @@
         },
     });
 
-  $("#id_telefono_fijo, #id_telefono_celular, #id_telefono_madre, #id_telefono_padre, #id_telefono_tutor").inputmask("9999-9999");
+  $("#id_telefono_fijo, #id_telefono_celular, #id_telefono_madre, #id_telefono_padre, #id_telefono_tutor").attr('maxlength', 8);
 
-  $("#id_identidad_madre, #id_identidad_padre, #id_identidad_tutor").attr('maxlength', 20).inputmask("9999-9999-99999");
+  $("#id_identidad_madre, #id_identidad_padre, #id_identidad_tutor").attr('maxlength', 20)
 
   //BUSQUEDA DE IDENTIDAD
-  $('#identidad').keypress(function (e) {
-      event.preventDefault();
-      identidad = $(this).val().replace('-', '');
-      identidad = identidad.replace('-', '')
+  $('#identidad').attr({
+   onKeyDown:"if(this.value.length==15 && event.keyCode!=8 && event.keyCode!=13) return false;"
+  }).keypress(function (e) {
+      
+      identidad = $(this).val();
 
       expediente = identidad + '-' + $('#id_fecha_nacimiento').val() + '-' + $('input[name=sexo]').val()
       $('.identidad').val($(this).val())
-      $('#expediente').text(btoa(expediente))
-      $('#input_expediente, .expediente').val(btoa(expediente))
+      $('#expediente').text(expediente)
+      $('#input_expediente, .expediente').val(expediente)
 
       var key = e.which;
       if(key == 13){
+        event.preventDefault();
         $.ajax({
           url: "{% url 'pre_prueba_vih' %}",
           data: { 
@@ -379,6 +377,7 @@
               
               $('input[name=sexo]').prop('disabled',true).val('')
               $('#id_sexo_'+(persona.sexo-1)).prop('checked', true)
+              $('#sexo_persona').val(persona.sexo)
 
               //ESA ONDA DE EMBARADA
               if (persona.sexo == 1){
@@ -413,11 +412,85 @@
               }
 
               expediente = identidad + '-' + persona.fecha_nacimiento + '-' + persona.sexo
-              $('#expediente').text(btoa(expediente))
-              $('#input_expediente, .expediente').val(btoa(expediente))
+              $('#expediente').text(expediente)
+              $('#input_expediente, .expediente').val(expediente)
             }
           });
       }
+  }); 
+
+  $('#search_identidad').click(function (e) {
+      
+      identidad = $('#identidad').val();
+
+      expediente = identidad + '-' + $('#id_fecha_nacimiento').val() + '-' + $('input[name=sexo]').val()
+      $('.identidad').val($('#identidad').val())
+      $('#expediente').text(expediente)
+      $('#input_expediente, .expediente').val(expediente)
+
+        event.preventDefault();
+        $.ajax({
+          url: "{% url 'pre_prueba_vih' %}",
+          data: { 
+                  identidad: identidad
+                }
+        })
+          .done(function( persona ) {
+            if (persona==false){
+              $('#error_identidad').show().delay(4000).fadeOut()
+              $('#id_primer_nombre, #id_segundo_nombre, #id_primer_apellido, #id_segundo_apellido, #id_fecha_nacimiento').prop('readonly', false).val('')
+              $('#id_fecha_nacimiento, input[name=sexo]').prop('disabled',false).val('')
+
+
+            }else{
+              $('#error_identidad').hide()
+              $('#id_primer_nombre').val(persona.primer_nombre).prop('readonly', true)
+              $('#id_segundo_nombre').val(persona.segundo_nombre).prop('readonly', true)
+              $('#id_primer_apellido').val(persona.primer_apellido).prop('readonly', true)
+              $('#id_segundo_apellido').val(persona.segundo_apellido).prop('readonly', true)
+              $('#id_fecha_nacimiento').val(persona.fecha_nacimiento).prop('readonly', true).prop('disabled', true)
+              
+              $('input[name=sexo]').prop('disabled',true).val('')
+              $('#id_sexo_'+(persona.sexo-1)).prop('checked', true)
+              $('#sexo_persona').val(persona.sexo)
+
+              //ESA ONDA DE EMBARADA
+              if (persona.sexo == 1){
+                $("#id_condiciones option[value='"+ embarazada_id +"']").remove();
+              }else{
+                $("#id_condiciones").append('<option value="'+ embarazada_id +'">Embarazada</option>');
+              }
+
+              //CALCULO DE EDAD
+              edad = $('#id_fecha_nacimiento').val().split("-");
+              var mes = edad[1];
+              var anio = edad[0];
+              var anio_actual = new Date().getFullYear();
+              var edad_anios = anio_actual - anio;
+              var mes_actual = new Date().getMonth()+1;
+              var edad_mes = mes_actual - mes;
+                
+              if (edad_mes < 0){
+                  if (edad_mes > 0){
+                     edad_anios = edad_anios-1
+                     edad_mes = ((12-mes)+mes_actual)
+                  }
+                }
+
+              $('#id_edad_anios').val(edad_anios)
+              $('#id_edad_meses').val(Math.abs(edad_mes))
+
+              if(parseInt(edad_anios)<18){
+                $('#encargados').show().fadeIn();
+              }else{
+                $('#encargados').hide().fadeOut();
+              }
+
+              expediente = identidad + '-' + persona.fecha_nacimiento + '-' + persona.sexo
+              $('#expediente').text(expediente)
+              $('#input_expediente, .expediente').val(expediente)
+            }
+          });
   }); 
 
 
@@ -489,24 +562,28 @@ var embarazada_id = {{embarazada.pk}}
 $("#id_condiciones option[value="+ embarazada_id +"]").remove();
 
 //NO IDENTIDAD
-$(document).on("click","input[name='sexo']:radio",function(){
-  genero = $('input[name=sexo]').val()
+$('input[name=sexo]').change(function(){
+   genero = $("#id_sexo_1").prop("checked")
 
-  //EXPEDIENTE
-  identidad = $('#identidad').val().replace('-', '');
-  identidad = identidad.replace('-', '')
-  expediente = identidad + '-' + $('#id_fecha_nacimiento').val() + '-' + $("input:radio[name='sexo']:checked").val()
-  $('#expediente').text(btoa(expediente))
-  $('#input_expediente, .expediente').val(btoa(expediente))
-  
+   if (genero == true){
+      $('#embarazada').show()
+      $("#id_condiciones").append('<option value="'+ embarazada_id +'">Embarazada</option>');
+      $('#sexo_persona').val(2)
+      sexo = 2
+   }else{
+      $("#id_condiciones option[value='"+ embarazada_id +"']").remove();
+      $('#embarazada').hide()
+      $('#sexo_persona').val(1)
+      sexo = 1
+   }
 
-  if (genero == 1){
-    $("#id_condiciones option[value='"+ embarazada_id +"']").remove();
-    $('#embarazada').hide()
-  }else{
-    $("#id_condiciones").append('<option value="'+ embarazada_id +'">Embarazada</option>');
-  }
-  
+   //EXPEDIENTE
+   identidad = $('#identidad').val();
+   expediente = identidad + '-' + $('#id_fecha_nacimiento').val() + '-' + sexo
+   
+   $('#expediente').text(identidad + '-'+  $('#id_fecha_nacimiento').val() + '-' + sexo)
+   $('#input_expediente, .expediente').val(identidad + '-'+ $('#id_fecha_nacimiento').val() + '-' + sexo)
+   
 })
 
 

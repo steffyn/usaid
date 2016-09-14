@@ -1,7 +1,2 @@
-boleta/migrations
-general/migrations
-usaid/settings.py
-usaid/wsgi.py
-*.pyc
-usaid/settings.pyc
-usaid/settings.py
+boleta\migrations
+general\migrations
