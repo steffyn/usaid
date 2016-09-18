@@ -7,9 +7,6 @@
 <link rel="stylesheet" href="{% static 'plugins/select2/select2.css' %}">
 <link rel="stylesheet" href="{% static 'plugins/daterangepicker/daterangepicker.css' %}">
 
-<script src="{% static 'plugins/input-mask/jquery.inputmask.js' %}"></script>
-<script src="{% static 'plugins/input-mask/jquery.inputmask.date.extensions.js' %}"></script>
-<script src="{% static 'plugins/input-mask/jquery.inputmask.extensions.js' %}"></script>
 <script src="{% static 'plugins/select2/select2.min.js' %}"></script>
 <script src="{% static 'plugins/daterangepicker/moment.min.js' %}"></script>
 <script src="{% static 'plugins/daterangepicker/daterangepicker.js' %}"></script>
@@ -31,7 +28,8 @@
             <div class="form-group">
               <label for="inputEmail3" class="col-sm-4 control-label">Identidad</label>
               <div class="col-sm-8 form-inline">
-                <input type="text" class="form-control" id='identidad' name="identidad" data-inputmask='"mask": "9999-9999-99999"' data-mask>
+                <input type="text" class="form-control" id='identidad' name="identidad">
+                <button type="button" class="btn btn-primary" id="search_identidad"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button><br>
                 <span class="label label-danger "  id='error_identidad' style="display:none">No se encontraron registros con la identidad ingresadda</span>
               </div>
             </div>
@@ -87,7 +85,6 @@
   </form>
 </div>
 <script type="text/javascript">
-   $(":input").inputmask();
    $("select").select2();
   $('#id_fecha_solicitud, #id_fecha_extraccion, #id_fecha_muestra, #id_fecha_prueba, #id_fecha_prueba_confirmatoria, #id_fecha_refirio_prueba_confirmatoria').daterangepicker({
         singleDatePicker: true,
@@ -129,12 +126,15 @@
 
 
   //BUSQUEDA DE IDENTIDAD
-  $('#identidad').keypress(function (e) {
-      event.preventDefault();
+  $('#identidad').attr({
+    type:'number',
+   onKeyDown:"if(this.value.length==15 && event.keyCode!=8 && event.keyCode!=13) return false;"
+  }).keypress(function (e) {
       identidad = $(this).val().replace('-', '');
       identidad = identidad.replace('-', '')
       var key = e.which;
       if(key == 13){
+      event.preventDefault();
         $.ajax({
           url: "{% url 'prueba_vih' %}",
           data: { 
@@ -156,6 +156,32 @@
             }
           });
       }
+  });
+
+  $('#search_identidad').click(function (e) {
+      identidad = $(this).val().replace('-', '');
+      identidad = identidad.replace('-', '')
+      var key = e.which;
+        $.ajax({
+          url: "{% url 'prueba_vih' %}",
+          data: { 
+                  identidad: identidad
+                }
+        })
+          .done(function( data ) {
+            console.log(data)
+            if (data.persona==false){
+              $('#error_identidad').show()
+              $('#expediente,#id_fecha_solicitud, #id_numero_prueba, #id_fecha_extraccion, #id_fecha_muestra, #id_fecha_prueba, #id_kit_prueba_tamizaje, #id_resultado_prueba_tamizaje, #id_nombre_persona_prueba, #id_fecha_prueba_confirmatoria, #id_related_name, #id_institucion_prueba_confirmatoria, #id_resultado_prueba_confirmatoria, #id_nombre_laboratorio, #id_fecha_refirio_prueba_confirmatoria').val('')
+            }else{
+              console.log(data)
+              $('#error_identidad').hide()
+              $('#id_numero_prueba').val(data.numero_prueba)
+              $('#expediente').val(data.expediente)
+              $('#boleta').val(data.boleta.pk)
+              $('#id_nombre_persona_prueba').val(data.boleta.primer_nombre + ' ' + data.boleta.segundo_nombre + ' ' + data.boleta.primer_apellido + ' ' + data.boleta.segundo_apellido)
+            }
+          });
   });
 
   $('input[name=resultado_prueba_tamizaje]').change(function(){

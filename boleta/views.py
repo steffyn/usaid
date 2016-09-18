@@ -79,7 +79,7 @@ def pre_prueba_vih(request):
 		ide = request.POST['identidad']
 		identidad = ide.replace("-", "")
 
-		formulario = RPNForm(request.POST)
+		formulario = RPNForm()
 		formulario2 = BoletaForm(request.POST)
 		formulario3 = BoletaConsejeriaForm(request.POST)
 		print request.POST['expediente'], 'EXPEDIENTE', request.POST['fecha_nacimiento']
@@ -90,7 +90,7 @@ def pre_prueba_vih(request):
 				registro.ciudad =  Ciudades.objects.get(pk=request.POST['ciudad'])
 				registro.municipio =  Municipios.objects.get(pk=request.POST['municipio'])
 				registro.identidad =  identidad
-				registro.sexo =  request.POST['sexo']
+				registro.sexo =  request.POST['sexo_persona']
 				registro.primer_nombre =  request.POST['primer_nombre']
 				registro.segundo_nombre =  request.POST['segundo_nombre']
 				registro.primer_apellido =  request.POST['primer_apellido']
@@ -102,7 +102,15 @@ def pre_prueba_vih(request):
 				registro.rpn =  True
 				registro.creado_por = request.user
 				registro.actualizado_por = request.user
+
+				try:
+					responsable = Responsables.objects.get(usuario_sistema=request.user)
+					registro.establecimiento = responsable.establecimiento
+				except Exception, e:
+					registro.establecimiento = None
+
 				registro.save()
+				formulario2.save_m2m()
 
 				registro2 = formulario3.save(commit=False)
 				registro2.boleta = registro
@@ -124,7 +132,7 @@ def pre_prueba_vih(request):
 				formulario3 = BoletaConsejeriaForm()
 				exito = True
 			except Exception, e:
-				print e
+				print e, 'E!'
 		else:
 			print 'PASO POR AQUI'
 			pass
@@ -425,7 +433,6 @@ def boleta_clinica(request):
 					'fecha_ultima_menstruacion',
 					'ciudad__pk',
 					'barrio',
-					'condiciones',
 					'otro_condicion',
 				).get(identidad=identidad)
 			)
@@ -486,6 +493,7 @@ def boleta_clinica(request):
 					registro.creado_por = request.user
 					registro.actualizado_por = request.user
 					registro.save()
+					formulario2.save_m2m()
 				else:
 					#CON BOLETA
 					instance = Boletas.objects.get(identidad=identidad)
@@ -506,9 +514,16 @@ def boleta_clinica(request):
 
 					registro.actualizado_por = request.user
 					registro.save()
+					formulario2.save_m2m()
 
 				registro2 = formulario3.save(commit=False)
 				registro2.boleta = registro
+				registro2.actualmente_tarv = request.POST.get('actualmente_tarv')
+				if request.POST.get('fecha_inicio_tarv') != '':
+					registro2.fecha_inicio_tarv = request.POST.get('fecha_inicio_tarv')
+				else:
+					registro2.fecha_inicio_tarv = None
+				registro2.estatus_actual_tarv = request.POST.get('estatus_actual_tarv')
 				registro2.estado_inmunologico = request.POST.get('estado_inmunologico')
 				registro2.hepb_resultado = request.POST.get('hepb_resultado')
 				registro2.hepc_resultado = request.POST.get('hepc_resultado')
@@ -643,9 +658,8 @@ def boleta_clinica(request):
 					responsable = Responsables.objects.get(usuario_sistema=request.user)
 					registro2.establecimiento = responsable.establecimiento
 				except Exception, e:
-					registro2.establecimiento = responsable.establecimiento
+					registro2.establecimiento = None
 
-				print request.POST
 				registro2.save()
 
 				formulario = RPNForm()

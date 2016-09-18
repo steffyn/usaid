@@ -75,10 +75,11 @@ class BoletaForm(ModelForm):
 		model = Boletas
 		fields = "__all__"
 		exclude = ['guardado','actualizado_por', 'creado_por', 'identidad', 'expediente', 'sexo', 'municipio', 'ciudad',
-					'primer_nombre', 'segundo_nombre', 'primer_apellido', 'segundo_apellido', 'fecha_nacimiento']
+					'primer_nombre', 'segundo_nombre', 'establecimiento' 'primer_apellido', 'segundo_apellido', 'fecha_nacimiento']
 		widgets = {
 			'edad_anios': TextInput(attrs={'readonly': 'readonly', 'type': 'text'}),
 			'edad_meses': TextInput(attrs={'readonly': 'readonly', 'type': 'text'}),
+			'edad_dias': TextInput(attrs={'readonly': 'readonly', 'type': 'text'}),
 		}
 	poblacion =  forms.ModelChoiceField(queryset=Poblaciones.objects.all(), widget=RadioSelect, empty_label=None )
 	grupo_etnico =  forms.ModelChoiceField(queryset=GruposEtnicos.objects.all(), widget=RadioSelect, empty_label=None )
@@ -149,7 +150,7 @@ class BoletaClinicaForm(ModelForm):
 	rpr_resultado =  forms.ChoiceField(widget=RadioSelect, choices=RESULTADOS, label='Resultado', required=False, initial=None)
 	
 	actualmente_tarv =  forms.ChoiceField(widget=RadioSelect, choices=SI_NO, label='Actualmente TARV', required=False, initial=None)
-	estatus_actual_tarv =  forms.ChoiceField(widget=RadioSelect, choices=STATUS_TARV, label='Resultado', required=False, initial=None)
+	estatus_actual_tarv =  forms.ChoiceField(widget=RadioSelect, choices=STATUS_TARV, label='', required=False, initial=None)
 
 	lic4 =  forms.ChoiceField(widget=RadioSelect, choices=SI_NO, label='Linfocitos C4', required=False, initial=None)
 	lic4_ordenado_consulta =  forms.ChoiceField(widget=RadioSelect, choices=ORDENADOS_EN_CONSULTA, label='Ordenados en esta consulta', required=False, initial=None)

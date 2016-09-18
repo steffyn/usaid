@@ -289,6 +289,7 @@
             </div>
             <div class="col-sm-5">
                {{formulario3.lic4_resultado|bootstrap}}
+               <span class="label label-danger"  id='error_infeccion' style="display:none"> El resultado no debe ser <span id="texto_infeccion"> </span> </span>
             </div>
             <div class="col-sm-2">
                {{formulario3.lic4_fecha_realizacion|bootstrap}}
@@ -1262,15 +1263,18 @@ $('#id_municipio').change(function(){
 
 
 $("#id_telefono_fijo, #id_telefono_celular, #id_telefono_madre, #id_telefono_padre, #id_telefono_tutor").attr({
+   type:'number',
    onKeyDown:"if(this.value.length==8 && event.keyCode!=8 && event.keyCode!=13) return false;"
 });
 
 $("#id_identidad_madre, #id_identidad_padre, #id_identidad_tutor").attr({
+   type: 'number',
    onKeyDown:"if(this.value.length==15 && event.keyCode!=8 && event.keyCode!=13) return false;"
 });
 
 //BUSQUEDA DE IDENTIDAD
 $('#identidad').attr({
+   type: 'number',
    onKeyDown:"if(this.value.length==15 && event.keyCode!=8 && event.keyCode!=13) return false;"
 }).keypress(function (e) {
    identidad = $(this).val();
@@ -2300,7 +2304,6 @@ $('input[name=infpel_intrat]').change(function(){
 
 
 $('input[name=estado_inmunologico], input[name=estado_clinico]').change(function(){
-   console.log($('input[name=estado_inmunologico]:checked').val(), $('input[name=estado_clinico]:checked').val())
    inmunologico = $('input[name=estado_inmunologico]:checked').val()
    clinico = $('input[name=estado_clinico]:checked').val()
 
@@ -2309,6 +2312,26 @@ $('input[name=estado_inmunologico], input[name=estado_clinico]').change(function
    }
 })
 
+$('#id_talla, #id_peso').attr('type', 'number')
+
+$('#id_lic4_resultado').keyup(function(){
+   inmunologico = $('input[name=estado_inmunologico]:checked').val()
+   if (parseInt(this.value) > 200 && inmunologico == 1){
+      $('#texto_infeccion').text('mayor a 200')
+      $('#error_infeccion').show()
+   }else if (parseInt(this.value) > 499 && inmunologico == 2) {
+      $('#texto_infeccion').text('entre 200 y 499')
+      $('#error_infeccion').show()
+   }else if (parseInt(this.value) < 200 && inmunologico == 2) {
+      $('#texto_infeccion').text('entre 200 y 499')
+      $('#error_infeccion').show()
+   }else if (parseInt(this.value) < 500 && inmunologico == 3) {
+      $('#texto_infeccion').text('menor a 500')
+      $('#error_infeccion').show()
+   }else{
+      $('#error_infeccion').hide()
+   }
+})
 </script>
 
 {% endblock %}

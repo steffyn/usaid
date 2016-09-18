@@ -41,7 +41,7 @@
 
   <header class="main-header">
     <!-- Logo -->
-    <a href="../../index2.html" class="logo">
+    <a href="#" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>SS</b></span>
       <!-- logo for regular state and mobile devices -->
@@ -99,8 +99,9 @@
             <li><a href="{% url 'pre_prueba_vih' %}">Registro Consejeria Pre Prueba</a></li>
             <li><a href="{% url 'prueba_vih' %}"> Registro de Pruebas</a></li>
             <li><a href="{% url 'post_prueba_vih' %}"> Registro Consejeria Post-Prueba</a></li>
-            <li><a href="{% url 'listado_asistencia' %}"> Listado de Asistencia</a></li>
+            <li><a href="{% url 'listado_asistencia' %}"> Intervenciones Comunitarias</a></li>
             <li><a href="{% url 'boleta_clinica' %}"> Ficha Clinica</a></li>
+            <li><a href="#"> Ficha de Seguimiento</a></li>
           </ul>
         </li>
         <li class="treeview">
@@ -113,8 +114,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="../../index.html"><i class="fa fa-circle-o"></i> Accion 1</a></li>
-            <li><a href="../../index2.html"><i class="fa fa-circle-o"></i> Accion 2</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i> Accion 1</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i> Accion 2</a></li>
           </ul>
         </li>
         <li class="treeview">
@@ -127,8 +128,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="../../index.html"><i class="fa fa-circle-o"></i> Accion 1</a></li>
-            <li><a href="../../index2.html"><i class="fa fa-circle-o"></i> Accion 2</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i> Accion 1</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i> Accion 2</a></li>
           </ul>
         </li>
         <li class="treeview">
@@ -140,8 +141,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="../../index.html"><i class="fa fa-circle-o"></i> Accion 1</a></li>
-            <li><a href="../../index2.html"><i class="fa fa-circle-o"></i> Accion 2</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i> Accion 1</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i> Accion 2</a></li>
           </ul>
         </li>
         <li class="treeview">
@@ -154,8 +155,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="../../index.html"><i class="fa fa-circle-o"></i> Accion 1</a></li>
-            <li><a href="../../index2.html"><i class="fa fa-circle-o"></i> Accion 2</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i> Accion 1</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i> Accion 2</a></li>
           </ul>
         </li>
         <li class="treeview">
@@ -167,8 +168,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="../../index.html"><i class="fa fa-circle-o"></i> Accion 1</a></li>
-            <li><a href="../../index2.html"><i class="fa fa-circle-o"></i> Accion 2</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i> Accion 1</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i> Accion 2</a></li>
           </ul>
         </li>
         <li class="treeview">
@@ -180,8 +181,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="../../index.html"><i class="fa fa-circle-o"></i> Accion 1</a></li>
-            <li><a href="../../index2.html"><i class="fa fa-circle-o"></i> Accion 2</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i> Accion 1</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i> Accion 2</a></li>
           </ul>
         </li>
         {% if perms.user.add_user %}
@@ -223,9 +224,6 @@
   </div>
   <!-- /.content-wrapper -->
   <footer class="main-footer">
-    <div class="pull-right hidden-xs">
-      <img src="{% static 'img/sesalfinal.png' %}">
-    </div>
 
     <b>Secretaría de Salud</b>
     <br> Barrio El Centro, Avenida Cervantes, Calle El Telegráfo, Contiguo al Correo Nacional Tegucigalpa, Francisco Morazán, Honduras, Centroamerica 
@@ -236,10 +234,6 @@
 
 </div>
 <!-- ./wrapper -->
-
-
-{% block js %}
-{% endblock %}
 
  <style type="text/css">
     .user-panel>.info{

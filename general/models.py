@@ -109,9 +109,10 @@ class Responsables(models.Model):
 	direccion = models.CharField(max_length=255, blank=True, null=True)
 	telefono_fijo = models.CharField(max_length=10, blank=True, null=True)
 	telefono_celular = models.CharField(max_length=10, blank=True, null=True)
-	usuario_sistema = models.ForeignKey(User)
+	usuario_sistema = models.ForeignKey(User, related_name='usuario_sistema')
 	establecimiento = models.ForeignKey(Establecimientos)
 	activo = models.BooleanField(default=True)
+	coordinador = models.ForeignKey(User, related_name='usuario_coordinador')
 
 	def __unicode__(self):
 		return u'%s %s' % (self.nombres, self.primer_apellido)

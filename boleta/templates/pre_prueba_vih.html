@@ -82,6 +82,9 @@
             <div class="col-sm-2">
               {{formulario2.edad_meses|bootstrap_horizontal:'col-md-4' }}
             </div>
+            <div class="col-sm-2">
+              {{formulario2.edad_dias|bootstrap_horizontal:'col-md-4' }}
+            </div>
           </div>
           <div class="row">
             <div class="col-sm-7">
@@ -132,7 +135,6 @@
               {{formulario2.poblacion|bootstrap_horizontal:'col-md-4'  }}
               {{formulario2.grupo_etnico|bootstrap_horizontal:'col-md-4'  }}
               {{formulario2.otro_grupo_etnico|bootstrap_horizontal:'col-md-4'  }}
-              {{formulario2.establecimiento|bootstrap_horizontal:'col-md-4'  }}
               {{formulario2.condiciones|bootstrap_horizontal:'col-md-4'  }}
               {{formulario2.otro_condicion|bootstrap_horizontal:'col-md-4'  }}
               <div id='embarazada' style="display:none">
@@ -232,6 +234,64 @@
     $("#id_fecha_nacimiento, input[name=sexo]").prop('disabled', false)
     return true
   })
+
+function calcularEdad()
+{
+    var fecha=document.getElementById("user_date").value;
+    if(validate_fecha(fecha)==true)
+    {
+        // Si la fecha es correcta, calculamos la edad
+        var values=fecha.split("-");
+        var dia = values[2];
+        var mes = values[1];
+        var ano = values[0];
+ 
+        // cogemos los valores actuales
+        var fecha_hoy = new Date();
+        var ahora_ano = fecha_hoy.getYear();
+        var ahora_mes = fecha_hoy.getMonth()+1;
+        var ahora_dia = fecha_hoy.getDate();
+ 
+        // realizamos el calculo
+        var edad = (ahora_ano + 1900) - ano;
+        if ( ahora_mes < mes )
+        {
+            edad--;
+        }
+        if ((mes == ahora_mes) && (ahora_dia < dia))
+        {
+            edad--;
+        }
+        if (edad > 1900)
+        {
+            edad -= 1900;
+        }
+ 
+        // calculamos los meses
+        var meses=0;
+        if(ahora_mes>mes)
+            meses=ahora_mes-mes;
+        if(ahora_mes<mes)
+            meses=12-(mes-ahora_mes);
+        if(ahora_mes==mes && dia>ahora_dia)
+            meses=11;
+ 
+        // calculamos los dias
+        var dias=0;
+        if(ahora_dia>dia)
+            dias=ahora_dia-dia;
+        if(ahora_dia<dia)
+        {
+            ultimoDiaMes=new Date(ahora_ano, ahora_mes, 0);
+            dias=ultimoDiaMes.getDate()-(dia-ahora_dia);
+        }
+ 
+        document.getElementById("result").innerHTML="Tienes "+edad+" años, "+meses+" meses y "+dias+" días";
+    }else{
+        document.getElementById("result").innerHTML="La fecha "+fecha+" es incorrecta";
+    }
+}
+
   //LOS PLUGINS
   $("select").select2();
   $('#id_fecha_nacimiento').daterangepicker({
@@ -271,10 +331,12 @@
       edad = start.format('YYYY-MM-DD').split("-");
       var mes = edad[1];
       var anio = edad[0];
+      var dia = edad[2];
       var anio_actual = new Date().getFullYear();
       var edad_anios = anio_actual - anio;
       var mes_actual = new Date().getMonth()+1;
       var edad_mes = mes_actual - mes;
+      var ahora_dia = new Date().getDate();
         
       if (edad_mes < 0){
           if (edad_mes > 0){
@@ -282,9 +344,18 @@
              edad_mes = ((12-mes)+mes_actual)
           }
         }
+      var dias=0;
+      if(ahora_dia>dia)
+          dias=ahora_dia-dia;
+      if(ahora_dia<dia)
+      {
+          ultimoDiaMes=new Date(anio_actual, mes_actual, 0);
+          dias=ultimoDiaMes.getDate()-(dia-ahora_dia);
+      }
 
       $('#id_edad_anios').val(edad_anios)
       $('#id_edad_meses').val(Math.abs(edad_mes))
+      $('#id_edad_dias').val(Math.abs(dias))
 
       if(parseInt(edad_anios)<18){
         $('#encargados').show().fadeIn();
@@ -295,9 +366,9 @@
       //EXPEDIENTE
       identidad = $('#identidad').val();
 
-      expediente = identidad + '-' + start.format('YYYY-MM-DD') + '-' + $('input[name=sexo]').val()
-      console.log(expediente)
+      expediente = btoa(identidad) + '-' + start.format('YYYY-MM-DD') + '-' + $('input[name=sexo]').val()
       $('#expediente').text(expediente)
+      expediente = identidad + '-' + start.format('YYYY-MM-DD') + '-' + $('input[name=sexo]').val()
       $('#input_expediente, .expediente').val(expediente)
     }).val('');
 
@@ -335,20 +406,28 @@
         },
     });
 
-  $("#id_telefono_fijo, #id_telefono_celular, #id_telefono_madre, #id_telefono_padre, #id_telefono_tutor").attr('maxlength', 8);
+  $("#id_telefono_fijo, #id_telefono_celular, #id_telefono_madre, #id_telefono_padre, #id_telefono_tutor").attr({
+    type:'number',
+   onKeyDown:"if(this.value.length==8 && event.keyCode!=8 && event.keyCode!=13) return false;"
+  })
 
-  $("#id_identidad_madre, #id_identidad_padre, #id_identidad_tutor").attr('maxlength', 20)
+  $("#id_identidad_madre, #id_identidad_padre, #id_identidad_tutor").attr({
+    type:'number',
+   onKeyDown:"if(this.value.length==15 && event.keyCode!=8 && event.keyCode!=13) return false;"
+  })
 
   //BUSQUEDA DE IDENTIDAD
   $('#identidad').attr({
+    type:'number',
    onKeyDown:"if(this.value.length==15 && event.keyCode!=8 && event.keyCode!=13) return false;"
   }).keypress(function (e) {
       
       identidad = $(this).val();
+      expediente = btoa(identidad) + '-' + $('#id_fecha_nacimiento').val() + '-' + $('input[name=sexo]').val()
+      $('#expediente').text(expediente)
 
       expediente = identidad + '-' + $('#id_fecha_nacimiento').val() + '-' + $('input[name=sexo]').val()
       $('.identidad').val($(this).val())
-      $('#expediente').text(expediente)
       $('#input_expediente, .expediente').val(expediente)
 
       var key = e.which;
@@ -390,20 +469,31 @@
               edad = $('#id_fecha_nacimiento').val().split("-");
               var mes = edad[1];
               var anio = edad[0];
+              var dia = edad[2];
               var anio_actual = new Date().getFullYear();
               var edad_anios = anio_actual - anio;
               var mes_actual = new Date().getMonth()+1;
               var edad_mes = mes_actual - mes;
-                
+              var ahora_dia = new Date().getDate();
+        
               if (edad_mes < 0){
                   if (edad_mes > 0){
                      edad_anios = edad_anios-1
                      edad_mes = ((12-mes)+mes_actual)
                   }
                 }
+              var dias=0;
+              if(ahora_dia>dia)
+                  dias=ahora_dia-dia;
+              if(ahora_dia<dia)
+              {
+                  ultimoDiaMes=new Date(anio_actual, mes_actual, 0);
+                  dias=ultimoDiaMes.getDate()-(dia-ahora_dia);
+              }
 
               $('#id_edad_anios').val(edad_anios)
               $('#id_edad_meses').val(Math.abs(edad_mes))
+              $('#id_edad_dias').val(Math.abs(dias))
 
               if(parseInt(edad_anios)<18){
                 $('#encargados').show().fadeIn();
@@ -411,8 +501,9 @@
                 $('#encargados').hide().fadeOut();
               }
 
-              expediente = identidad + '-' + persona.fecha_nacimiento + '-' + persona.sexo
+              expediente = btoa(identidad) + '-' + $('#id_fecha_nacimiento').val() + '-' + $('input[name=sexo]').val()
               $('#expediente').text(expediente)
+              expediente = identidad + '-' + persona.fecha_nacimiento + '-' + persona.sexo
               $('#input_expediente, .expediente').val(expediente)
             }
           });
@@ -422,10 +513,10 @@
   $('#search_identidad').click(function (e) {
       
       identidad = $('#identidad').val();
-
+      expediente = btoa(identidad) + '-' + $('#id_fecha_nacimiento').val() + '-' + $('input[name=sexo]').val()
+      $('#expediente').text(expediente)
       expediente = identidad + '-' + $('#id_fecha_nacimiento').val() + '-' + $('input[name=sexo]').val()
       $('.identidad').val($('#identidad').val())
-      $('#expediente').text(expediente)
       $('#input_expediente, .expediente').val(expediente)
 
         event.preventDefault();
@@ -465,29 +556,40 @@
               edad = $('#id_fecha_nacimiento').val().split("-");
               var mes = edad[1];
               var anio = edad[0];
+              var dia = edad[2];
               var anio_actual = new Date().getFullYear();
               var edad_anios = anio_actual - anio;
               var mes_actual = new Date().getMonth()+1;
               var edad_mes = mes_actual - mes;
-                
+              var ahora_dia = new Date().getDate();
+        
               if (edad_mes < 0){
                   if (edad_mes > 0){
                      edad_anios = edad_anios-1
                      edad_mes = ((12-mes)+mes_actual)
                   }
                 }
+              var dias=0;
+              if(ahora_dia>dia)
+                  dias=ahora_dia-dia;
+              if(ahora_dia<dia)
+              {
+                  ultimoDiaMes=new Date(anio_actual, mes_actual, 0);
+                  dias=ultimoDiaMes.getDate()-(dia-ahora_dia);
+              }
 
               $('#id_edad_anios').val(edad_anios)
               $('#id_edad_meses').val(Math.abs(edad_mes))
+              $('#id_edad_dias').val(Math.abs(dias))
 
               if(parseInt(edad_anios)<18){
                 $('#encargados').show().fadeIn();
               }else{
                 $('#encargados').hide().fadeOut();
               }
-
-              expediente = identidad + '-' + persona.fecha_nacimiento + '-' + persona.sexo
+              expediente = btoa(identidad) + '-' + persona.fecha_nacimiento + '-' + persona.sexo
               $('#expediente').text(expediente)
+              expediente = identidad + '-' + persona.fecha_nacimiento + '-' + persona.sexo
               $('#input_expediente, .expediente').val(expediente)
             }
           });
@@ -541,6 +643,7 @@ $('#no_identidad').change(function(){
     $('input[name=sexo]').prop('disabled', false).val('')
     $('#id_edad_anios').val('')
     $('#id_edad_meses').val('')
+    $('#id_edad_dias').val('')
     $('#expediente').text('')
 
   }else{
@@ -553,6 +656,7 @@ $('#no_identidad').change(function(){
     $('input[name=sexo]').prop('disabled', true).val('')
     $('#id_edad_anios').val('')
     $('#id_edad_meses').val('')
+    $('#id_edad_dias').val('')
     $('#expediente').text('')
   }
   
@@ -581,7 +685,7 @@ $('input[name=sexo]').change(function(){
    identidad = $('#identidad').val();
    expediente = identidad + '-' + $('#id_fecha_nacimiento').val() + '-' + sexo
    
-   $('#expediente').text(identidad + '-'+  $('#id_fecha_nacimiento').val() + '-' + sexo)
+   $('#expediente').text(btoa(identidad) + '-'+  $('#id_fecha_nacimiento').val() + '-' + sexo)
    $('#input_expediente, .expediente').val(identidad + '-'+ $('#id_fecha_nacimiento').val() + '-' + sexo)
    
 })

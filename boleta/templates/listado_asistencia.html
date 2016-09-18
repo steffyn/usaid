@@ -7,25 +7,15 @@
 <link rel="stylesheet" href="{% static 'plugins/select2/select2.css' %}">
 <link rel="stylesheet" href="{% static 'plugins/daterangepicker/daterangepicker.css' %}">
 
-<script src="{% static 'plugins/input-mask/jquery.inputmask.js' %}"></script>
-<script src="{% static 'plugins/input-mask/jquery.inputmask.date.extensions.js' %}"></script>
-<script src="{% static 'plugins/input-mask/jquery.inputmask.extensions.js' %}"></script>
 <script src="{% static 'plugins/select2/select2.min.js' %}"></script>
 <script src="{% static 'plugins/daterangepicker/moment.min.js' %}"></script>
 <script src="{% static 'plugins/daterangepicker/daterangepicker.js' %}"></script>
 <div class="box box-primary">
   <div class="box-header with-border">
-    <h3 class="box-title">Lista de Asistencia</h3>
+    <h3 class="box-title">Intervenciones Comunitarias</h3>
   </div>
   <!-- /.box-header -->
   <!-- form start -->
-    <br>
-    <div class="text-center" > 
-      <img src="{% static 'img/logo-linkages.jpg' %}"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
-      <img src="{% static 'img/logo-pepfar.jpg' %}"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
-      <img src="{% static 'img/logo-usaid.jpg' %}">
-    </div>
-    <br>
   <form role="form" class="form-horizontal"  method="POST" id='formulario'>
     {% csrf_token %}
     <div class="box-body">
@@ -42,7 +32,10 @@
         </div>
         <div class="well">
           <div class="row text-center">
-            <div class="col-md-3">Identidad <br><input class="form-control" type="text" id="id_identidad" name=""></div>
+            <div class="col-lg-3 form-inline">Identidad <br><input class="form-control" type="text" id="id_identidad" name=""> 
+            <button type="button" class="btn btn-primary" id="search_identidad"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button><br>
+             <span class="label label-danger "  id='error_identidad' style="display:none">No se encontraron registros con la identidad ingresadda</span>
+            </div>
             <div class="col-md-5">Nombre<br> <input class="form-control" type="text" id="id_nombre" name=""> </div>
             <div class="col-md-4">Correo<br> <input class="form-control" type="text" id="id_correo" name=""> </div>
           </div>
@@ -74,6 +67,7 @@
             </div>
 
     </div>
+    {{responsable.coordinador.}}
     <!-- /.box-body -->
     <div class="box-footer">
       <div class="row">
@@ -87,18 +81,24 @@
 
 <script type="text/javascript">
 
-  function quitar(identidad){
-    console.log(identidad, 'laksjdlaskjdlasjdla')
-    $('#'+identidad).remove()
+  $('#id_responsable').attr({
+      readonly:'readonly',
+      value : '{{responsable.nombres}} {{responsable.primer_apellido}}'
+  })
 
+  $('#id_coordinador').attr({
+      readonly:'readonly',
+      value : '{{responsable.coordinador.first_name}} {{responsable.coordinador.last_name}}'
+  })
+
+  function quitar(identidad){
+    $('#'+identidad).remove()
   }
 
   $('#agregar_participante').click(function(){
     if($("#id_nombre").val()== '' || $("#id_identidad").val()=='' || $("#id_edad").val()=='' || $("#id_telefono").val()=='' || $("#id_cantidad").val()==''){
       $('#validacion_participante').fadeIn().delay(4000).fadeOut()
-      console.log('asdasdasdasd')
     }else{
-      console.log('ppasdojskjasdhkasj')
       $('#validacion_participante').hide()
 
       identidad = $("#id_identidad").val().replace('-', '');
@@ -121,7 +121,6 @@
 
   })
   //LOS PLUGINS
-  $(":input").inputmask();
   $("select").select2();
    $('#id_fecha').daterangepicker({
         //autoUpdateInput: false,
@@ -157,10 +156,80 @@
         },
     });
 
-  $("#id_telefono").inputmask("9999-9999");
+  $("#id_telefono").attr({
+    type: 'number',
+    onKeyDown:"if(this.value.length==9 && event.keyCode!=8 && event.keyCode!=13) return false;"
+  });
 
-  $("#id_identidad").attr('maxlength', 20).inputmask("9999-9999-99999");
+  $("#id_identidad, #id_identidad_reclutador").attr({
+    type: 'number',
+    onKeyDown:"if(this.value.length==13 && event.keyCode!=8 && event.keyCode!=13) return false;"
+  });
 
+
+  $('#id_identidad').attr({
+    type:'number',
+   onKeyDown:"if(this.value.length==15 && event.keyCode!=8 && event.keyCode!=13) return false;"
+  }).keypress(function (e) {
+      identidad = $(this).val()
+      var key = e.which;
+      if(key == 13){
+      event.preventDefault();
+        $.ajax({
+          url: "{% url 'pre_prueba_vih' %}",
+          data: { 
+                  identidad: identidad
+                }
+        })
+          .done(function( persona ) {
+            if (persona==false){
+              $('#error_identidad').show().delay(4000).fadeOut()
+              $('#id_nombre, #id_edad').prop('readonly', false).val('')
+
+
+            }else{
+              $('#error_identidad').hide()
+              $('#id_nombre').val(persona.primer_nombre + ' ' + persona.segundo_nombre  + ' ' + persona.primer_apellido  + ' ' + persona.segundo_apellido).prop('readonly', true)
+              //CALCULO DE EDAD
+              edad = persona.fecha_nacimiento.split("-");
+              var anio = edad[0];
+              var anio_actual = new Date().getFullYear();
+              var edad_anios = anio_actual - anio;
+
+              $('#id_edad').val(edad_anios).prop('readonly', true)
+            }
+          });
+      }
+  }); 
+
+  $('#search_identidad').click(function (e) {
+    identidad = $('#id_identidad').val()
+        $.ajax({
+          url: "{% url 'pre_prueba_vih' %}",
+          data: { 
+                  identidad: identidad
+                }
+        })
+          .done(function( persona ) {
+            if (persona==false){
+              $('#error_identidad').show().delay(4000).fadeOut()
+              $('#id_nombre, #id_edad').prop('readonly', false).val('')
+
+
+            }else{
+              $('#error_identidad').hide()
+              $('#id_nombre').val(persona.primer_nombre + ' ' + persona.segundo_nombre  + ' ' + persona.primer_apellido  + ' ' + persona.segundo_apellido).prop('readonly', true)
+              //CALCULO DE EDAD
+              edad = persona.fecha_nacimiento.split("-");
+              var anio = edad[0];
+              var anio_actual = new Date().getFullYear();
+              var edad_anios = anio_actual - anio;
+
+              $('#id_edad').val(edad_anios).prop('readonly', true)
+            }
+        
+          });
+  });
  
 </script>
 

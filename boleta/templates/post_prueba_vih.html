@@ -8,9 +8,6 @@
 <link rel="stylesheet" href="{% static 'plugins/daterangepicker/daterangepicker.css' %}">
 
 
-<script src="{% static 'plugins/input-mask/jquery.inputmask.js' %}"></script>
-<script src="{% static 'plugins/input-mask/jquery.inputmask.date.extensions.js' %}"></script>
-<script src="{% static 'plugins/input-mask/jquery.inputmask.extensions.js' %}"></script>
 <script src="{% static 'plugins/select2/select2.min.js' %}"></script>
 <script src="{% static 'plugins/daterangepicker/moment.min.js' %}"></script>
 <script src="{% static 'plugins/daterangepicker/daterangepicker.js' %}"></script>
@@ -34,7 +31,8 @@
             <div class="form-group">
               <label for="inputEmail3" class="col-sm-4 control-label">Identidad</label>
               <div class="col-sm-8 form-inline">
-                <input type="text" class="form-control" id='identidad' name="identidad" data-inputmask='"mask": "9999-9999-99999"' data-mask>
+                <input type="text" class="form-control" id='identidad' name="identidad">
+                <button type="button" class="btn btn-primary" id="search_identidad"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button><br>
                 <span class="label label-danger "  id='error_identidad' style="display:none">No se encontraron registros con la identidad ingresada</span>
               </div>
             </div>
@@ -84,7 +82,6 @@
   </form>
 </div>
 <script type="text/javascript">
-  $(":input").inputmask();
   $('#id_fecha_consejeria').daterangepicker({
         singleDatePicker: true,
         showDropdowns: true,
@@ -125,12 +122,15 @@
 
 
   //BUSQUEDA DE IDENTIDAD
-  $('#identidad').keypress(function (e) {
-      event.preventDefault();
+  $('#identidad').attr({
+    type:'number',
+    onKeyDown:"if(this.value.length==15 && event.keyCode!=8 && event.keyCode!=13) return false;"
+  }).keypress(function (e) {
       identidad = $(this).val().replace('-', '');
       identidad = identidad.replace('-', '')
       var key = e.which;
       if(key == 13){
+      event.preventDefault();
         $.ajax({
           url: "{% url 'post_prueba_vih' %}",
           data: { 
@@ -182,6 +182,64 @@
             }
           });
       }
+  });
+
+
+  //BUSQUEDA DE IDENTIDAD
+  $('#search_identidad').click(function (e) {
+      identidad = $(this).val().replace('-', '');
+      identidad = identidad.replace('-', '')
+      var key = e.which;
+        $.ajax({
+          url: "{% url 'post_prueba_vih' %}",
+          data: { 
+                  identidad: identidad
+                }
+        })
+          .done(function( data ) {
+            if (data.persona==false){
+              $('#error_identidad').show()
+              $('#expediente,#id_fecha_consejeria, #id_observaciones, #id_referido').val('')
+            }else{
+              console.log(data.boleta.boleta__pk, data.boleta)
+              $('#error_identidad').hide()
+              $('#boleta').val(data.boleta.boleta__pk)
+              $('#expediente').val(data.expediente)
+
+              tamizaje = data.boleta.resultado_prueba_tamizaje 
+              confimatoria = data.boleta.resultado_prueba_confirmatoria
+
+                if(confimatoria == 1 & tamizaje == 1){
+                  $('#resultado').text('POSITIVO')
+                }
+                if(confimatoria == 1 & tamizaje != 1){
+                  $('#resultado').text('NO CONCLUYENTE')
+                }
+                if(confimatoria != 1 & tamizaje == 1){
+                  $('#resultado').text('NO CONCLUYENTE')
+                }
+                if(confimatoria != 1 & tamizaje != 1){
+                  $('#resultado').text('NEGATIVO')
+                }
+
+              //SI ES MENOR DE EDAD, SON LOS TUTORES QUE VA EN EL CAMPO DE REFERIDO
+              if(data.boleta.boleta__edad_anios <= 18){
+                if(data.boleta.boleta__nombre_madre != ''){
+                  $('#id_referido').val(data.boleta.boleta__nombre_madre)
+                }else if(data.boleta.boleta__nombre_padre != ''){ 
+                  $('#id_referido').val(data.boleta.boleta__nombre_padre)
+                }else if(data.boleta.boleta__nombre_tutor != ''){
+                  $('#id_referido').val(data.boleta.boleta__nombre_tutor)
+                }else{
+                  $('#id_referido').val(data.boleta.boleta__primer_nombre + ' ' + data.boleta.boleta__segundo_nombre + ' ' + data.boleta.boleta__primer_apellido + ' ' + data.boleta.boleta__segundo_apellido)
+                }
+                
+              }else{
+                $('#id_referido').val(data.boleta.boleta__primer_nombre + ' ' + data.boleta.boleta__segundo_nombre + ' ' + data.boleta.boleta__primer_apellido + ' ' + data.boleta.boleta__segundo_apellido)
+              }
+              
+            }
+          });
   });
 </script>
 {% endblock %}

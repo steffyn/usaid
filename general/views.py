@@ -52,6 +52,7 @@ def crear_usuario(request):
 					usuario.first_name = request.POST['nombres']
 					usuario.last_name = request.POST['primer_apellido']
 					usuario.save()
+					formulario.save_m2m()
 
 					responsable = formulario2.save(commit=False)
 					responsable.usuario_sistema = usuario
