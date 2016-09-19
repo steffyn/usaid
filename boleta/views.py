@@ -19,9 +19,7 @@ import json
 def usuario(id):
 	return Responsables.objects.get(usuario_sistema__id=id)
 
-@login_required()
-def principal(request):
-	return render(request, 'principal.html')
+
 
 def date_handler(obj):
 	if hasattr(obj, 'isoformat'):

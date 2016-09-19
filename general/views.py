@@ -27,7 +27,7 @@ def login(request):
 		if user is not None:
 			if user.is_active:
 				auth_login(request, user)
-				return HttpResponseRedirect(reverse('pre_prueba_vih'))
+				return HttpResponseRedirect(reverse('principal'))
 		else:
 			ctx = {
 				'error': True,
@@ -72,3 +72,8 @@ def crear_usuario(request):
 		'exito': exito,
 	}
 	return render(request, 'crear_usuario.html', ctx)
+
+
+@login_required()
+def principal(request):
+	return render(request, 'principal.html')
