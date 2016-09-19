@@ -126,8 +126,7 @@
     type:'number',
     onKeyDown:"if(this.value.length==15 && event.keyCode!=8 && event.keyCode!=13) return false;"
   }).keypress(function (e) {
-      identidad = $(this).val().replace('-', '');
-      identidad = identidad.replace('-', '')
+      identidad = $(this).val()
       var key = e.which;
       if(key == 13){
       event.preventDefault();
@@ -187,8 +186,7 @@
 
   //BUSQUEDA DE IDENTIDAD
   $('#search_identidad').click(function (e) {
-      identidad = $(this).val().replace('-', '');
-      identidad = identidad.replace('-', '')
+       identidad = $('#identidad').val()
       var key = e.which;
         $.ajax({
           url: "{% url 'post_prueba_vih' %}",

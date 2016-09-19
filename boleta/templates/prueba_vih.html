@@ -159,8 +159,8 @@
   });
 
   $('#search_identidad').click(function (e) {
-      identidad = $(this).val().replace('-', '');
-      identidad = identidad.replace('-', '')
+      identidad = $('#identidad').val()
+      console.log(identidad)
       var key = e.which;
         $.ajax({
           url: "{% url 'prueba_vih' %}",
