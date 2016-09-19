@@ -96,12 +96,24 @@
             </span>
           </a>
           <ul class="treeview-menu">
+          {% if perms.boleta.add_boletasconsejeria %}
             <li><a href="{% url 'pre_prueba_vih' %}">Registro Consejeria Pre Prueba</a></li>
+          {% endif %}
+          {% if perms.boleta.add_boletaspruebas %}
             <li><a href="{% url 'prueba_vih' %}"> Registro de Pruebas</a></li>
+          {% endif %}
+          {% if perms.boleta.add_boletasconsejeriapostprueba %}
             <li><a href="{% url 'post_prueba_vih' %}"> Registro Consejeria Post-Prueba</a></li>
+          {% endif %}
+          {% if perms.boleta.add_listadoasistencia %}
             <li><a href="{% url 'listado_asistencia' %}"> Intervenciones Comunitarias</a></li>
+          {% endif %}
+          {% if perms.boleta.add_boletasclinicas %}
             <li><a href="{% url 'boleta_clinica' %}"> Ficha Clinica</a></li>
+          {% endif %}
+          {% if perms.boleta.add_boletasseguimiento %}
             <li><a href="#"> Ficha de Seguimiento</a></li>
+          {% endif %}
           </ul>
         </li>
         <li class="treeview">

@@ -38,7 +38,10 @@
 
 
 <script>
-$("#id_telefono_fijo, #id_telefono_celular").inputmask("9999-9999");
+  $("#id_telefono_fijo, #id_telefono_celular").attr({
+   type: 'number',
+   onKeyDown:"if(this.value.length==8 && event.keyCode!=8 && event.keyCode!=13) return false;"
+})
   $('#id_fecha_nacimiento').daterangepicker({
         //autoUpdateInput: false,
         singleDatePicker: true,

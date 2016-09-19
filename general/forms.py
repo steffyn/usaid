@@ -19,7 +19,7 @@ class UsuarioResponsableForm(ModelForm):
 		fields = "__all__"
 		exclude = ['usuario_sistema', 'activo']
 	sexo =  forms.ChoiceField(choices=GENERO, widget=RadioSelect)
-	coordinador =  forms.ModelChoiceField(queryset=User.objects.filter(groups__name='Coordinador'))
+	coordinador =  forms.ModelChoiceField(queryset=User.objects.filter(groups__name='Coordinador'), required=False)
 	
 
 class RPNForm(ModelForm):
