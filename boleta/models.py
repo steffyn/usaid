@@ -510,3 +510,197 @@ class BoletasClinicas(models.Model):
 	def __unicode__(self):
 		return u'[%s] %s' % (self.boleta.expediente, self.boleta.identidad)
 
+MOTIVOS_CONSULTA = {
+	(1, 'Control Medico'),
+	(2, 'Asistencia a Consejería/Psicología'),
+	(3, 'Retiro de Medicamentos'),
+	(4, 'Referido desde Otro Establecimiento'),
+}
+
+CONTEO = {
+	(1, 'Menor de 200'),
+	(2, 'Mayor de 200'),
+}
+
+MOTIVOS_FALLECIMIENTO = {
+	(1, 'Relacionado con SIDA'),
+	(2, 'Fallecimiento por TB'),
+}
+
+ESQUEMA_ARV = {
+	(1, '1era Línea'),
+	(2, '2da Línea'),
+	(3, '3er Línea'),
+}
+
+DOCUMENTADO = {
+	(1, 'Fallo Virológico'),
+	(2, 'Por Fallo Clínico'),
+	(3, 'Efectos Secundarios'),
+	(4, 'Intolerancia a los ARV'),
+	(5, 'Fallo Inmunológico'),
+	(6, 'Diagnóstico de TB'),
+	(7, 'Disponibilidad de ARV'),
+}
+
+
+class Terapias(models.Model):
+	nombre = models.CharField(max_length=255)
+	orden = models.IntegerField()
+	def __unicode__(self):
+		return u'%s' % (self.nombre)
+
+
+class Medicamentos(models.Model):
+	nombre = models.CharField(max_length=255)
+	orden = models.IntegerField()
+	def __unicode__(self):
+		return u'%s' % (self.nombre)
+
+class BoletasSeguimientos(models.Model):
+	boleta_clinica = models.ForeignKey(BoletasClinicas)
+	identidad = models.CharField(max_length=15)
+	motivo = models.IntegerField(choices=MOTIVOS_CONSULTA, blank=True, null=True)
+	profpri = models.IntegerField(choices=ORDENADOS_EN_CONSULTA, blank=True, null=True)
+	fecha_consulta = models.DateField(blank=True, null=True, verbose_name='Fecha de Consulta')
+	fecha_proxima_cita = models.DateField(blank=True, null=True, verbose_name='Fecha de Próxima Cita')
+	
+	tmpsmx = models.IntegerField(choices=SI_NO, blank=True, null=True)
+	tmpsmx_initrat = models.IntegerField(choices=SI_NO, blank=True, null=True)
+	tmpsmx_fecha_initrat = models.DateField(blank=True, null=True, verbose_name='Fecha')
+	tmpsmx_fintrat = models.IntegerField(choices=SI_NO, blank=True, null=True, verbose_name='Finalizó Tratamiento')
+	tmpsmx_fecha_fintrat = models.DateField(blank=True, null=True, verbose_name='Fecha')
+	tmpsmx_intrat = models.IntegerField(choices=SI_NO, blank=True, null=True, verbose_name='Interrumpió Tratamiento')
+	tmpsmx_fecha_intrat= models.DateField(blank=True, null=True, verbose_name='Fecha')
+	tmpsmx_reitrat = models.IntegerField(choices=SI_NO, blank=True, null=True, verbose_name='Reinicio Tratamiento')
+	tmpsmx_fecha_reitrat = models.DateField(blank=True, null=True, verbose_name='Fecha')
+
+	isoniacida = models.IntegerField(choices=SI_NO, blank=True, null=True)
+	isoniacida_initrat = models.IntegerField(choices=SI_NO, blank=True, null=True)
+	isoniacida_fecha_initrat = models.DateField(blank=True, null=True, verbose_name='Fecha')
+	isoniacida_fintrat = models.IntegerField(choices=SI_NO, blank=True, null=True, verbose_name='Finalizó Tratamiento')
+	isoniacida_fecha_fintrat = models.DateField(blank=True, null=True, verbose_name='Fecha')
+	isoniacida_intrat = models.IntegerField(choices=SI_NO, blank=True, null=True, verbose_name='Interrumpió Tratamiento')
+	isoniacida_fecha_intrat= models.DateField(blank=True, null=True, verbose_name='Fecha')
+	isoniacida_reitrat = models.IntegerField(choices=SI_NO, blank=True, null=True, verbose_name='Reinicio Tratamiento')
+	isoniacida_fecha_reitrat = models.DateField(blank=True, null=True, verbose_name='Fecha')
+
+	azitromicida = models.IntegerField(choices=SI_NO, blank=True, null=True)
+	azitromicida_initrat = models.IntegerField(choices=SI_NO, blank=True, null=True)
+	azitromicida_fecha_initrat = models.DateField(blank=True, null=True, verbose_name='Fecha')
+	azitromicida_fintrat = models.IntegerField(choices=SI_NO, blank=True, null=True, verbose_name='Finalizó Tratamiento')
+	azitromicida_fecha_fintrat = models.DateField(blank=True, null=True, verbose_name='Fecha')
+	azitromicida_intrat = models.IntegerField(choices=SI_NO, blank=True, null=True, verbose_name='Interrumpió Tratamiento')
+	azitromicida_fecha_intrat= models.DateField(blank=True, null=True, verbose_name='Fecha')
+	azitromicida_reitrat = models.IntegerField(choices=SI_NO, blank=True, null=True, verbose_name='Reinicio Tratamiento')
+	azitromicida_fecha_reitrat = models.DateField(blank=True, null=True, verbose_name='Fecha')
+
+	arv_fecha_ini = models.DateField(blank=True, null=True, verbose_name='Fecha de Inicio de ARV')
+	conteo_cd4 = models.IntegerField(choices=CONTEO, blank=True, null=True, verbose_name='Conteo de CD4 con que inició Terapia')
+	abandono =  models.IntegerField(choices=SI_NO, blank=True, null=True)
+	fecha_abandono = models.DateField(blank=True, null=True, verbose_name='Fecha de Abandono')
+
+	suspension =  models.IntegerField(choices=SI_NO, blank=True, null=True)
+	fecha_suspension = models.DateField(blank=True, null=True, verbose_name='Fecha de Suspensión')
+	fecha_reinicio = models.DateField(blank=True, null=True, verbose_name='Fecha de Reinicio')
+
+	fallecido =  models.IntegerField(choices=SI_NO, blank=True, null=True)
+	fecha_fallecido = models.DateField(blank=True, null=True, verbose_name='Fecha de Fallecimiento')
+	causa_fallecido =  models.IntegerField(choices=MOTIVOS_FALLECIMIENTO, blank=True, null=True)
+	
+	activo =  models.IntegerField(choices=SI_NO, blank=True, null=True)
+	esquema_arv = models.IntegerField(choices=ESQUEMA_ARV, blank=True, null=True)
+	fecha_prescripcion_arv = models.DateField(blank=True, null=True, verbose_name='Fecha de Prescripción de ARV')
+	cambio_terapia =  models.IntegerField(choices=SI_NO, blank=True, null=True)
+	fecha_cambio_terapia =  models.DateField(blank=True, null=True, verbose_name='Fecha de  Cambio de Terapia')
+	motivo_cambio_terapia = models.IntegerField(choices=SI_NO, blank=True, null=True)
+	documentado_con = models.IntegerField(choices=DOCUMENTADO, blank=True, null=True)
+	esquema_actual_arv = models.IntegerField(choices=ESQUEMA_ARV, blank=True, null=True, verbose_name='Esquema Actual RV')
+	fecha_entrega_arv = models.DateField(blank=True, null=True, verbose_name='Fecha de Entrega de ARV')
+	
+	azt = models.NullBooleanField(default=False)
+	abc = models.NullBooleanField(default=False)
+	efv = models.NullBooleanField(default=False)
+	rpv = models.NullBooleanField(default=False)
+	dtf = models.NullBooleanField(default=False)
+	lpv = models.NullBooleanField(default=False)
+
+	abc_cant = models.IntegerField(blank=True, null=True, verbose_name='Abacavir (ABC)')
+	ft_cant= models.IntegerField(blank=True, null=True, verbose_name='Emtricitabina (FT)')
+	d4t_cant= models.IntegerField(blank=True, null=True, verbose_name='Estavudina (D4T)')
+	azt_cant = models.IntegerField(blank=True, null=True, verbose_name='Zidovunidina (AZT)')
+	efv_cant= models.IntegerField(blank=True, null=True, verbose_name='Efavirenz (EFV)')
+	nvp_cant= models.IntegerField(blank=True, null=True, verbose_name='Neviraparina (NVP)')
+	ddi_cant= models.IntegerField(blank=True, null=True, verbose_name='Didanosida (DDI)')
+	tc_cant= models.IntegerField(blank=True, null=True, verbose_name='Lamivudina (3TC)')
+	tdf_cant= models.IntegerField(blank=True, null=True, verbose_name='Tenofovir (TDF)')
+	rpv_cant= models.IntegerField(blank=True, null=True, verbose_name='Rilpavirina (RPV)')
+	etr_cant= models.IntegerField(blank=True, null=True, verbose_name='Etravirina (ETR)')
+	atv_cant= models.IntegerField(blank=True, null=True, verbose_name='Atazanavir (ATV)')
+	drv_cant= models.IntegerField(blank=True, null=True, verbose_name='Darunavir (RAL)')
+	fpv_cant= models.IntegerField(blank=True, null=True, verbose_name='Fosamprenavir (FPV)')
+	idv_cant= models.IntegerField(blank=True, null=True, verbose_name='Indinavir (IDV)')
+	nfv_cant= models.IntegerField(blank=True, null=True, verbose_name='Nelfinavir (NFV)')
+	sqv_cant= models.IntegerField(blank=True, null=True, verbose_name='Saquinavir (SQV)')
+	tpv_cant= models.IntegerField(blank=True, null=True, verbose_name='Tripanavir (TPV)')
+	ral_cant= models.IntegerField(blank=True, null=True, verbose_name='Raltegravir (RAL)')
+	evg_cant= models.IntegerField(blank=True, null=True, verbose_name='Elvitegravir (EVG)')
+	dtg_cant= models.IntegerField(blank=True, null=True, verbose_name='Dolutegravir (DTG)')
+
+	abc_med = models.NullBooleanField(default=False)
+	ft_med= models.NullBooleanField(default=False)
+	d4t_med= models.NullBooleanField(default=False)
+	azt_med = models.NullBooleanField(default=False)
+	efv_med= models.NullBooleanField(default=False)
+	nvp_med= models.NullBooleanField(default=False)
+	ddi_med= models.NullBooleanField(default=False)
+	tc_med= models.NullBooleanField(default=False)
+	tdf_med= models.NullBooleanField(default=False)
+	rpv_med= models.NullBooleanField(default=False)
+	etr_med= models.NullBooleanField(default=False)
+	atv_med= models.NullBooleanField(default=False)
+	drv_med= models.NullBooleanField(default=False)
+	fpv_med= models.NullBooleanField(default=False)
+	idv_med= models.NullBooleanField(default=False)
+	nfv_med= models.NullBooleanField(default=False)
+	sqv_med= models.NullBooleanField(default=False)
+	tpv_med= models.NullBooleanField(default=False)
+	ral_med= models.NullBooleanField(default=False)
+	evg_med= models.NullBooleanField(default=False)
+	dtg_med= models.NullBooleanField(default=False)
+
+	abc_ter = models.NullBooleanField(default=False)
+	ft_ter= models.NullBooleanField(default=False)
+	d4t_ter= models.NullBooleanField(default=False)
+	azt_ter = models.NullBooleanField(default=False)
+	efv_ter= models.NullBooleanField(default=False)
+	nvp_ter= models.NullBooleanField(default=False)
+	ddi_ter= models.NullBooleanField(default=False)
+	tc_ter= models.NullBooleanField(default=False)
+	tdf_ter= models.NullBooleanField(default=False)
+	rpv_ter= models.NullBooleanField(default=False)
+	etr_ter= models.NullBooleanField(default=False)
+	atv_ter= models.NullBooleanField(default=False)
+	drv_ter= models.NullBooleanField(default=False)
+	fpv_ter= models.NullBooleanField(default=False)
+	idv_ter= models.NullBooleanField(default=False)
+	nfv_ter= models.NullBooleanField(default=False)
+	sqv_ter= models.NullBooleanField(default=False)
+	tpv_ter= models.NullBooleanField(default=False)
+	ral_ter= models.NullBooleanField(default=False)
+	evg_ter= models.NullBooleanField(default=False)
+	dtg_ter= models.NullBooleanField(default=False)
+
+	azt2_ter = models.NullBooleanField(default=False)
+	abc2_ter = models.NullBooleanField(default=False)
+	efv2_ter = models.NullBooleanField(default=False)
+	rpv2_ter = models.NullBooleanField(default=False)
+	dtf2_ter = models.NullBooleanField(default=False)
+	lpv2_ter = models.NullBooleanField(default=False)
+
+		
+
+	cantidad_medicamento =  models.IntegerField(blank=True, null=True, verbose_name='Cantidad de Medicamento Contados')
+	adherencia = models.IntegerField(blank=True, null=True, verbose_name='Porcentaje de Adherencia')
+	tiempo_arv = models.IntegerField(blank=True, null=True, verbose_name='Tiempo enn ARV')
+	fecha_proxentrega_arv = models.DateField(blank=True, null=True, verbose_name='Fecha de Próxima Entrega de ARV')

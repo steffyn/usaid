@@ -111,8 +111,8 @@
           {% if perms.boleta.add_boletasclinicas %}
             <li><a href="{% url 'boleta_clinica' %}"> Ficha Clinica</a></li>
           {% endif %}
-          {% if perms.boleta.add_boletasseguimiento %}
-            <li><a href="#"> Ficha de Seguimiento</a></li>
+          {% if perms.boleta.add_boletasclinicas %}
+            <li><a href="{% url 'boleta_seguimiento' %}"> Ficha de Seguimiento</a></li>
           {% endif %}
           </ul>
         </li>
