@@ -802,7 +802,7 @@ class BoletaSeguimientoForm(ModelForm):
 	cambio_terapia =  forms.ChoiceField(widget=RadioSelect, choices=SI_NO, label='Cambio de Terapia', required=False, initial=None)
 	motivo_cambio_terapia =  forms.ChoiceField(widget=RadioSelect, choices=SI_NO, label='Fracaso Terapeutico (Resistencia a los ARV)', required=False, initial=None)
 	documentado_con =  forms.ChoiceField(widget=RadioSelect, choices=DOCUMENTADO, label='Documentado por', required=False, initial=None)
-	esquema_actual_arv =  forms.ChoiceField(widget=RadioSelect, choices=ESQUEMA_ARV, label='Esquema ARV', required=False, initial=None)
+	esquema_actual_arv =  forms.ChoiceField(widget=RadioSelect, choices=ESQUEMA_ARV, label='Esquema Actual ARV', required=False, initial=None)
 	
 	abandono =  forms.ChoiceField(widget=RadioSelect, choices=SI_NO, label='Abandono', required=False, initial=None)
 	suspension =  forms.ChoiceField(widget=RadioSelect, choices=SI_NO, label='Suspensión', required=False, initial=None)
