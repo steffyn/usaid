@@ -705,5 +705,10 @@ class BoletasSeguimientos(models.Model):
 	tiempo_arv = models.IntegerField(blank=True, null=True, verbose_name='Tiempo enn ARV')
 	fecha_proxentrega_arv = models.DateField(blank=True, null=True, verbose_name='Fecha de Próxima Entrega de ARV')
 
+	#creado_por = models.ForeignKey(User, related_name='creado_por_seguimiento')
+	#fecha_creacion = models.DateTimeField(auto_now_add=True)
+	#actualizado_por = models.ForeignKey(User, related_name='actualizado_por_seguimiento')
+	#fecha_actualizacion = models.DateTimeField(auto_now=True)
+	
 	def __unicode__(self):
 		return u'[%s] %s' % (self.boleta_clinica.boleta.expediente, self.boleta_clinica.boleta.identidad)

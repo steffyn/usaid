@@ -1060,6 +1060,8 @@ def boleta_seguimiento(request):
 					'infpel_intrat_diag',
 					'infpel_intrat_reitrat',
 					'infpel_intrat_fecha_reitrat',
+					'fecha_creacion',
+					'fecha_actualizacion',
 					
 				).filter(boleta__identidad=identidad)[:1].get()
 			)
