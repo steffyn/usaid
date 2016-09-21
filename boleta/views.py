@@ -1106,7 +1106,7 @@ def boleta_seguimiento(request):
 			if  formulario4.is_valid():
 				print identidad, 'IDENTIDAD'
 				try:
-					instance = BoletasClinicas.objects.get(boleta__identidad=identidad)
+					instance = BoletasClinicas.objects.filter(boleta__identidad=identidad).order_by('-fecha_actualizacion')[:1].get()
 				except Exception, e:
 					formulario = RPNForm()
 					formulario.fields['sexo'].widget.attrs['disabled'] = True
