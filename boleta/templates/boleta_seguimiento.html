@@ -55,6 +55,8 @@
          <div class="form-horizontal"> 
          <input type="hidden" name="persona" id='persona' value="" placeholder="">
          <input type="hidden" name="sexo_persona" id='sexo_persona' value="" placeholder="">
+         <input type="text" name="boleta_clinica" id='boleta_clinica' value="" placeholder="">
+         <input type="text" name="boleta_seg" id='boleta_seg' value="" placeholder="">
             <h4 class="text-center font-style">
                [PARTE I] DATOS GENERALES DE LA PERSONA USUARIA DE LOS SERVICIOS
             </h4>
@@ -1543,6 +1545,7 @@ $('#identidad').attr({
          $('#id_fecha_consulta').val(msg.seg.fecha_consulta)
          $('#id_fecha_proxima_cita').val(msg.seg.fecha_proxima_cita)
          $('#id_identidad').val(msg.seg.identidad)
+         $('#boleta_seg').val(msg.seg.id)
 
 
          $('#id_tmpsmx_'+(parseInt(msg.seg.tmpsmx)-1)).prop('checked', true)
@@ -1730,67 +1733,67 @@ $('#identidad').attr({
          $("#medicamento_preinscritos").val(option).trigger("change");
 
          var option = new Array();
-         if (msg.seg.abc_cant==true){
+         if (msg.seg.abc_ter==true){
             option.push('1')
          }
-         if (msg.seg.ft_cant==true){
+         if (msg.seg.ft_ter==true){
             option.push('2')
          }
-         if (msg.seg.d4t_cant==true){
+         if (msg.seg.d4t_ter==true){
             option.push('3')
          }
-         if (msg.seg.azt_cant==true){
+         if (msg.seg.azt_ter==true){
             option.push('4')
          }
-         if (msg.seg.efv_cant==true){
+         if (msg.seg.efv_ter==true){
             option.push('5')
          }
-         if (msg.seg.nvp_cant==true){
+         if (msg.seg.nvp_ter==true){
             option.push('6')
          }
-         if (msg.seg.ddi_cant==true){
+         if (msg.seg.ddi_ter==true){
             option.push('7')
          }
-         if (msg.seg.tc_cant==true){
+         if (msg.seg.tc_ter==true){
             option.push('8')
          }
-         if (msg.seg.tdf_cant==true){
+         if (msg.seg.tdf_ter==true){
             option.push('9')
          }
-         if (msg.seg.rpv_cant==true){
+         if (msg.seg.rpv_ter==true){
             option.push('10')
          }
-         if (msg.seg.etr_cant==true){
+         if (msg.seg.etr_ter==true){
             option.push('11')
          }
-         if (msg.seg.atv_cant==true){
+         if (msg.seg.atv_ter==true){
             option.push('12')
          }
-         if (msg.seg.drv_cant==true){
+         if (msg.seg.drv_ter==true){
             option.push('13')
          }
-         if (msg.seg.fpv_cant==true){
+         if (msg.seg.fpv_ter==true){
             option.push('14')
          }
-         if (msg.seg.idv_cant==true){
+         if (msg.seg.idv_ter==true){
             option.push('15')
          }
-         if (msg.seg.nfv_cant==true){
+         if (msg.seg.nfv_ter==true){
             option.push('16')
          }
-         if (msg.seg.sqv_cant==true){
+         if (msg.seg.sqv_ter==true){
             option.push('17')
          }
-         if (msg.seg.tpv_cant==true){
+         if (msg.seg.tpv_ter==true){
             option.push('18')
          }
-         if (msg.seg.ral_cant==true){
+         if (msg.seg.ral_ter==true){
             option.push('19')
          }
-         if (msg.seg.evg_cant==true){
+         if (msg.seg.evg_ter==true){
             option.push('20')
          }
-         if (msg.seg.dtg_cant==true){
+         if (msg.seg.dtg_ter==true){
             option.push('21')
          }
          $("#terapia").val(option).trigger("change");
@@ -1819,6 +1822,7 @@ $('#identidad').attr({
          $('#error_identidad').hide()
 
          $('#identidad').val(msg.persona.boleta__identidad)
+         $('#boleta_clinica').val(msg.persona.id)
          $('#id_primer_nombre').val(msg.persona.boleta__primer_nombre).prop('readonly', true)
          $('#id_segundo_nombre').val(msg.persona.boleta__segundo_nombre).prop('readonly', true)
          $('#id_primer_apellido').val(msg.persona.boleta__primer_apellido).prop('readonly', true)
@@ -2161,7 +2165,7 @@ $('#search_identidad').click(function() {
          $('#id_fecha_consulta').val(msg.seg.fecha_consulta)
          $('#id_fecha_proxima_cita').val(msg.seg.fecha_proxima_cita)
          $('#id_identidad').val(msg.seg.identidad)
-
+         $('#boleta_seg').val(msg.seg.id)
 
          $('#id_tmpsmx_'+(parseInt(msg.seg.tmpsmx)-1)).prop('checked', true)
          $('#id_tmpsmx_initrat_'+(parseInt(msg.seg.tmpsmx_initrat)-1)).prop('checked', true)
@@ -2348,67 +2352,67 @@ $('#search_identidad').click(function() {
          $("#medicamento_preinscritos").val(option).trigger("change");
 
          var option = new Array();
-         if (msg.seg.abc_cant==true){
+         if (msg.seg.abc_ter==true){
             option.push('1')
          }
-         if (msg.seg.ft_cant==true){
+         if (msg.seg.ft_ter==true){
             option.push('2')
          }
-         if (msg.seg.d4t_cant==true){
+         if (msg.seg.d4t_ter==true){
             option.push('3')
          }
-         if (msg.seg.azt_cant==true){
+         if (msg.seg.azt_ter==true){
             option.push('4')
          }
-         if (msg.seg.efv_cant==true){
+         if (msg.seg.efv_ter==true){
             option.push('5')
          }
-         if (msg.seg.nvp_cant==true){
+         if (msg.seg.nvp_ter==true){
             option.push('6')
          }
-         if (msg.seg.ddi_cant==true){
+         if (msg.seg.ddi_ter==true){
             option.push('7')
          }
-         if (msg.seg.tc_cant==true){
+         if (msg.seg.tc_ter==true){
             option.push('8')
          }
-         if (msg.seg.tdf_cant==true){
+         if (msg.seg.tdf_ter==true){
             option.push('9')
          }
-         if (msg.seg.rpv_cant==true){
+         if (msg.seg.rpv_ter==true){
             option.push('10')
          }
-         if (msg.seg.etr_cant==true){
+         if (msg.seg.etr_ter==true){
             option.push('11')
          }
-         if (msg.seg.atv_cant==true){
+         if (msg.seg.atv_ter==true){
             option.push('12')
          }
-         if (msg.seg.drv_cant==true){
+         if (msg.seg.drv_ter==true){
             option.push('13')
          }
-         if (msg.seg.fpv_cant==true){
+         if (msg.seg.fpv_ter==true){
             option.push('14')
          }
-         if (msg.seg.idv_cant==true){
+         if (msg.seg.idv_ter==true){
             option.push('15')
          }
-         if (msg.seg.nfv_cant==true){
+         if (msg.seg.nfv_ter==true){
             option.push('16')
          }
-         if (msg.seg.sqv_cant==true){
+         if (msg.seg.sqv_ter==true){
             option.push('17')
          }
-         if (msg.seg.tpv_cant==true){
+         if (msg.seg.tpv_ter==true){
             option.push('18')
          }
-         if (msg.seg.ral_cant==true){
+         if (msg.seg.ral_ter==true){
             option.push('19')
          }
-         if (msg.seg.evg_cant==true){
+         if (msg.seg.evg_ter==true){
             option.push('20')
          }
-         if (msg.seg.dtg_cant==true){
+         if (msg.seg.dtg_ter==true){
             option.push('21')
          }
          $("#terapia").val(option).trigger("change");
@@ -2436,6 +2440,7 @@ $('#search_identidad').click(function() {
          }
          $('#error_identidad').hide()
          $('#identidad').val(msg.persona.boleta__identidad)
+         $('#boleta_clinica').val(msg.persona.id)
          $('#id_primer_nombre').val(msg.persona.boleta__primer_nombre).prop('readonly', true)
          $('#id_segundo_nombre').val(msg.persona.boleta__segundo_nombre).prop('readonly', true)
          $('#id_primer_apellido').val(msg.persona.boleta__primer_apellido).prop('readonly', true)

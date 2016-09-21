@@ -932,6 +932,7 @@ def boleta_seguimiento(request):
 			try:
 				seguimiento = dict(
 					BoletasSeguimientos.objects.values(
+						'id',
 						'motivo',
 						'profpri',
 						'fecha_consulta',
@@ -1065,7 +1066,7 @@ def boleta_seguimiento(request):
 				)
 			except Exception, e:
 				seguimiento = False
-				print 'kjhkjhk'
+				print e,'kjhkjhk'
 				pass
 			
 		except Exception, e:
@@ -1106,7 +1107,7 @@ def boleta_seguimiento(request):
 			if  formulario4.is_valid():
 				print identidad, 'IDENTIDAD'
 				try:
-					instance = BoletasClinicas.objects.filter(boleta__identidad=identidad).order_by('-fecha_actualizacion')[:1].get()
+					instance = BoletasClinicas.objects.get(pk=request.POST.get('boleta_clinica'))
 				except Exception, e:
 					formulario = RPNForm()
 					formulario.fields['sexo'].widget.attrs['disabled'] = True
@@ -1264,7 +1265,7 @@ def boleta_seguimiento(request):
 				registro2.save()
 
 				try:
-					instance = BoletasSeguimientos.objects.filter(identidad=identidad)[:1].get()
+					instance = BoletasSeguimientos.objects.get(pk=request.POST.get('boleta_seg'))
 					formulario4 = BoletaSeguimientoForm(request.POST, instance=instance)
 				except Exception, e:
 					formulario4 = BoletaSeguimientoForm(request.POST)
@@ -1272,116 +1273,225 @@ def boleta_seguimiento(request):
 				registro = formulario4.save(commit=False)
 				registro.boleta_clinica = registro2
 				if '1' in request.POST.getlist('co1'):
-					registro.azt = True 
+					registro.azt = True
+				else:
+					registro.azt = False 
 				if '2' in request.POST.getlist('co1'):
-					registro.abc = True 
+					registro.abc = True
+				else:
+					registro.abc = False 
 				if '3' in request.POST.getlist('co1'):
-					registro.efv = True 
+					registro.efv = True
+				else:
+					registro.efv = False 
 				if '4' in request.POST.getlist('co1'):
-					registro.rpv = True 
+					registro.rpv = True
+				else:
+					registro.rpv = False 
 				if '5' in request.POST.getlist('co1'):
-					registro.dtf = True 
+					registro.dtf = True
+				else:
+					registro.dtf = False 
 				if '6' in request.POST.getlist('co1'):
-					registro.lpv = True 
+					registro.lpv = True
+				else:
+					registro.lpv = False 
 
 				if '1' in request.POST.getlist('medicamento_prescritos'):
 					registro.abc_med = True
+				else:
+						registro.abc_med = False
 				if '2' in request.POST.getlist('medicamento_prescritos'):
 					registro.ft_med = True
+				else:
+						registro.ft_med = False
 				if '3' in request.POST.getlist('medicamento_prescritos'):
 					registro.d4t_med = True
+				else:
+						registro.d4t_med = False
 				if '4' in request.POST.getlist('medicamento_prescritos'):
 					registro.azt_med = True
+				else:
+						registro.azt_med = False
 				if '5' in request.POST.getlist('medicamento_prescritos'):
 					registro.efv_med = True
+				else:
+						registro.efv_med = False
 				if '6' in request.POST.getlist('medicamento_prescritos'):
 					registro.nvp_med = True
+				else:
+						registro.nvp_med = False
 				if '7' in request.POST.getlist('medicamento_prescritos'):
 					registro.ddi_med = True
+				else:
+						registro.ddi_med = False
 				if '8' in request.POST.getlist('medicamento_prescritos'):
 					registro.tc_med = True
+				else:
+						registro.tc_med = False
 				if '9' in request.POST.getlist('medicamento_prescritos'):
 					registro.tdf_med = True
+				else:
+						registro.tdf_med = False
 				if '10' in request.POST.getlist('medicamento_prescritos'):
 					registro.rpv_med = True
+				else:
+						registro.rpv_med = False
 				if '11' in request.POST.getlist('medicamento_prescritos'):
 					registro.etr_med = True
+				else:
+						registro.etr_med = False
 				if '12' in request.POST.getlist('medicamento_prescritos'):
 					registro.atv_med = True
+				else:
+						registro.atv_med = False
 				if '13' in request.POST.getlist('medicamento_prescritos'):
 					registro.drv_med = True
+				else:
+						registro.drv_med = False
 				if '14' in request.POST.getlist('medicamento_prescritos'):
 					registro.fpv_med = True
+				else:
+						registro.fpv_med = False
 				if '15' in request.POST.getlist('medicamento_prescritos'):
 					registro.idv_med = True
+				else:
+						registro.idv_med = False
 				if '16' in request.POST.getlist('medicamento_prescritos'):
 					registro.nfv_med = True
+				else:
+						registro.nfv_med = False
 				if '17' in request.POST.getlist('medicamento_prescritos'):
 					registro.sqv_med = True
+				else:
+						registro.sqv_med = False
 				if '18' in request.POST.getlist('medicamento_prescritos'):
 					registro.tpv_med = True
+				else:
+						registro.tpv_med = False
 				if '19' in request.POST.getlist('medicamento_prescritos'):
 					registro.ral_med = True
+				else:
+						registro.ral_med = False
 				if '20' in request.POST.getlist('medicamento_prescritos'):
 					registro.evg_med = True
+				else:
+						registro.evg_med = False
 				if '21' in request.POST.getlist('medicamento_prescritos'):
 					registro.dtg_med = True
+				else:
+						registro.dtg_med = False
 
 				if '1' in request.POST.getlist('co2'):
-					registro.azt2_ter = True 
+					registro.azt2_ter = True
+				else:
+					registro.azt2_ter = False 
 				if '2' in request.POST.getlist('co2'):
-					registro.abc2_ter = True 
+					registro.abc2_ter = True
+				else:
+					registro.abc2_ter = False 
 				if '3' in request.POST.getlist('co2'):
-					registro.efv2_ter = True 
+					registro.efv2_ter = True
+				else:
+					registro.efv2_ter = False 
 				if '4' in request.POST.getlist('co2'):
-					registro.rpv2_ter = True 
+					registro.rpv2_ter = True
+				else:
+					registro.rpv2_ter = False 
 				if '5' in request.POST.getlist('co2'):
-					registro.dtf2_ter = True 
+					registro.dtf2_ter = True
+				else:
+					registro.dtf2_ter = False 
 				if '6' in request.POST.getlist('co2'):
-					registro.lpv2_ter = True 
+					registro.lpv2_ter = True
+				else:
+					registro.lpv2_ter = False 
 
+				print request.POST.getlist('terapia')
 				if '1' in request.POST.getlist('terapia'):
 					registro.abc_ter = True
+				else:
+						registro.abc_ter = False
 				if '2' in request.POST.getlist('terapia'):
 					registro.ft_ter = True
+				else:
+						registro.ft_ter = False
 				if '3' in request.POST.getlist('terapia'):
 					registro.d4t_ter = True
+				else:
+						registro.d4t_ter = False
 				if '4' in request.POST.getlist('terapia'):
 					registro.azt_ter = True
+				else:
+						registro.azt_ter = False
 				if '5' in request.POST.getlist('terapia'):
 					registro.efv_ter = True
+				else:
+						registro.efv_ter = False
 				if '6' in request.POST.getlist('terapia'):
 					registro.nvp_ter = True
+				else:
+						registro.nvp_ter = False
 				if '7' in request.POST.getlist('terapia'):
 					registro.ddi_ter = True
+				else:
+						registro.ddi_ter = False
 				if '8' in request.POST.getlist('terapia'):
 					registro.tc_ter = True
+				else:
+						registro.tc_ter = False
 				if '9' in request.POST.getlist('terapia'):
 					registro.tdf_ter = True
+				else:
+						registro.tdf_ter = False
 				if '10' in request.POST.getlist('terapia'):
 					registro.rpv_ter = True
+				else:
+						registro.rpv_ter = False
 				if '11' in request.POST.getlist('terapia'):
 					registro.etr_ter = True
+				else:
+						registro.etr_ter = False
 				if '12' in request.POST.getlist('terapia'):
 					registro.atv_ter = True
+				else:
+						registro.atv_ter = False
 				if '13' in request.POST.getlist('terapia'):
 					registro.drv_ter = True
+				else:
+						registro.drv_ter = False
 				if '14' in request.POST.getlist('terapia'):
 					registro.fpv_ter = True
+				else:
+						registro.fpv_ter = False
 				if '15' in request.POST.getlist('terapia'):
 					registro.idv_ter = True
+				else:
+						registro.idv_ter = False
 				if '16' in request.POST.getlist('terapia'):
 					registro.nfv_ter = True
+				else:
+						registro.nfv_ter = False
 				if '17' in request.POST.getlist('terapia'):
 					registro.sqv_ter = True
+				else:
+						registro.sqv_ter = False
 				if '18' in request.POST.getlist('terapia'):
 					registro.tpv_ter = True
+				else:
+						registro.tpv_ter = False
 				if '19' in request.POST.getlist('terapia'):
 					registro.ral_ter = True
+				else:
+						registro.ral_ter = False
 				if '20' in request.POST.getlist('terapia'):
 					registro.evg_ter = True
+				else:
+						registro.evg_ter = False
 				if '21' in request.POST.getlist('terapia'):
 					registro.dtg_ter = True
+				else:
+						registro.dtg_ter = False
 
 				registro.conteo_cd4 = request.POST.get('conteo_cd4')
 				registro.causa_fallecido = request.POST.get('causa_fallecido')
