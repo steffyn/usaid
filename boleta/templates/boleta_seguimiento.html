@@ -49,11 +49,9 @@
 
          {% if error %}
             <div class="alert alert-danger" role="alert"> 
-               Por favor ingrese una Ficha Clinica del Paciente (Formulario 2) 
+               Por favor ingrese una Ficha Clinica del Paciente.
             </div>
          {% endif %}
-         {{formulario2.errors}}
-         {{formulario3.errors}}
          <div class="form-horizontal"> 
          <input type="hidden" name="persona" id='persona' value="" placeholder="">
          <input type="hidden" name="sexo_persona" id='sexo_persona' value="" placeholder="">
@@ -62,14 +60,21 @@
             </h4>
             <p class="page-header"></p>
 
-            <div class="row">
+            <div class="row" >
                <div class="col-sm-12">
                   <div class="well text-center">
                      <b> Número de Expediente Clínico o Código Identificador Único  <br> <span id="expediente">  </span>  </b>
                   </div>
                </div>
             </div>
-
+            <div class="row" id="fechas">
+               <div class="col-sm-6">
+                  <p> <b> Fecha de Creación: </b> <span id="creacion"></span> </p>
+               </div>
+               <div class="col-sm-6">
+                  <p> <b> Fecha de Actualización: </b> <span id="modificacion"></span> </p>
+               </div>
+            </div>
             <div class="row">
                <div class="col-sm-7">
                   <div class="form-group">
@@ -1582,17 +1587,17 @@ $('#identidad').attr({
          $('#id_tiempo_arv').val(msg.seg.tiempo_arv)
          $('#id_fecha_proxentrega_arv').val(msg.seg.fecha_proxentrega_arv)
          $('#id_cantidad_medicamento').val(msg.seg.cantidad_medicamento)
-         $('#id_conteo_cd4_'+(parseInt(msg.seg.conteo_cd4)-1)).prop('checked', true)
-         $('#id_abandono_'+(parseInt(msg.seg.abandono)-1)).prop('checked', true)
-         $('#id_activo_'+(parseInt(msg.seg.activo)-1)).prop('checked', true)
-         $('#id_suspension_'+(parseInt(msg.seg.suspension)-1)).prop('checked', true)
-         $('#id_fallecido_'+(parseInt(msg.seg.fallecido)-1)).prop('checked', true)
-         $('#id_causa_fallecido_'+(parseInt(msg.seg.causa_fallecido)-1)).prop('checked', true)
-         $('#id_esquema_arv_'+(parseInt(msg.seg.esquema_arv)-1)).prop('checked', true)
-         $('#id_cambio_terapia_'+(parseInt(msg.seg.cambio_terapia)-1)).prop('checked', true)
-         $('#id_motivo_cambio_terapia_'+(parseInt(msg.seg.motivo_cambio_terapia)-1)).prop('checked', true)
-         $('#id_documentado_con_'+(parseInt(msg.seg.documentado_con)-1)).prop('checked', true)
-         $('#id_esquema_actual_arv_'+(parseInt(msg.seg.esquema_actual_arv)-1)).prop('checked', true)
+         $('#id_conteo_cd4_'+(parseInt(msg.seg.conteo_cd4)-1)).prop('checked', true).trigger('click')
+         $('#id_abandono_'+(parseInt(msg.seg.abandono)-1)).prop('checked', true).trigger('click')
+         $('#id_activo_'+(parseInt(msg.seg.activo)-1)).prop('checked', true).trigger('click')
+         $('#id_suspension_'+(parseInt(msg.seg.suspension)-1)).prop('checked', true).trigger('click')
+         $('#id_fallecido_'+(parseInt(msg.seg.fallecido)-1)).prop('checked', true).trigger('click')
+         $('#id_causa_fallecido_'+(parseInt(msg.seg.causa_fallecido)-1)).prop('checked', true).trigger('click')
+         $('#id_esquema_arv_'+(parseInt(msg.seg.esquema_arv)-1)).prop('checked', true).trigger('click')
+         $('#id_cambio_terapia_'+(parseInt(msg.seg.cambio_terapia)-1)).prop('checked', true).trigger('click')
+         $('#id_motivo_cambio_terapia_'+(parseInt(msg.seg.motivo_cambio_terapia)-1)).prop('checked', true).trigger('click')
+         $('#id_documentado_con_'+(parseInt(msg.seg.documentado_con)-1)).prop('checked', true).trigger('click')
+         $('#id_esquema_actual_arv_'+(parseInt(msg.seg.esquema_actual_arv)-1)).prop('checked', true).trigger('click')
          $('#id_abc_cant').val(msg.seg.abc_cant)
          $('#id_ft_cant').val(msg.seg.ft_cant)
          $('#id_d4t_cant').val(msg.seg.d4t_cant)
@@ -1818,94 +1823,99 @@ $('#identidad').attr({
          $('#id_segundo_apellido').val(msg.persona.boleta__segundo_apellido).prop('readonly', true)
          $('#id_fecha_nacimiento').val(msg.persona.boleta__fecha_nacimiento).prop('readonly', true).prop('disabled', true)
 
+         fecha1 = msg.persona.fecha_creacion.split('T')
+         fecha2 = msg.persona.fecha_actualizacion.split('T')
+         $('#creacion').text(fecha1[0])
+         $('#modificacion').text(fecha2[0])
+
          $('input[name=sexo]').prop('disabled',true).val('')
-         $('#id_sexo_'+(msg.persona.boleta__sexo-1)).prop('checked', true)
+         $('#id_sexo_'+(msg.persona.boleta__sexo-1)).prop('checked', true).trigger('change')
          
          $('#sexo_persona').val(msg.persona.boleta__sexo)
-         $('#id_estado_inmunologico_'+(msg.persona.estado_inmunologico-1)).prop('checked', true)
+         $('#id_estado_inmunologico_'+(msg.persona.estado_inmunologico-1)).prop('checked', true).trigger('change')
          $('#id_estadio_infeccion').val(msg.persona.estadio_infeccion)
 
          if(msg.persona.estado_clinico == 'A'){
-            $('#id_estado_clinico_1').prop('checked', true)
+            $('#id_estado_clinico_1').prop('checked', true).trigger('change')
          }
          if(msg.persona.estado_clinico == 'B'){
-            $('#id_estado_clinico_2').prop('checked', true)
+            $('#id_estado_clinico_2').prop('checked', true).trigger('change')
          }
          if(msg.persona.estado_clinico == 'C'){
-            $('#id_estado_clinico_3').prop('checked', true)
+            $('#id_estado_clinico_3').prop('checked', true).trigger('change')
          }
         
          console.log(msg.persona.estado_clinico)
 
-         $('#id_lic4_'+(msg.persona.lic4-1)).prop('checked', true)
-         $('#id_lic4_ordenado_consulta_'+(msg.persona.lic4_ordenado_consulta-1)).prop('checked', true)
+         $('#id_lic4_'+(msg.persona.lic4-1)).prop('checked', true).trigger('change')
+         $('#id_lic4_ordenado_consulta_'+(msg.persona.lic4_ordenado_consulta-1)).prop('checked', true).trigger('change')
          $('#id_lic4_resultado').val(msg.persona.lic4_resultado)
          $('#id_lic4_fecha_realizacion').val(msg.persona.lic4_fecha_realizacion)
 
-         $('#id_caviral_'+(msg.persona.caviral-1)).prop('checked', true)
-         $('#id_caviral_ordenado_consulta_'+(msg.persona.caviral_ordenado_consulta-1)).prop('checked', true)
+         $('#id_caviral_'+(msg.persona.caviral-1)).prop('checked', true).trigger('change')
+         $('#id_caviral_ordenado_consulta_'+(msg.persona.caviral_ordenado_consulta-1)).prop('checked', true).trigger('change')
          $('#id_caviral_resultado').val(msg.persona.caviral_resultado)
          $('#id_caviral_fecha_realizacion').val(msg.persona.caviral_fecha_realizacion)
 
-         $('#id_hepb_'+(msg.persona.hepb-1)).prop('checked', true)
-         $('#id_hepb_ordenado_consulta_'+(msg.persona.hepb_ordenado_consulta-1)).prop('checked', true)
-         $('#id_hepb_resultado_'+(parseInt(msg.persona.hepb_resultado)-1)).prop('checked', true)
+         $('#id_hepb_'+(msg.persona.hepb-1)).prop('checked', true).trigger('change')
+         $('#id_hepb_ordenado_consulta_'+(msg.persona.hepb_ordenado_consulta-1)).prop('checked', true).trigger('change')
+         $('#id_hepb_resultado_'+(parseInt(msg.persona.hepb_resultado)-1)).prop('checked', true).trigger('change')
           $('#id_hepb_fecha_realizacion').val(msg.persona.hepb_fecha_realizacion)
 
-         $('#id_hepc_'+(msg.persona.hepc-1)).prop('checked', true)
-         $('#id_hepc_ordenado_consulta_'+(msg.persona.hepc_ordenado_consulta-1)).prop('checked', true)
-         $('#id_hepc_resultado_'+(parseInt(msg.persona.hepc_resultado)-1)).prop('checked', true)
+         $('#id_hepc_'+(msg.persona.hepc-1)).prop('checked', true).trigger('change')
+         $('#id_hepc_ordenado_consulta_'+(msg.persona.hepc_ordenado_consulta-1)).prop('checked', true).trigger('change')
+         $('#id_hepc_resultado_'+(parseInt(msg.persona.hepc_resultado)-1)).prop('checked', true).trigger('change')
          $('#id_hepc_fecha_realizacion').val(msg.persona.hepc_fecha_realizacion)
 
-         $('#id_rpr_'+(msg.persona.rpr-1)).prop('checked', true)
-         $('#id_rpr_ordenado_consulta_'+(msg.persona.rpr_ordenado_consulta-1)).prop('checked', true)
-         $('#id_rpr_resultado_'+(parseInt(msg.persona.rpr_resultado)-1)).prop('checked', true)
+         $('#id_rpr_'+(msg.persona.rpr-1)).prop('checked', true).trigger('change')
+         $('#id_rpr_ordenado_consulta_'+(msg.persona.rpr_ordenado_consulta-1)).prop('checked', true).trigger('change')
+         $('#id_rpr_resultado_'+(parseInt(msg.persona.rpr_resultado)-1)).prop('checked', true).trigger('change')
          $('#id_rpr_fecha_realizacion').val(msg.persona.rpr_fecha_realizacion)
 
-         $('#id_rxtorax_'+(msg.persona.rxtorax-1)).prop('checked', true)
-         $('#id_rxtorax_ordenado_consulta_'+(msg.persona.rxtorax_ordenado_consulta-1)).prop('checked', true)
+         $('#id_rxtorax_'+(msg.persona.rxtorax-1)).prop('checked', true).trigger('change')
+         $('#id_rxtorax_ordenado_consulta_'+(msg.persona.rxtorax_ordenado_consulta-1)).prop('checked', true).trigger('change')
          $('#id_rxtorax_resultado').val(msg.persona.rxtorax_resultado)
          $('#id_rxtorax_fecha_realizacion').val(msg.persona.rxtorax_fecha_realizacion)
 
-         $('#id_sespu_'+(msg.persona.sespu-1)).prop('checked', true)
-         $('#id_sespu_ordenado_consulta_'+(msg.persona.sespu_ordenado_consulta-1)).prop('checked', true)
+         $('#id_sespu_'+(msg.persona.sespu-1)).prop('checked', true).trigger('change')
+         $('#id_sespu_ordenado_consulta_'+(msg.persona.sespu_ordenado_consulta-1)).prop('checked', true).trigger('change')
          $('#id_sespu_resultado').val(msg.persona.sespu_resultado)
          $('#id_sespu_fecha_realizacion').val(msg.persona.sespu_fecha_realizacion)
 
-         $('#id_ppd_'+(msg.persona.ppd-1)).prop('checked', true)
-         $('#id_ppd_ordenado_consulta_'+(msg.persona.ppd_ordenado_consulta-1)).prop('checked', true)
+         $('#id_ppd_'+(msg.persona.ppd-1)).prop('checked', true).trigger('change')
+         $('#id_ppd_ordenado_consulta_'+(msg.persona.ppd_ordenado_consulta-1)).prop('checked', true).trigger('change')
          $('#id_ppd_resultado').val(msg.persona.ppd_resultado)
          $('#id_ppd_fecha_realizacion').val(msg.persona.ppd_fecha_realizacion)
 
-         $('#id_cultivo_'+(msg.persona.cultivo-1)).prop('checked', true)
-         $('#id_cultivo_ordenado_consulta_'+(msg.persona.cultivo_ordenado_consulta-1)).prop('checked', true)
+         $('#id_cultivo_'+(msg.persona.cultivo-1)).prop('checked', true).trigger('change')
+         $('#id_cultivo_ordenado_consulta_'+(msg.persona.cultivo_ordenado_consulta-1)).prop('checked', true).trigger('change')
          $('#id_cultivo_resultado').val(msg.persona.cultivo_resultado)
          $('#id_cultivo_fecha_realizacion').val(msg.persona.cultivo_fecha_realizacion)
 
-         $('#id_usg_'+(msg.persona.usg-1)).prop('checked', true)
-         $('#id_usg_ordenado_consulta_'+(msg.persona.usg_ordenado_consulta-1)).prop('checked', true)
+         $('#id_usg_'+(msg.persona.usg-1)).prop('checked', true).trigger('change')
+         $('#id_usg_ordenado_consulta_'+(msg.persona.usg_ordenado_consulta-1)).prop('checked', true).trigger('change')
          $('#id_usg_resultado').val(msg.persona.usg_resultado)
          $('#id_usg_fecha_realizacion').val(msg.persona.usg_fecha_realizacion)
 
-         $('#id_biopsia_'+(msg.persona.biopsia-1)).prop('checked', true)
-         $('#id_biopsia_ordenado_consulta_'+(msg.persona.biopsia_ordenado_consulta-1)).prop('checked', true)
+         $('#id_biopsia_'+(msg.persona.biopsia-1)).prop('checked', true).trigger('change')
+         $('#id_biopsia_ordenado_consulta_'+(msg.persona.biopsia_ordenado_consulta-1)).prop('checked', true).trigger('change')
          $('#id_biopsia_resultado').val(msg.persona.biopsia_resultado)
          $('#id_biopsia_fecha_realizacion').val(msg.persona.biopsia_fecha_realizacion)
 
-         $('#id_otro_'+(msg.persona.otro-1)).prop('checked', true)
-         $('#id_otro_ordenado_consulta_'+(msg.persona.otro_ordenado_consulta-1)).prop('checked', true)
+         $('#id_otro_'+(msg.persona.otro-1)).prop('checked', true).trigger('change')
+         $('#id_otro_ordenado_consulta_'+(msg.persona.otro_ordenado_consulta-1)).prop('checked', true).trigger('change')
          $('#id_otro_resultado').val(msg.persona.otro_resultado)
          $('#id_otro_fecha_realizacion').val(msg.persona.otro_fecha_realizacion)
 
 
 
-         $('#id_tupu_trat_'+(msg.persona.tupu_trat-1)).prop('checked', true)
-         $('#id_tupu_'+(msg.persona.tupu-1)).prop('checked', true)
-         $('#id_tupu_initrat_'+(msg.persona.tupu_initrat-1)).prop('checked', true)
-         $('#id_tupu_entrat_'+(msg.persona.tupu_entrat-1)).prop('checked', true)
-         $('#id_tupu_entrat_fintrat_'+(msg.persona.tupu_entrat_fintrat-1)).prop('checked', true)
-         $('#id_tupu_intrat_'+(msg.persona.tupu_intrat-1)).prop('checked', true)
-         $('#id_tupu_intrat_reitrat_'+(msg.persona.tupu_intrat_reitrat-1)).prop('checked', true)
+         $('#id_tupu_trat_'+(msg.persona.tupu_trat-1)).prop('checked', true).trigger('change')
+         $('#id_tupu_'+(msg.persona.tupu-1)).prop('checked', true).trigger('change')
+         $('#id_tupu_initrat_'+(msg.persona.tupu_initrat-1)).prop('checked', true).trigger('change')
+         $('#id_tupu_entrat_'+(msg.persona.tupu_entrat-1)).prop('checked', true).trigger('change')
+         $('#id_tupu_entrat_fintrat_'+(msg.persona.tupu_entrat_fintrat-1)).prop('checked', true).trigger('change')
+         $('#id_tupu_intrat_'+(msg.persona.tupu_intrat-1)).prop('checked', true).trigger('change')
+         $('#id_tupu_intrat_reitrat_'+(msg.persona.tupu_intrat_reitrat-1)).prop('checked', true).trigger('change')
          $('#id_tupu_diag').val(msg.persona.tupu_diag)
          $('#id_tupu_fecha_initrat').val(msg.persona.tupu_fecha_initrat)
          $('#id_tupu_entrat_diag').val(msg.persona.tupu_entrat_diag)
@@ -1913,12 +1923,12 @@ $('#identidad').attr({
          $('#id_tupu_intrat_diag').val(msg.persona.tupu_intrat_diag)
          $('#id_tupu_intrat_fecha_reitrat').val(msg.persona.tupu_intrat_fecha_reitrat)
 
-         $('#id_tudi_'+(msg.persona.tudi-1)).prop('checked', true)
-         $('#id_tudi_initrat_'+(msg.persona.tudi_initrat-1)).prop('checked', true)
-         $('#id_tudi_entrat_'+(msg.persona.tudi_entrat-1)).prop('checked', true)
-         $('#id_tudi_entrat_fintrat_'+(msg.persona.tudi_entrat_fintrat-1)).prop('checked', true)
-         $('#id_tudi_intrat_'+(msg.persona.tudi_intrat-1)).prop('checked', true)
-         $('#id_tudi_intrat_reitrat_'+(msg.persona.tudi_intrat_reitrat-1)).prop('checked', true)
+         $('#id_tudi_'+(msg.persona.tudi-1)).prop('checked', true).trigger('change')
+         $('#id_tudi_initrat_'+(msg.persona.tudi_initrat-1)).prop('checked', true).trigger('change')
+         $('#id_tudi_entrat_'+(msg.persona.tudi_entrat-1)).prop('checked', true).trigger('change')
+         $('#id_tudi_entrat_fintrat_'+(msg.persona.tudi_entrat_fintrat-1)).prop('checked', true).trigger('change')
+         $('#id_tudi_intrat_'+(msg.persona.tudi_intrat-1)).prop('checked', true).trigger('change')
+         $('#id_tudi_intrat_reitrat_'+(msg.persona.tudi_intrat_reitrat-1)).prop('checked', true).trigger('change')
          $('#id_tudi_diag').val(msg.persona.tudi_diag)
          $('#id_tudi_fecha_initrat').val(msg.persona.tudi_fecha_initrat)
          $('#id_tudi_entrat_diag').val(msg.persona.tudi_entrat_diag)
@@ -1926,12 +1936,12 @@ $('#identidad').attr({
          $('#id_tudi_intrat_diag').val(msg.persona.tudi_intrat_diag)
          $('#id_tudi_intrat_fecha_reitrat').val(msg.persona.tudi_intrat_fecha_reitrat)
 
-         $('#id_hepb_'+(msg.persona.hepb-1)).prop('checked', true)
-         $('#id_hepb_initrat_'+(msg.persona.hepb_initrat-1)).prop('checked', true)
-         $('#id_hepb_entrat_'+(msg.persona.hepb_entrat-1)).prop('checked', true)
-         $('#id_hepb_entrat_fintrat_'+(msg.persona.hepb_entrat_fintrat-1)).prop('checked', true)
-         $('#id_hepb_intrat_'+(msg.persona.hepb_intrat-1)).prop('checked', true)
-         $('#id_hepb_intrat_reitrat_'+(msg.persona.hepb_intrat_reitrat-1)).prop('checked', true)
+         $('#id_hepb_'+(msg.persona.hepb-1)).prop('checked', true).trigger('change')
+         $('#id_hepb_initrat_'+(msg.persona.hepb_initrat-1)).prop('checked', true).trigger('change')
+         $('#id_hepb_entrat_'+(msg.persona.hepb_entrat-1)).prop('checked', true).trigger('change')
+         $('#id_hepb_entrat_fintrat_'+(msg.persona.hepb_entrat_fintrat-1)).prop('checked', true).trigger('change')
+         $('#id_hepb_intrat_'+(msg.persona.hepb_intrat-1)).prop('checked', true).trigger('change')
+         $('#id_hepb_intrat_reitrat_'+(msg.persona.hepb_intrat_reitrat-1)).prop('checked', true).trigger('change')
          $('#id_hepb_diag').val(msg.persona.hepb_diag)
          $('#id_hepb_fecha_initrat').val(msg.persona.hepb_fecha_initrat)
          $('#id_hepb_entrat_diag').val(msg.persona.hepb_entrat_diag)
@@ -1939,12 +1949,12 @@ $('#identidad').attr({
          $('#id_hepb_intrat_diag').val(msg.persona.hepb_intrat_diag)
          $('#id_hepb_intrat_fecha_reitrat').val(msg.persona.hepb_intrat_fecha_reitrat)
 
-         $('#id_hepc_'+(msg.persona.lic4-1)).prop('checked', true)
-         $('#id_hepc_initrat_'+(msg.persona.hepc_initrat-1)).prop('checked', true)
-         $('#id_hepc_entrat_'+(msg.persona.hepc_entrat-1)).prop('checked', true)
-         $('#id_hepc_entrat_fintrat_'+(msg.persona.hepc_entrat_fintrat-1)).prop('checked', true)
-         $('#id_hepc_intrat_'+(msg.persona.hepc_intrat-1)).prop('checked', true)
-         $('#id_hepc_intrat_reitrat_'+(msg.persona.hepc_intrat_reitrat-1)).prop('checked', true)
+         $('#id_hepc_'+(msg.persona.lic4-1)).prop('checked', true).trigger('change')
+         $('#id_hepc_initrat_'+(msg.persona.hepc_initrat-1)).prop('checked', true).trigger('change')
+         $('#id_hepc_entrat_'+(msg.persona.hepc_entrat-1)).prop('checked', true).trigger('change')
+         $('#id_hepc_entrat_fintrat_'+(msg.persona.hepc_entrat_fintrat-1)).prop('checked', true).trigger('change')
+         $('#id_hepc_intrat_'+(msg.persona.hepc_intrat-1)).prop('checked', true).trigger('change')
+         $('#id_hepc_intrat_reitrat_'+(msg.persona.hepc_intrat_reitrat-1)).prop('checked', true).trigger('change')
          $('#id_hepc_diag').val(msg.persona.hepc_diag)
          $('#id_hepc_fecha_initrat').val(msg.persona.hepc_fecha_initrat)
          $('#id_hepc_entrat_diag').val(msg.persona.hepc_entrat_diag)
@@ -1952,12 +1962,12 @@ $('#identidad').attr({
          $('#id_hepc_intrat_diag').val(msg.persona.hepc_intrat_diag)
          $('#id_hepc_intrat_fecha_reitrat').val(msg.persona.hepc_intrat_fecha_reitrat)
 
-         $('#id_ulg_'+(msg.persona.lic4-1)).prop('checked', true)
-         $('#id_ulg_initrat_'+(msg.persona.ulg_initrat-1)).prop('checked', true)
-         $('#id_ulg_entrat_'+(msg.persona.ulg_entrat-1)).prop('checked', true)
-         $('#id_ulg_entrat_fintrat_'+(msg.persona.ulg_entrat_fintrat-1)).prop('checked', true)
-         $('#id_ulg_intrat_'+(msg.persona.ulg_intrat-1)).prop('checked', true)
-         $('#id_ulg_intrat_reitrat_'+(msg.persona.ulg_intrat_reitrat-1)).prop('checked', true)
+         $('#id_ulg_'+(msg.persona.lic4-1)).prop('checked', true).trigger('change')
+         $('#id_ulg_initrat_'+(msg.persona.ulg_initrat-1)).prop('checked', true).trigger('change')
+         $('#id_ulg_entrat_'+(msg.persona.ulg_entrat-1)).prop('checked', true).trigger('change')
+         $('#id_ulg_entrat_fintrat_'+(msg.persona.ulg_entrat_fintrat-1)).prop('checked', true).trigger('change')
+         $('#id_ulg_intrat_'+(msg.persona.ulg_intrat-1)).prop('checked', true).trigger('change')
+         $('#id_ulg_intrat_reitrat_'+(msg.persona.ulg_intrat_reitrat-1)).prop('checked', true).trigger('change')
          $('#id_ulg_diag').val(msg.persona.ulg_diag)
          $('#id_ulg_fecha_initrat').val(msg.persona.ulg_fecha_initrat)
          $('#id_ulg_entrat_diag').val(msg.persona.ulg_entrat_diag)
@@ -1965,12 +1975,12 @@ $('#identidad').attr({
          $('#id_ulg_intrat_diag').val(msg.persona.ulg_intrat_diag)
          $('#id_ulg_intrat_fecha_reitrat').val(msg.persona.ulg_intrat_fecha_reitrat)
 
-         $('#id_secure_'+(msg.persona.lic4-1)).prop('checked', true)
-         $('#id_secure_initrat_'+(msg.persona.secure_initrat-1)).prop('checked', true)
-         $('#id_secure_entrat_'+(msg.persona.secure_entrat-1)).prop('checked', true)
-         $('#id_secure_entrat_fintrat_'+(msg.persona.secure_entrat_fintrat-1)).prop('checked', true)
-         $('#id_secure_intrat_'+(msg.persona.secure_intrat-1)).prop('checked', true)
-         $('#id_secure_intrat_reitrat_'+(msg.persona.secure_intrat_reitrat-1)).prop('checked', true)
+         $('#id_secure_'+(msg.persona.lic4-1)).prop('checked', true).trigger('change')
+         $('#id_secure_initrat_'+(msg.persona.secure_initrat-1)).prop('checked', true).trigger('change')
+         $('#id_secure_entrat_'+(msg.persona.secure_entrat-1)).prop('checked', true).trigger('change')
+         $('#id_secure_entrat_fintrat_'+(msg.persona.secure_entrat_fintrat-1)).prop('checked', true).trigger('change')
+         $('#id_secure_intrat_'+(msg.persona.secure_intrat-1)).prop('checked', true).trigger('change')
+         $('#id_secure_intrat_reitrat_'+(msg.persona.secure_intrat_reitrat-1)).prop('checked', true).trigger('change')
          $('#id_secure_diag').val(msg.persona.secure_diag)
          $('#id_secure_fecha_initrat').val(msg.persona.secure_fecha_initrat)
          $('#id_secure_entrat_diag').val(msg.persona.secure_entrat_diag)
@@ -1978,12 +1988,12 @@ $('#identidad').attr({
          $('#id_secure_intrat_diag').val(msg.persona.secure_intrat_diag)
          $('#id_secure_intrat_fecha_reitrat').val(msg.persona.secure_intrat_fecha_reitrat)
 
-         $('#id_fluva_'+(msg.persona.lic4-1)).prop('checked', true)
-         $('#id_fluva_initrat_'+(msg.persona.fluva_initrat-1)).prop('checked', true)
-         $('#id_fluva_entrat_'+(msg.persona.fluva_entrat-1)).prop('checked', true)
-         $('#id_fluva_entrat_fintrat_'+(msg.persona.fluva_entrat_fintrat-1)).prop('checked', true)
-         $('#id_fluva_intrat_'+(msg.persona.fluva_intrat-1)).prop('checked', true)
-         $('#id_fluva_intrat_reitrat_'+(msg.persona.fluva_intrat_reitrat-1)).prop('checked', true)
+         $('#id_fluva_'+(msg.persona.lic4-1)).prop('checked', true).trigger('change')
+         $('#id_fluva_initrat_'+(msg.persona.fluva_initrat-1)).prop('checked', true).trigger('change')
+         $('#id_fluva_entrat_'+(msg.persona.fluva_entrat-1)).prop('checked', true).trigger('change')
+         $('#id_fluva_entrat_fintrat_'+(msg.persona.fluva_entrat_fintrat-1)).prop('checked', true).trigger('change')
+         $('#id_fluva_intrat_'+(msg.persona.fluva_intrat-1)).prop('checked', true).trigger('change')
+         $('#id_fluva_intrat_reitrat_'+(msg.persona.fluva_intrat_reitrat-1)).prop('checked', true).trigger('change')
          $('#id_fluva_diag').val(msg.persona.fluva_diag)
          $('#id_fluva_fecha_initrat').val(msg.persona.fluva_fecha_initrat)
          $('#id_fluva_entrat_diag').val(msg.persona.fluva_entrat_diag)
@@ -1991,12 +2001,12 @@ $('#identidad').attr({
          $('#id_fluva_intrat_diag').val(msg.persona.fluva_intrat_diag)
          $('#id_fluva_intrat_fecha_reitrat').val(msg.persona.fluva_intrat_fecha_reitrat)
 
-         $('#id_buin_'+(msg.persona.lic4-1)).prop('checked', true)
-         $('#id_buin_initrat_'+(msg.persona.buin_initrat-1)).prop('checked', true)
-         $('#id_buin_entrat_'+(msg.persona.buin_entrat-1)).prop('checked', true)
-         $('#id_buin_entrat_fintrat_'+(msg.persona.buin_entrat_fintrat-1)).prop('checked', true)
-         $('#id_buin_intrat_'+(msg.persona.buin_intrat-1)).prop('checked', true)
-         $('#id_buin_intrat_reitrat_'+(msg.persona.buin_intrat_reitrat-1)).prop('checked', true)
+         $('#id_buin_'+(msg.persona.lic4-1)).prop('checked', true).trigger('change')
+         $('#id_buin_initrat_'+(msg.persona.buin_initrat-1)).prop('checked', true).trigger('change')
+         $('#id_buin_entrat_'+(msg.persona.buin_entrat-1)).prop('checked', true).trigger('change')
+         $('#id_buin_entrat_fintrat_'+(msg.persona.buin_entrat_fintrat-1)).prop('checked', true).trigger('change')
+         $('#id_buin_intrat_'+(msg.persona.buin_intrat-1)).prop('checked', true).trigger('change')
+         $('#id_buin_intrat_reitrat_'+(msg.persona.buin_intrat_reitrat-1)).prop('checked', true).trigger('change')
          $('#id_buin_diag').val(msg.persona.buin_diag)
          $('#id_buin_fecha_initrat').val(msg.persona.buin_fecha_initrat)
          $('#id_buin_entrat_diag').val(msg.persona.buin_entrat_diag)
@@ -2004,12 +2014,12 @@ $('#identidad').attr({
          $('#id_buin_intrat_diag').val(msg.persona.buin_intrat_diag)
          $('#id_buin_intrat_fecha_reitrat').val(msg.persona.buin_intrat_fecha_reitrat)
 
-         $('#id_edes_'+(msg.persona.lic4-1)).prop('checked', true)
-         $('#id_edes_initrat_'+(msg.persona.edes_initrat-1)).prop('checked', true)
-         $('#id_edes_entrat_'+(msg.persona.edes_entrat-1)).prop('checked', true)
-         $('#id_edes_entrat_fintrat_'+(msg.persona.edes_entrat_fintrat-1)).prop('checked', true)
-         $('#id_edes_intrat_'+(msg.persona.edes_intrat-1)).prop('checked', true)
-         $('#id_edes_intrat_reitrat_'+(msg.persona.edes_intrat_reitrat-1)).prop('checked', true)
+         $('#id_edes_'+(msg.persona.lic4-1)).prop('checked', true).trigger('change')
+         $('#id_edes_initrat_'+(msg.persona.edes_initrat-1)).prop('checked', true).trigger('change')
+         $('#id_edes_entrat_'+(msg.persona.edes_entrat-1)).prop('checked', true).trigger('change')
+         $('#id_edes_entrat_fintrat_'+(msg.persona.edes_entrat_fintrat-1)).prop('checked', true).trigger('change')
+         $('#id_edes_intrat_'+(msg.persona.edes_intrat-1)).prop('checked', true).trigger('change')
+         $('#id_edes_intrat_reitrat_'+(msg.persona.edes_intrat_reitrat-1)).prop('checked', true).trigger('change')
          $('#id_edes_diag').val(msg.persona.edes_diag)
          $('#id_edes_fecha_initrat').val(msg.persona.edes_fecha_initrat)
          $('#id_edes_entrat_diag').val(msg.persona.edes_entrat_diag)
@@ -2017,12 +2027,12 @@ $('#identidad').attr({
          $('#id_edes_intrat_diag').val(msg.persona.edes_intrat_diag)
          $('#id_edes_intrat_fecha_reitrat').val(msg.persona.edes_intrat_fecha_reitrat)
 
-         $('#id_verge_'+(msg.persona.lic4-1)).prop('checked', true)
-         $('#id_verge_initrat_'+(msg.persona.verge_initrat-1)).prop('checked', true)
-         $('#id_verge_entrat_'+(msg.persona.verge_entrat-1)).prop('checked', true)
-         $('#id_verge_entrat_fintrat_'+(msg.persona.verge_entrat_fintrat-1)).prop('checked', true)
-         $('#id_verge_intrat_'+(msg.persona.verge_intrat-1)).prop('checked', true)
-         $('#id_verge_intrat_reitrat_'+(msg.persona.verge_intrat_reitrat-1)).prop('checked', true)
+         $('#id_verge_'+(msg.persona.lic4-1)).prop('checked', true).trigger('change')
+         $('#id_verge_initrat_'+(msg.persona.verge_initrat-1)).prop('checked', true).trigger('change')
+         $('#id_verge_entrat_'+(msg.persona.verge_entrat-1)).prop('checked', true).trigger('change')
+         $('#id_verge_entrat_fintrat_'+(msg.persona.verge_entrat_fintrat-1)).prop('checked', true).trigger('change')
+         $('#id_verge_intrat_'+(msg.persona.verge_intrat-1)).prop('checked', true).trigger('change')
+         $('#id_verge_intrat_reitrat_'+(msg.persona.verge_intrat_reitrat-1)).prop('checked', true).trigger('change')
          $('#id_verge_diag').val(msg.persona.verge_diag)
          $('#id_verge_fecha_initrat').val(msg.persona.verge_fecha_initrat)
          $('#id_verge_entrat_diag').val(msg.persona.verge_entrat_diag)
@@ -2030,12 +2040,12 @@ $('#identidad').attr({
          $('#id_verge_intrat_diag').val(msg.persona.verge_intrat_diag)
          $('#id_verge_intrat_fecha_reitrat').val(msg.persona.verge_intrat_fecha_reitrat)
 
-         $('#id_trasex_'+(msg.persona.lic4-1)).prop('checked', true)
-         $('#id_trasex_initrat_'+(msg.persona.trasex_initrat-1)).prop('checked', true)
-         $('#id_trasex_entrat_'+(msg.persona.trasex_entrat-1)).prop('checked', true)
-         $('#id_trasex_entrat_fintrat_'+(msg.persona.trasex_entrat_fintrat-1)).prop('checked', true)
-         $('#id_trasex_intrat_'+(msg.persona.trasex_intrat-1)).prop('checked', true)
-         $('#id_trasex_intrat_reitrat_'+(msg.persona.trasex_intrat_reitrat-1)).prop('checked', true)
+         $('#id_trasex_'+(msg.persona.lic4-1)).prop('checked', true).trigger('change')
+         $('#id_trasex_initrat_'+(msg.persona.trasex_initrat-1)).prop('checked', true).trigger('change')
+         $('#id_trasex_entrat_'+(msg.persona.trasex_entrat-1)).prop('checked', true).trigger('change')
+         $('#id_trasex_entrat_fintrat_'+(msg.persona.trasex_entrat_fintrat-1)).prop('checked', true).trigger('change')
+         $('#id_trasex_intrat_'+(msg.persona.trasex_intrat-1)).prop('checked', true).trigger('change')
+         $('#id_trasex_intrat_reitrat_'+(msg.persona.trasex_intrat_reitrat-1)).prop('checked', true).trigger('change')
          $('#id_trasex_diag').val(msg.persona.trasex_diag)
          $('#id_trasex_fecha_initrat').val(msg.persona.trasex_fecha_initrat)
          $('#id_trasex_entrat_diag').val(msg.persona.trasex_entrat_diag)
@@ -2043,12 +2053,12 @@ $('#identidad').attr({
          $('#id_trasex_intrat_diag').val(msg.persona.trasex_intrat_diag)
          $('#id_trasex_intrat_fecha_reitrat').val(msg.persona.trasex_intrat_fecha_reitrat)
 
-         $('#id_proc_'+(msg.persona.lic4-1)).prop('checked', true)
-         $('#id_proc_initrat_'+(msg.persona.proc_initrat-1)).prop('checked', true)
-         $('#id_proc_entrat_'+(msg.persona.proc_entrat-1)).prop('checked', true)
-         $('#id_proc_entrat_fintrat_'+(msg.persona.proc_entrat_fintrat-1)).prop('checked', true)
-         $('#id_proc_intrat_'+(msg.persona.proc_intrat-1)).prop('checked', true)
-         $('#id_proc_intrat_reitrat_'+(msg.persona.proc_intrat_reitrat-1)).prop('checked', true)
+         $('#id_proc_'+(msg.persona.lic4-1)).prop('checked', true).trigger('change')
+         $('#id_proc_initrat_'+(msg.persona.proc_initrat-1)).prop('checked', true).trigger('change')
+         $('#id_proc_entrat_'+(msg.persona.proc_entrat-1)).prop('checked', true).trigger('change')
+         $('#id_proc_entrat_fintrat_'+(msg.persona.proc_entrat_fintrat-1)).prop('checked', true).trigger('change')
+         $('#id_proc_intrat_'+(msg.persona.proc_intrat-1)).prop('checked', true).trigger('change')
+         $('#id_proc_intrat_reitrat_'+(msg.persona.proc_intrat_reitrat-1)).prop('checked', true).trigger('change')
          $('#id_proc_diag').val(msg.persona.proc_diag)
          $('#id_proc_fecha_initrat').val(msg.persona.proc_fecha_initrat)
          $('#id_proc_entrat_diag').val(msg.persona.proc_entrat_diag)
@@ -2056,12 +2066,12 @@ $('#identidad').attr({
          $('#id_proc_intrat_diag').val(msg.persona.proc_intrat_diag)
          $('#id_proc_intrat_fecha_reitrat').val(msg.persona.proc_intrat_fecha_reitrat)
 
-         $('#id_infpel_'+(msg.persona.lic4-1)).prop('checked', true)
-         $('#id_infpel_initrat_'+(msg.persona.infpel_initrat-1)).prop('checked', true)
-         $('#id_infpel_entrat_'+(msg.persona.infpel_entrat-1)).prop('checked', true)
-         $('#id_infpel_entrat_fintrat_'+(msg.persona.infpel_entrat_fintrat-1)).prop('checked', true)
-         $('#id_infpel_intrat_'+(msg.persona.infpel_intrat-1)).prop('checked', true)
-         $('#id_infpel_intrat_reitrat_'+(msg.persona.infpel_intrat_reitrat-1)).prop('checked', true)
+         $('#id_infpel_'+(msg.persona.lic4-1)).prop('checked', true).trigger('change')
+         $('#id_infpel_initrat_'+(msg.persona.infpel_initrat-1)).prop('checked', true).trigger('change')
+         $('#id_infpel_entrat_'+(msg.persona.infpel_entrat-1)).prop('checked', true).trigger('change')
+         $('#id_infpel_entrat_fintrat_'+(msg.persona.infpel_entrat_fintrat-1)).prop('checked', true).trigger('change')
+         $('#id_infpel_intrat_'+(msg.persona.infpel_intrat-1)).prop('checked', true).trigger('change')
+         $('#id_infpel_intrat_reitrat_'+(msg.persona.infpel_intrat_reitrat-1)).prop('checked', true).trigger('change')
          $('#id_infpel_diag').val(msg.persona.infpel_diag)
          $('#id_infpel_fecha_initrat').val(msg.persona.infpel_fecha_initrat)
          $('#id_infpel_entrat_diag').val(msg.persona.infpel_entrat_diag)
@@ -2129,7 +2139,7 @@ $('#search_identidad').click(function() {
    identidad = $('#identidad').val();
 
    expediente = identidad + '-' + $('#id_fecha_nacimiento').val() + '-' + $('input[name=sexo]').val()
-   $('.identidad').val($(this).val())
+   $('.identidad').val($('#identidad').val())
    $('#expediente').text(btoa(identidad) + '-'+ $('#id_fecha_nacimiento').val() + '-' + $('input[name=sexo]').val())
    $('#input_expediente, .expediente').val(btoa(identidad) + '-'+ $('#id_fecha_nacimiento').val() + '-' + $('input[name=sexo]').val())
 
@@ -2139,9 +2149,270 @@ $('#search_identidad').click(function() {
       identidad: identidad
    }
    })
-   .done(function( persona ) {
-      console.log()
-      if (persona==false){
+   .done(function( msg ) {
+      if (msg.seg == false){
+         $('#formulario').trigger("reset");
+      }else{
+         console.log("PASO POR AQUI",msg.seg.motivo)
+         $('#id_motivo_'+(parseInt(msg.seg.motivo)-1)).prop('checked', true)
+         $('#id_profpri_'+(parseInt(msg.seg.profpri)-1)).prop('checked', true)
+         $('#id_fecha_consulta').val(msg.seg.fecha_consulta)
+         $('#id_fecha_proxima_cita').val(msg.seg.fecha_proxima_cita)
+         $('#id_identidad').val(msg.seg.identidad)
+
+
+         $('#id_tmpsmx_'+(parseInt(msg.seg.tmpsmx)-1)).prop('checked', true)
+         $('#id_tmpsmx_initrat_'+(parseInt(msg.seg.tmpsmx_initrat)-1)).prop('checked', true)
+         $('#id_tmpsmx_fintrat_'+(parseInt(msg.seg.tmpsmx_fintrat)-1)).prop('checked', true)
+         $('#id_tmpsmx_intrat_'+(parseInt(msg.seg.tmpsmx_intrat)-1)).prop('checked', true)
+         $('#id_tmpsmx_reitrat_'+(parseInt(msg.seg.tmpsmx_reitrat)-1)).prop('checked', true)
+         $('#id_tmpsmx_fecha_initrat').val(msg.seg.tmpsmx_fecha_initrat)
+         $('#id_tmpsmx_fecha_fintrat').val(msg.seg.tmpsmx_fecha_fintrat)
+         $('#id_tmpsmx_fecha_intrat').val(msg.seg.tmpsmx_fecha_intrat)
+         $('#id_tmpsmx_fecha_reitrat').val(msg.seg.tmpsmx_fecha_reitrat)
+
+         $('#id_isoniacida_'+(parseInt(msg.seg.isoniacida)-1)).prop('checked', true)
+         $('#id_isoniacida_initrat_'+(parseInt(msg.seg.isoniacida_initrat)-1)).prop('checked', true)
+         $('#id_isoniacida_fintrat_'+(parseInt(msg.seg.isoniacida_fintrat)-1)).prop('checked', true)
+         $('#id_isoniacida_intrat_'+(parseInt(msg.seg.isoniacida_intrat)-1)).prop('checked', true)
+         $('#id_isoniacida_reitrat_'+(parseInt(msg.seg.isoniacida_reitrat)-1)).prop('checked', true)
+         $('#id_isoniacida_fecha_initrat').val(msg.seg.isoniacida_fecha_initrat)
+         $('#id_isoniacida_fecha_fintrat').val(msg.seg.isoniacida_fecha_fintrat)
+         $('#id_isoniacida_fecha_intrat').val(msg.seg.isoniacida_fecha_intrat)
+         $('#id_isoniacida_fecha_reitrat').val(msg.seg.isoniacida_fecha_reitrat)
+
+         $('#id_azitromicida_'+(parseInt(msg.seg.azitromicida)-1)).prop('checked', true)
+         $('#id_azitromicida_initrat_'+(parseInt(msg.seg.azitromicida_initrat)-1)).prop('checked', true)
+         $('#id_azitromicida_fintrat_'+(parseInt(msg.seg.azitromicida_fintrat)-1)).prop('checked', true)
+         $('#id_azitromicida_intrat_'+(parseInt(msg.seg.azitromicida_intrat)-1)).prop('checked', true)
+         $('#id_azitromicida_reitrat_'+(parseInt(msg.seg.azitromicida_reitrat)-1)).prop('checked', true)
+         $('#id_azitromicida_fecha_initrat').val(msg.seg.azitromicida_fecha_initrat)
+         $('#id_azitromicida_fecha_fintrat').val(msg.seg.azitromicida_fecha_fintrat)
+         $('#id_azitromicida_fecha_intrat').val(msg.seg.azitromicida_fecha_intrat)
+         $('#id_azitromicida_fecha_reitrat').val(msg.seg.azitromicida_fecha_reitrat)
+
+         $('#id_arv_fecha_ini').val(msg.seg.arv_fecha_ini)
+         $('#id_fecha_abandono').val(msg.seg.fecha_abandono)
+         $('#id_fecha_suspension').val(msg.seg.fecha_suspension)
+         $('#id_fecha_reinicio').val(msg.seg.fecha_reinicio)
+         $('#id_fecha_fallecido').val(msg.seg.fecha_fallecido)
+         $('#id_fecha_prescripcion_arv').val(msg.seg.fecha_prescripcion_arv)
+         $('#id_fecha_cambio_terapia').val(msg.seg.fecha_cambio_terapia)
+         $('#id_fecha_entrega_arv').val(msg.seg.fecha_entrega_arv)
+         $('#id_adherencia').val(msg.seg.adherencia)
+         $('#id_tiempo_arv').val(msg.seg.tiempo_arv)
+         $('#id_fecha_proxentrega_arv').val(msg.seg.fecha_proxentrega_arv)
+         $('#id_cantidad_medicamento').val(msg.seg.cantidad_medicamento)
+         $('#id_conteo_cd4_'+(parseInt(msg.seg.conteo_cd4)-1)).prop('checked', true).trigger('click')
+         $('#id_abandono_'+(parseInt(msg.seg.abandono)-1)).prop('checked', true).trigger('click')
+         $('#id_activo_'+(parseInt(msg.seg.activo)-1)).prop('checked', true).trigger('click')
+         $('#id_suspension_'+(parseInt(msg.seg.suspension)-1)).prop('checked', true).trigger('click')
+         $('#id_fallecido_'+(parseInt(msg.seg.fallecido)-1)).prop('checked', true).trigger('click')
+         $('#id_causa_fallecido_'+(parseInt(msg.seg.causa_fallecido)-1)).prop('checked', true).trigger('click')
+         $('#id_esquema_arv_'+(parseInt(msg.seg.esquema_arv)-1)).prop('checked', true).trigger('click')
+         $('#id_cambio_terapia_'+(parseInt(msg.seg.cambio_terapia)-1)).prop('checked', true).trigger('click')
+         $('#id_motivo_cambio_terapia_'+(parseInt(msg.seg.motivo_cambio_terapia)-1)).prop('checked', true).trigger('click')
+         $('#id_documentado_con_'+(parseInt(msg.seg.documentado_con)-1)).prop('checked', true).trigger('click')
+         $('#id_esquema_actual_arv_'+(parseInt(msg.seg.esquema_actual_arv)-1)).prop('checked', true).trigger('click')
+         $('#id_abc_cant').val(msg.seg.abc_cant)
+         $('#id_ft_cant').val(msg.seg.ft_cant)
+         $('#id_d4t_cant').val(msg.seg.d4t_cant)
+         $('#id_azt_cant').val(msg.seg.azt_cant)
+         $('#id_efv_cant').val(msg.seg.efv_cant)
+         $('#id_nvp_cant').val(msg.seg.nvp_cant)
+         $('#id_ddi_cant').val(msg.seg.ddi_cant)
+         $('#id_tc_cant').val(msg.seg.tc_cant)
+         $('#id_tdf_cant').val(msg.seg.tdf_cant)
+         $('#id_rpv_cant').val(msg.seg.rpv_cant)
+         $('#id_etr_cant').val(msg.seg.etr_cant)
+         $('#id_atv_cant').val(msg.seg.atv_cant)
+         $('#id_drv_cant').val(msg.seg.drv_cant)
+         $('#id_fpv_cant').val(msg.seg.fpv_cant)
+         $('#id_idv_cant').val(msg.seg.idv_cant)
+         $('#id_nfv_cant').val(msg.seg.nfv_cant)
+         $('#id_sqv_cant').val(msg.seg.sqv_cant)
+         $('#id_tpv_cant').val(msg.seg.tpv_cant)
+         $('#id_ral_cant').val(msg.seg.ral_cant)
+         $('#id_evg_cant').val(msg.seg.evg_cant)
+         $('#id_dtg_cant').val(msg.seg.dtg_cant)
+
+         var option = new Array();
+         if (msg.seg.azt==true){
+            option.push('1')
+         }
+         if (msg.seg.abc==true){
+            option.push('2')
+         }
+         if (msg.seg.efv==true){
+            option.push('3')
+         }
+         if (msg.seg.rpv==true){
+            option.push('4')
+         }
+         if (msg.seg.dtf==true){
+            option.push('5')
+         }
+         if (msg.seg.lpv==true){
+            option.push('6')
+         }
+         $("#sel1").val(option).trigger("change");
+
+         var option = new Array();
+         if (msg.seg.azt2_ter==true){
+            option.push('1')
+         }
+         if (msg.seg.abc2_ter==true){
+            option.push('2')
+         }
+         if (msg.seg.efv2_ter==true){
+            option.push('3')
+         }
+         if (msg.seg.rpv2_ter==true){
+            option.push('4')
+         }
+         if (msg.seg.dtf2_ter==true){
+            option.push('5')
+         }
+         if (msg.seg.lpv2_ter==true){
+            option.push('6')
+         }
+         $("#sel2").val(option).trigger("change");
+
+
+         var option = new Array();
+         if (msg.seg.abc_med==true){
+            option.push('1')
+         }
+         if (msg.seg.ft_med==true){
+            option.push('2')
+         }
+         if (msg.seg.d4t_med==true){
+            option.push('3')
+         }
+         if (msg.seg.azt_med==true){
+            option.push('4')
+         }
+         if (msg.seg.efv_med==true){
+            option.push('5')
+         }
+         if (msg.seg.nvp_med==true){
+            option.push('6')
+         }
+         if (msg.seg.ddi_med==true){
+            option.push('7')
+         }
+         if (msg.seg.tc_med==true){
+            option.push('8')
+         }
+         if (msg.seg.tdf_med==true){
+            option.push('9')
+         }
+         if (msg.seg.rpv_med==true){
+            option.push('10')
+         }
+         if (msg.seg.etr_med==true){
+            option.push('11')
+         }
+         if (msg.seg.atv_med==true){
+            option.push('12')
+         }
+         if (msg.seg.drv_med==true){
+            option.push('13')
+         }
+         if (msg.seg.fpv_med==true){
+            option.push('14')
+         }
+         if (msg.seg.idv_med==true){
+            option.push('15')
+         }
+         if (msg.seg.nfv_med==true){
+            option.push('16')
+         }
+         if (msg.seg.sqv_med==true){
+            option.push('17')
+         }
+         if (msg.seg.tpv_med==true){
+            option.push('18')
+         }
+         if (msg.seg.ral_med==true){
+            option.push('19')
+         }
+         if (msg.seg.evg_med==true){
+            option.push('20')
+         }
+         if (msg.seg.dtg_med==true){
+            option.push('21')
+         }
+         $("#medicamento_preinscritos").val(option).trigger("change");
+
+         var option = new Array();
+         if (msg.seg.abc_cant==true){
+            option.push('1')
+         }
+         if (msg.seg.ft_cant==true){
+            option.push('2')
+         }
+         if (msg.seg.d4t_cant==true){
+            option.push('3')
+         }
+         if (msg.seg.azt_cant==true){
+            option.push('4')
+         }
+         if (msg.seg.efv_cant==true){
+            option.push('5')
+         }
+         if (msg.seg.nvp_cant==true){
+            option.push('6')
+         }
+         if (msg.seg.ddi_cant==true){
+            option.push('7')
+         }
+         if (msg.seg.tc_cant==true){
+            option.push('8')
+         }
+         if (msg.seg.tdf_cant==true){
+            option.push('9')
+         }
+         if (msg.seg.rpv_cant==true){
+            option.push('10')
+         }
+         if (msg.seg.etr_cant==true){
+            option.push('11')
+         }
+         if (msg.seg.atv_cant==true){
+            option.push('12')
+         }
+         if (msg.seg.drv_cant==true){
+            option.push('13')
+         }
+         if (msg.seg.fpv_cant==true){
+            option.push('14')
+         }
+         if (msg.seg.idv_cant==true){
+            option.push('15')
+         }
+         if (msg.seg.nfv_cant==true){
+            option.push('16')
+         }
+         if (msg.seg.sqv_cant==true){
+            option.push('17')
+         }
+         if (msg.seg.tpv_cant==true){
+            option.push('18')
+         }
+         if (msg.seg.ral_cant==true){
+            option.push('19')
+         }
+         if (msg.seg.evg_cant==true){
+            option.push('20')
+         }
+         if (msg.seg.dtg_cant==true){
+            option.push('21')
+         }
+         $("#terapia").val(option).trigger("change");
+
+      }
+      if (msg.persona==false){
 
          $('#persona').val(1)
          $('#error_identidad').show().delay(4000).fadeOut()
@@ -2151,267 +2422,281 @@ $('#search_identidad').click(function() {
 
 
       }else{
-         $('#formulario').trigger("reset");
-         console.log(persona)
-         if(persona.boleta__edad_anios){
+         console.log(msg.persona)
+         if(msg.persona.boleta__edad_anios){
             $('#persona').val(2)
-            $('#id_edad_anios').val(persona.boleta__edad_anios)
-            $('#id_edad_meses').val(persona.boleta__edad_meses)
-            $('#id_edad_dias').val(persona.boleta__edad_dias)
+            $('#id_edad_anios').val(msg.persona.boleta__edad_anios)
+            $('#id_edad_meses').val(msg.persona.boleta__edad_meses)
+            $('#id_edad_dias').val(msg.persona.boleta__edad_dias)
 
          }else{
             $('#persona').val(3)
          }
          $('#error_identidad').hide()
-         $('#id_primer_nombre').val(persona.boleta__primer_nombre).prop('readonly', true)
-         $('#id_segundo_nombre').val(persona.boleta__segundo_nombre).prop('readonly', true)
-         $('#id_primer_apellido').val(persona.boleta__primer_apellido).prop('readonly', true)
-         $('#id_segundo_apellido').val(persona.boleta__segundo_apellido).prop('readonly', true)
-         $('#id_fecha_nacimiento').val(persona.boleta__fecha_nacimiento).prop('readonly', true).prop('disabled', true)
+         $('#id_primer_nombre').val(msg.persona.boleta__primer_nombre).prop('readonly', true)
+         $('#id_segundo_nombre').val(msg.persona.boleta__segundo_nombre).prop('readonly', true)
+         $('#id_primer_apellido').val(msg.persona.boleta__primer_apellido).prop('readonly', true)
+         $('#id_segundo_apellido').val(msg.persona.boleta__segundo_apellido).prop('readonly', true)
+         $('#id_fecha_nacimiento').val(msg.persona.boleta__fecha_nacimiento).prop('readonly', true).prop('disabled', true)
+          fecha1 = msg.persona.fecha_creacion.split('T')
+         fecha2 = msg.persona.fecha_actualizacion.split('T')
+         $('#creacion').text(fecha1[0])
+         $('#modificacion').text(fecha2[0])
 
          $('input[name=sexo]').prop('disabled',true).val('')
-         $('#id_sexo_'+(persona.boleta__sexo-1)).prop('checked', true)
+         $('#id_sexo_'+(msg.persona.boleta__sexo-1)).prop('checked', true).trigger('change')
          
-         $('#sexo_persona').val(persona.boleta__sexo)
-         $('#id_estado_inmunologico_'+(persona.estado_inmunologico-1)).prop('checked', true)
-         $('#id_estado_clinico_'+(persona.estado_clinico-1)).prop('checked', true)
-         $('#id_estadio_infeccion').val(persona.estadio_infeccion)
+         $('#sexo_persona').val(msg.persona.boleta__sexo)
+         $('#id_estado_inmunologico_'+(msg.persona.estado_inmunologico-1)).prop('checked', true).trigger('change')
+         $('#id_estadio_infeccion').val(msg.persona.estadio_infeccion)
 
-         $('#id_lic4_'+(persona.lic4-1)).prop('checked', true)
-         $('#id_lic4_ordenado_consulta_'+(persona.lic4_ordenado_consulta-1)).prop('checked', true)
-         $('#id_lic4_resultado').val(persona.lic4_resultado)
-         $('#id_lic4_fecha_realizacion').val(persona.lic4_fecha_realizacion)
+         if(msg.persona.estado_clinico == 'A'){
+            $('#id_estado_clinico_1').prop('checked', true).trigger('change')
+         }
+         if(msg.persona.estado_clinico == 'B'){
+            $('#id_estado_clinico_2').prop('checked', true).trigger('change')
+         }
+         if(msg.persona.estado_clinico == 'C'){
+            $('#id_estado_clinico_3').prop('checked', true).trigger('change')
+         }
+        
+         console.log(msg.persona.estado_clinico)
 
-         $('#id_caviral_'+(persona.caviral-1)).prop('checked', true)
-         $('#id_caviral_ordenado_consulta_'+(persona.caviral_ordenado_consulta-1)).prop('checked', true)
-         $('#id_caviral_resultado').val(persona.caviral_resultado)
-         $('#id_caviral_fecha_realizacion').val(persona.caviral_fecha_realizacion)
+         $('#id_lic4_'+(msg.persona.lic4-1)).prop('checked', true).trigger('change')
+         $('#id_lic4_ordenado_consulta_'+(msg.persona.lic4_ordenado_consulta-1)).prop('checked', true).trigger('change')
+         $('#id_lic4_resultado').val(msg.persona.lic4_resultado)
+         $('#id_lic4_fecha_realizacion').val(msg.persona.lic4_fecha_realizacion)
 
-         $('#id_hepb_'+(persona.hepb-1)).prop('checked', true)
-         $('#id_hepb_ordenado_consulta_'+(persona.hepb_ordenado_consulta-1)).prop('checked', true)
-         $('#id_hepb_resultado_'+(parseInt(persona.hepb_resultado)-1)).prop('checked', true)
-          $('#id_hepb_fecha_realizacion').val(persona.hepb_fecha_realizacion)
+         $('#id_caviral_'+(msg.persona.caviral-1)).prop('checked', true).trigger('change')
+         $('#id_caviral_ordenado_consulta_'+(msg.persona.caviral_ordenado_consulta-1)).prop('checked', true).trigger('change')
+         $('#id_caviral_resultado').val(msg.persona.caviral_resultado)
+         $('#id_caviral_fecha_realizacion').val(msg.persona.caviral_fecha_realizacion)
 
-         $('#id_hepc_'+(persona.hepc-1)).prop('checked', true)
-         $('#id_hepc_ordenado_consulta_'+(persona.hepc_ordenado_consulta-1)).prop('checked', true)
-         $('#id_hepc_resultado_'+(parseInt(persona.hepc_resultado)-1)).prop('checked', true)
-         $('#id_hepc_fecha_realizacion').val(persona.hepc_fecha_realizacion)
+         $('#id_hepb_'+(msg.persona.hepb-1)).prop('checked', true).trigger('change')
+         $('#id_hepb_ordenado_consulta_'+(msg.persona.hepb_ordenado_consulta-1)).prop('checked', true).trigger('change')
+         $('#id_hepb_resultado_'+(parseInt(msg.persona.hepb_resultado)-1)).prop('checked', true).trigger('change')
+          $('#id_hepb_fecha_realizacion').val(msg.persona.hepb_fecha_realizacion)
 
-         $('#id_rpr_'+(persona.rpr-1)).prop('checked', true)
-         $('#id_rpr_ordenado_consulta_'+(persona.rpr_ordenado_consulta-1)).prop('checked', true)
-         $('#id_rpr_resultado_'+(parseInt(persona.rpr_resultado)-1)).prop('checked', true)
-         $('#id_rpr_fecha_realizacion').val(persona.rpr_fecha_realizacion)
+         $('#id_hepc_'+(msg.persona.hepc-1)).prop('checked', true).trigger('change')
+         $('#id_hepc_ordenado_consulta_'+(msg.persona.hepc_ordenado_consulta-1)).prop('checked', true).trigger('change')
+         $('#id_hepc_resultado_'+(parseInt(msg.persona.hepc_resultado)-1)).prop('checked', true).trigger('change')
+         $('#id_hepc_fecha_realizacion').val(msg.persona.hepc_fecha_realizacion)
 
-         $('#id_rxtorax_'+(persona.rxtorax-1)).prop('checked', true)
-         $('#id_rxtorax_ordenado_consulta_'+(persona.rxtorax_ordenado_consulta-1)).prop('checked', true)
-         $('#id_rxtorax_resultado').val(persona.rxtorax_resultado)
-         $('#id_rxtorax_fecha_realizacion').val(persona.rxtorax_fecha_realizacion)
+         $('#id_rpr_'+(msg.persona.rpr-1)).prop('checked', true).trigger('change')
+         $('#id_rpr_ordenado_consulta_'+(msg.persona.rpr_ordenado_consulta-1)).prop('checked', true).trigger('change')
+         $('#id_rpr_resultado_'+(parseInt(msg.persona.rpr_resultado)-1)).prop('checked', true).trigger('change')
+         $('#id_rpr_fecha_realizacion').val(msg.persona.rpr_fecha_realizacion)
 
-         $('#id_sespu_'+(persona.sespu-1)).prop('checked', true)
-         $('#id_sespu_ordenado_consulta_'+(persona.sespu_ordenado_consulta-1)).prop('checked', true)
-         $('#id_sespu_resultado').val(persona.sespu_resultado)
-         $('#id_sespu_fecha_realizacion').val(persona.sespu_fecha_realizacion)
+         $('#id_rxtorax_'+(msg.persona.rxtorax-1)).prop('checked', true).trigger('change')
+         $('#id_rxtorax_ordenado_consulta_'+(msg.persona.rxtorax_ordenado_consulta-1)).prop('checked', true).trigger('change')
+         $('#id_rxtorax_resultado').val(msg.persona.rxtorax_resultado)
+         $('#id_rxtorax_fecha_realizacion').val(msg.persona.rxtorax_fecha_realizacion)
 
-         $('#id_ppd_'+(persona.ppd-1)).prop('checked', true)
-         $('#id_ppd_ordenado_consulta_'+(persona.ppd_ordenado_consulta-1)).prop('checked', true)
-         $('#id_ppd_resultado').val(persona.ppd_resultado)
-         $('#id_ppd_fecha_realizacion').val(persona.ppd_fecha_realizacion)
+         $('#id_sespu_'+(msg.persona.sespu-1)).prop('checked', true).trigger('change')
+         $('#id_sespu_ordenado_consulta_'+(msg.persona.sespu_ordenado_consulta-1)).prop('checked', true).trigger('change')
+         $('#id_sespu_resultado').val(msg.persona.sespu_resultado)
+         $('#id_sespu_fecha_realizacion').val(msg.persona.sespu_fecha_realizacion)
 
-         $('#id_cultivo_'+(persona.cultivo-1)).prop('checked', true)
-         $('#id_cultivo_ordenado_consulta_'+(persona.cultivo_ordenado_consulta-1)).prop('checked', true)
-         $('#id_cultivo_resultado').val(persona.cultivo_resultado)
-         $('#id_cultivo_fecha_realizacion').val(persona.cultivo_fecha_realizacion)
+         $('#id_ppd_'+(msg.persona.ppd-1)).prop('checked', true).trigger('change')
+         $('#id_ppd_ordenado_consulta_'+(msg.persona.ppd_ordenado_consulta-1)).prop('checked', true).trigger('change')
+         $('#id_ppd_resultado').val(msg.persona.ppd_resultado)
+         $('#id_ppd_fecha_realizacion').val(msg.persona.ppd_fecha_realizacion)
 
-         $('#id_usg_'+(persona.usg-1)).prop('checked', true)
-         $('#id_usg_ordenado_consulta_'+(persona.usg_ordenado_consulta-1)).prop('checked', true)
-         $('#id_usg_resultado').val(persona.usg_resultado)
-         $('#id_usg_fecha_realizacion').val(persona.usg_fecha_realizacion)
+         $('#id_cultivo_'+(msg.persona.cultivo-1)).prop('checked', true).trigger('change')
+         $('#id_cultivo_ordenado_consulta_'+(msg.persona.cultivo_ordenado_consulta-1)).prop('checked', true).trigger('change')
+         $('#id_cultivo_resultado').val(msg.persona.cultivo_resultado)
+         $('#id_cultivo_fecha_realizacion').val(msg.persona.cultivo_fecha_realizacion)
 
-         $('#id_biopsia_'+(persona.biopsia-1)).prop('checked', true)
-         $('#id_biopsia_ordenado_consulta_'+(persona.biopsia_ordenado_consulta-1)).prop('checked', true)
-         $('#id_biopsia_resultado').val(persona.biopsia_resultado)
-         $('#id_biopsia_fecha_realizacion').val(persona.biopsia_fecha_realizacion)
+         $('#id_usg_'+(msg.persona.usg-1)).prop('checked', true).trigger('change')
+         $('#id_usg_ordenado_consulta_'+(msg.persona.usg_ordenado_consulta-1)).prop('checked', true).trigger('change')
+         $('#id_usg_resultado').val(msg.persona.usg_resultado)
+         $('#id_usg_fecha_realizacion').val(msg.persona.usg_fecha_realizacion)
 
-         $('#id_otro_'+(persona.otro-1)).prop('checked', true)
-         $('#id_otro_ordenado_consulta_'+(persona.otro_ordenado_consulta-1)).prop('checked', true)
-         $('#id_otro_resultado').val(persona.otro_resultado)
-         $('#id_otro_fecha_realizacion').val(persona.otro_fecha_realizacion)
+         $('#id_biopsia_'+(msg.persona.biopsia-1)).prop('checked', true).trigger('change')
+         $('#id_biopsia_ordenado_consulta_'+(msg.persona.biopsia_ordenado_consulta-1)).prop('checked', true).trigger('change')
+         $('#id_biopsia_resultado').val(msg.persona.biopsia_resultado)
+         $('#id_biopsia_fecha_realizacion').val(msg.persona.biopsia_fecha_realizacion)
+
+         $('#id_otro_'+(msg.persona.otro-1)).prop('checked', true).trigger('change')
+         $('#id_otro_ordenado_consulta_'+(msg.persona.otro_ordenado_consulta-1)).prop('checked', true).trigger('change')
+         $('#id_otro_resultado').val(msg.persona.otro_resultado)
+         $('#id_otro_fecha_realizacion').val(msg.persona.otro_fecha_realizacion)
 
 
 
-         $('#id_tupu_trat_'+(persona.tupu_trat-1)).prop('checked', true)
-         $('#id_tupu_'+(persona.tupu-1)).prop('checked', true)
-         $('#id_tupu_initrat_'+(persona.tupu_initrat-1)).prop('checked', true)
-         $('#id_tupu_entrat_'+(persona.tupu_entrat-1)).prop('checked', true)
-         $('#id_tupu_entrat_fintrat_'+(persona.tupu_entrat_fintrat-1)).prop('checked', true)
-         $('#id_tupu_intrat_'+(persona.tupu_intrat-1)).prop('checked', true)
-         $('#id_tupu_intrat_reitrat_'+(persona.tupu_intrat_reitrat-1)).prop('checked', true)
-         $('#id_tupu_diag').val(persona.tupu_diag)
-         $('#id_tupu_fecha_initrat').val(persona.tupu_fecha_initrat)
-         $('#id_tupu_entrat_diag').val(persona.tupu_entrat_diag)
-         $('#id_tupu_entrat_fecha_fintrat').val(persona.tupu_entrat_fecha_fintrat)
-         $('#id_tupu_intrat_diag').val(persona.tupu_intrat_diag)
-         $('#id_tupu_intrat_fecha_reitrat').val(persona.tupu_intrat_fecha_reitrat)
+         $('#id_tupu_trat_'+(msg.persona.tupu_trat-1)).prop('checked', true).trigger('change')
+         $('#id_tupu_'+(msg.persona.tupu-1)).prop('checked', true).trigger('change')
+         $('#id_tupu_initrat_'+(msg.persona.tupu_initrat-1)).prop('checked', true).trigger('change')
+         $('#id_tupu_entrat_'+(msg.persona.tupu_entrat-1)).prop('checked', true).trigger('change')
+         $('#id_tupu_entrat_fintrat_'+(msg.persona.tupu_entrat_fintrat-1)).prop('checked', true).trigger('change')
+         $('#id_tupu_intrat_'+(msg.persona.tupu_intrat-1)).prop('checked', true).trigger('change')
+         $('#id_tupu_intrat_reitrat_'+(msg.persona.tupu_intrat_reitrat-1)).prop('checked', true).trigger('change')
+         $('#id_tupu_diag').val(msg.persona.tupu_diag)
+         $('#id_tupu_fecha_initrat').val(msg.persona.tupu_fecha_initrat)
+         $('#id_tupu_entrat_diag').val(msg.persona.tupu_entrat_diag)
+         $('#id_tupu_entrat_fecha_fintrat').val(msg.persona.tupu_entrat_fecha_fintrat)
+         $('#id_tupu_intrat_diag').val(msg.persona.tupu_intrat_diag)
+         $('#id_tupu_intrat_fecha_reitrat').val(msg.persona.tupu_intrat_fecha_reitrat)
 
-         $('#id_tudi_'+(persona.tudi-1)).prop('checked', true)
-         $('#id_tudi_initrat_'+(persona.tudi_initrat-1)).prop('checked', true)
-         $('#id_tudi_entrat_'+(persona.tudi_entrat-1)).prop('checked', true)
-         $('#id_tudi_entrat_fintrat_'+(persona.tudi_entrat_fintrat-1)).prop('checked', true)
-         $('#id_tudi_intrat_'+(persona.tudi_intrat-1)).prop('checked', true)
-         $('#id_tudi_intrat_reitrat_'+(persona.tudi_intrat_reitrat-1)).prop('checked', true)
-         $('#id_tudi_diag').val(persona.tudi_diag)
-         $('#id_tudi_fecha_initrat').val(persona.tudi_fecha_initrat)
-         $('#id_tudi_entrat_diag').val(persona.tudi_entrat_diag)
-         $('#id_tudi_entrat_fecha_fintrat').val(persona.tudi_entrat_fecha_fintrat)
-         $('#id_tudi_intrat_diag').val(persona.tudi_intrat_diag)
-         $('#id_tudi_intrat_fecha_reitrat').val(persona.tudi_intrat_fecha_reitrat)
+         $('#id_tudi_'+(msg.persona.tudi-1)).prop('checked', true).trigger('change')
+         $('#id_tudi_initrat_'+(msg.persona.tudi_initrat-1)).prop('checked', true).trigger('change')
+         $('#id_tudi_entrat_'+(msg.persona.tudi_entrat-1)).prop('checked', true).trigger('change')
+         $('#id_tudi_entrat_fintrat_'+(msg.persona.tudi_entrat_fintrat-1)).prop('checked', true).trigger('change')
+         $('#id_tudi_intrat_'+(msg.persona.tudi_intrat-1)).prop('checked', true).trigger('change')
+         $('#id_tudi_intrat_reitrat_'+(msg.persona.tudi_intrat_reitrat-1)).prop('checked', true).trigger('change')
+         $('#id_tudi_diag').val(msg.persona.tudi_diag)
+         $('#id_tudi_fecha_initrat').val(msg.persona.tudi_fecha_initrat)
+         $('#id_tudi_entrat_diag').val(msg.persona.tudi_entrat_diag)
+         $('#id_tudi_entrat_fecha_fintrat').val(msg.persona.tudi_entrat_fecha_fintrat)
+         $('#id_tudi_intrat_diag').val(msg.persona.tudi_intrat_diag)
+         $('#id_tudi_intrat_fecha_reitrat').val(msg.persona.tudi_intrat_fecha_reitrat)
 
-         $('#id_hepb_'+(persona.hepb-1)).prop('checked', true)
-         $('#id_hepb_initrat_'+(persona.hepb_initrat-1)).prop('checked', true)
-         $('#id_hepb_entrat_'+(persona.hepb_entrat-1)).prop('checked', true)
-         $('#id_hepb_entrat_fintrat_'+(persona.hepb_entrat_fintrat-1)).prop('checked', true)
-         $('#id_hepb_intrat_'+(persona.hepb_intrat-1)).prop('checked', true)
-         $('#id_hepb_intrat_reitrat_'+(persona.hepb_intrat_reitrat-1)).prop('checked', true)
-         $('#id_hepb_diag').val(persona.hepb_diag)
-         $('#id_hepb_fecha_initrat').val(persona.hepb_fecha_initrat)
-         $('#id_hepb_entrat_diag').val(persona.hepb_entrat_diag)
-         $('#id_hepb_entrat_fecha_fintrat').val(persona.hepb_entrat_fecha_fintrat)
-         $('#id_hepb_intrat_diag').val(persona.hepb_intrat_diag)
-         $('#id_hepb_intrat_fecha_reitrat').val(persona.hepb_intrat_fecha_reitrat)
+         $('#id_hepb_'+(msg.persona.hepb-1)).prop('checked', true).trigger('change')
+         $('#id_hepb_initrat_'+(msg.persona.hepb_initrat-1)).prop('checked', true).trigger('change')
+         $('#id_hepb_entrat_'+(msg.persona.hepb_entrat-1)).prop('checked', true).trigger('change')
+         $('#id_hepb_entrat_fintrat_'+(msg.persona.hepb_entrat_fintrat-1)).prop('checked', true).trigger('change')
+         $('#id_hepb_intrat_'+(msg.persona.hepb_intrat-1)).prop('checked', true).trigger('change')
+         $('#id_hepb_intrat_reitrat_'+(msg.persona.hepb_intrat_reitrat-1)).prop('checked', true).trigger('change')
+         $('#id_hepb_diag').val(msg.persona.hepb_diag)
+         $('#id_hepb_fecha_initrat').val(msg.persona.hepb_fecha_initrat)
+         $('#id_hepb_entrat_diag').val(msg.persona.hepb_entrat_diag)
+         $('#id_hepb_entrat_fecha_fintrat').val(msg.persona.hepb_entrat_fecha_fintrat)
+         $('#id_hepb_intrat_diag').val(msg.persona.hepb_intrat_diag)
+         $('#id_hepb_intrat_fecha_reitrat').val(msg.persona.hepb_intrat_fecha_reitrat)
 
-         $('#id_hepc_'+(persona.lic4-1)).prop('checked', true)
-         $('#id_hepc_initrat_'+(persona.hepc_initrat-1)).prop('checked', true)
-         $('#id_hepc_entrat_'+(persona.hepc_entrat-1)).prop('checked', true)
-         $('#id_hepc_entrat_fintrat_'+(persona.hepc_entrat_fintrat-1)).prop('checked', true)
-         $('#id_hepc_intrat_'+(persona.hepc_intrat-1)).prop('checked', true)
-         $('#id_hepc_intrat_reitrat_'+(persona.hepc_intrat_reitrat-1)).prop('checked', true)
-         $('#id_hepc_diag').val(persona.hepc_diag)
-         $('#id_hepc_fecha_initrat').val(persona.hepc_fecha_initrat)
-         $('#id_hepc_entrat_diag').val(persona.hepc_entrat_diag)
-         $('#id_hepc_entrat_fecha_fintrat').val(persona.hepc_entrat_fecha_fintrat)
-         $('#id_hepc_intrat_diag').val(persona.hepc_intrat_diag)
-         $('#id_hepc_intrat_fecha_reitrat').val(persona.hepc_intrat_fecha_reitrat)
+         $('#id_hepc_'+(msg.persona.lic4-1)).prop('checked', true).trigger('change')
+         $('#id_hepc_initrat_'+(msg.persona.hepc_initrat-1)).prop('checked', true).trigger('change')
+         $('#id_hepc_entrat_'+(msg.persona.hepc_entrat-1)).prop('checked', true).trigger('change')
+         $('#id_hepc_entrat_fintrat_'+(msg.persona.hepc_entrat_fintrat-1)).prop('checked', true).trigger('change')
+         $('#id_hepc_intrat_'+(msg.persona.hepc_intrat-1)).prop('checked', true).trigger('change')
+         $('#id_hepc_intrat_reitrat_'+(msg.persona.hepc_intrat_reitrat-1)).prop('checked', true).trigger('change')
+         $('#id_hepc_diag').val(msg.persona.hepc_diag)
+         $('#id_hepc_fecha_initrat').val(msg.persona.hepc_fecha_initrat)
+         $('#id_hepc_entrat_diag').val(msg.persona.hepc_entrat_diag)
+         $('#id_hepc_entrat_fecha_fintrat').val(msg.persona.hepc_entrat_fecha_fintrat)
+         $('#id_hepc_intrat_diag').val(msg.persona.hepc_intrat_diag)
+         $('#id_hepc_intrat_fecha_reitrat').val(msg.persona.hepc_intrat_fecha_reitrat)
 
-         $('#id_ulg_'+(persona.lic4-1)).prop('checked', true)
-         $('#id_ulg_initrat_'+(persona.ulg_initrat-1)).prop('checked', true)
-         $('#id_ulg_entrat_'+(persona.ulg_entrat-1)).prop('checked', true)
-         $('#id_ulg_entrat_fintrat_'+(persona.ulg_entrat_fintrat-1)).prop('checked', true)
-         $('#id_ulg_intrat_'+(persona.ulg_intrat-1)).prop('checked', true)
-         $('#id_ulg_intrat_reitrat_'+(persona.ulg_intrat_reitrat-1)).prop('checked', true)
-         $('#id_ulg_diag').val(persona.ulg_diag)
-         $('#id_ulg_fecha_initrat').val(persona.ulg_fecha_initrat)
-         $('#id_ulg_entrat_diag').val(persona.ulg_entrat_diag)
-         $('#id_ulg_entrat_fecha_fintrat').val(persona.ulg_entrat_fecha_fintrat)
-         $('#id_ulg_intrat_diag').val(persona.ulg_intrat_diag)
-         $('#id_ulg_intrat_fecha_reitrat').val(persona.ulg_intrat_fecha_reitrat)
+         $('#id_ulg_'+(msg.persona.lic4-1)).prop('checked', true).trigger('change')
+         $('#id_ulg_initrat_'+(msg.persona.ulg_initrat-1)).prop('checked', true).trigger('change')
+         $('#id_ulg_entrat_'+(msg.persona.ulg_entrat-1)).prop('checked', true).trigger('change')
+         $('#id_ulg_entrat_fintrat_'+(msg.persona.ulg_entrat_fintrat-1)).prop('checked', true).trigger('change')
+         $('#id_ulg_intrat_'+(msg.persona.ulg_intrat-1)).prop('checked', true).trigger('change')
+         $('#id_ulg_intrat_reitrat_'+(msg.persona.ulg_intrat_reitrat-1)).prop('checked', true).trigger('change')
+         $('#id_ulg_diag').val(msg.persona.ulg_diag)
+         $('#id_ulg_fecha_initrat').val(msg.persona.ulg_fecha_initrat)
+         $('#id_ulg_entrat_diag').val(msg.persona.ulg_entrat_diag)
+         $('#id_ulg_entrat_fecha_fintrat').val(msg.persona.ulg_entrat_fecha_fintrat)
+         $('#id_ulg_intrat_diag').val(msg.persona.ulg_intrat_diag)
+         $('#id_ulg_intrat_fecha_reitrat').val(msg.persona.ulg_intrat_fecha_reitrat)
 
-         $('#id_secure_'+(persona.lic4-1)).prop('checked', true)
-         $('#id_secure_initrat_'+(persona.secure_initrat-1)).prop('checked', true)
-         $('#id_secure_entrat_'+(persona.secure_entrat-1)).prop('checked', true)
-         $('#id_secure_entrat_fintrat_'+(persona.secure_entrat_fintrat-1)).prop('checked', true)
-         $('#id_secure_intrat_'+(persona.secure_intrat-1)).prop('checked', true)
-         $('#id_secure_intrat_reitrat_'+(persona.secure_intrat_reitrat-1)).prop('checked', true)
-         $('#id_secure_diag').val(persona.secure_diag)
-         $('#id_secure_fecha_initrat').val(persona.secure_fecha_initrat)
-         $('#id_secure_entrat_diag').val(persona.secure_entrat_diag)
-         $('#id_secure_entrat_fecha_fintrat').val(persona.secure_entrat_fecha_fintrat)
-         $('#id_secure_intrat_diag').val(persona.secure_intrat_diag)
-         $('#id_secure_intrat_fecha_reitrat').val(persona.secure_intrat_fecha_reitrat)
+         $('#id_secure_'+(msg.persona.lic4-1)).prop('checked', true).trigger('change')
+         $('#id_secure_initrat_'+(msg.persona.secure_initrat-1)).prop('checked', true).trigger('change')
+         $('#id_secure_entrat_'+(msg.persona.secure_entrat-1)).prop('checked', true).trigger('change')
+         $('#id_secure_entrat_fintrat_'+(msg.persona.secure_entrat_fintrat-1)).prop('checked', true).trigger('change')
+         $('#id_secure_intrat_'+(msg.persona.secure_intrat-1)).prop('checked', true).trigger('change')
+         $('#id_secure_intrat_reitrat_'+(msg.persona.secure_intrat_reitrat-1)).prop('checked', true).trigger('change')
+         $('#id_secure_diag').val(msg.persona.secure_diag)
+         $('#id_secure_fecha_initrat').val(msg.persona.secure_fecha_initrat)
+         $('#id_secure_entrat_diag').val(msg.persona.secure_entrat_diag)
+         $('#id_secure_entrat_fecha_fintrat').val(msg.persona.secure_entrat_fecha_fintrat)
+         $('#id_secure_intrat_diag').val(msg.persona.secure_intrat_diag)
+         $('#id_secure_intrat_fecha_reitrat').val(msg.persona.secure_intrat_fecha_reitrat)
 
-         $('#id_fluva_'+(persona.lic4-1)).prop('checked', true)
-         $('#id_fluva_initrat_'+(persona.fluva_initrat-1)).prop('checked', true)
-         $('#id_fluva_entrat_'+(persona.fluva_entrat-1)).prop('checked', true)
-         $('#id_fluva_entrat_fintrat_'+(persona.fluva_entrat_fintrat-1)).prop('checked', true)
-         $('#id_fluva_intrat_'+(persona.fluva_intrat-1)).prop('checked', true)
-         $('#id_fluva_intrat_reitrat_'+(persona.fluva_intrat_reitrat-1)).prop('checked', true)
-         $('#id_fluva_diag').val(persona.fluva_diag)
-         $('#id_fluva_fecha_initrat').val(persona.fluva_fecha_initrat)
-         $('#id_fluva_entrat_diag').val(persona.fluva_entrat_diag)
-         $('#id_fluva_entrat_fecha_fintrat').val(persona.fluva_entrat_fecha_fintrat)
-         $('#id_fluva_intrat_diag').val(persona.fluva_intrat_diag)
-         $('#id_fluva_intrat_fecha_reitrat').val(persona.fluva_intrat_fecha_reitrat)
+         $('#id_fluva_'+(msg.persona.lic4-1)).prop('checked', true).trigger('change')
+         $('#id_fluva_initrat_'+(msg.persona.fluva_initrat-1)).prop('checked', true).trigger('change')
+         $('#id_fluva_entrat_'+(msg.persona.fluva_entrat-1)).prop('checked', true).trigger('change')
+         $('#id_fluva_entrat_fintrat_'+(msg.persona.fluva_entrat_fintrat-1)).prop('checked', true).trigger('change')
+         $('#id_fluva_intrat_'+(msg.persona.fluva_intrat-1)).prop('checked', true).trigger('change')
+         $('#id_fluva_intrat_reitrat_'+(msg.persona.fluva_intrat_reitrat-1)).prop('checked', true).trigger('change')
+         $('#id_fluva_diag').val(msg.persona.fluva_diag)
+         $('#id_fluva_fecha_initrat').val(msg.persona.fluva_fecha_initrat)
+         $('#id_fluva_entrat_diag').val(msg.persona.fluva_entrat_diag)
+         $('#id_fluva_entrat_fecha_fintrat').val(msg.persona.fluva_entrat_fecha_fintrat)
+         $('#id_fluva_intrat_diag').val(msg.persona.fluva_intrat_diag)
+         $('#id_fluva_intrat_fecha_reitrat').val(msg.persona.fluva_intrat_fecha_reitrat)
 
-         $('#id_buin_'+(persona.lic4-1)).prop('checked', true)
-         $('#id_buin_initrat_'+(persona.buin_initrat-1)).prop('checked', true)
-         $('#id_buin_entrat_'+(persona.buin_entrat-1)).prop('checked', true)
-         $('#id_buin_entrat_fintrat_'+(persona.buin_entrat_fintrat-1)).prop('checked', true)
-         $('#id_buin_intrat_'+(persona.buin_intrat-1)).prop('checked', true)
-         $('#id_buin_intrat_reitrat_'+(persona.buin_intrat_reitrat-1)).prop('checked', true)
-         $('#id_buin_diag').val(persona.buin_diag)
-         $('#id_buin_fecha_initrat').val(persona.buin_fecha_initrat)
-         $('#id_buin_entrat_diag').val(persona.buin_entrat_diag)
-         $('#id_buin_entrat_fecha_fintrat').val(persona.buin_entrat_fecha_fintrat)
-         $('#id_buin_intrat_diag').val(persona.buin_intrat_diag)
-         $('#id_buin_intrat_fecha_reitrat').val(persona.buin_intrat_fecha_reitrat)
+         $('#id_buin_'+(msg.persona.lic4-1)).prop('checked', true).trigger('change')
+         $('#id_buin_initrat_'+(msg.persona.buin_initrat-1)).prop('checked', true).trigger('change')
+         $('#id_buin_entrat_'+(msg.persona.buin_entrat-1)).prop('checked', true).trigger('change')
+         $('#id_buin_entrat_fintrat_'+(msg.persona.buin_entrat_fintrat-1)).prop('checked', true).trigger('change')
+         $('#id_buin_intrat_'+(msg.persona.buin_intrat-1)).prop('checked', true).trigger('change')
+         $('#id_buin_intrat_reitrat_'+(msg.persona.buin_intrat_reitrat-1)).prop('checked', true).trigger('change')
+         $('#id_buin_diag').val(msg.persona.buin_diag)
+         $('#id_buin_fecha_initrat').val(msg.persona.buin_fecha_initrat)
+         $('#id_buin_entrat_diag').val(msg.persona.buin_entrat_diag)
+         $('#id_buin_entrat_fecha_fintrat').val(msg.persona.buin_entrat_fecha_fintrat)
+         $('#id_buin_intrat_diag').val(msg.persona.buin_intrat_diag)
+         $('#id_buin_intrat_fecha_reitrat').val(msg.persona.buin_intrat_fecha_reitrat)
 
-         $('#id_edes_'+(persona.lic4-1)).prop('checked', true)
-         $('#id_edes_initrat_'+(persona.edes_initrat-1)).prop('checked', true)
-         $('#id_edes_entrat_'+(persona.edes_entrat-1)).prop('checked', true)
-         $('#id_edes_entrat_fintrat_'+(persona.edes_entrat_fintrat-1)).prop('checked', true)
-         $('#id_edes_intrat_'+(persona.edes_intrat-1)).prop('checked', true)
-         $('#id_edes_intrat_reitrat_'+(persona.edes_intrat_reitrat-1)).prop('checked', true)
-         $('#id_edes_diag').val(persona.edes_diag)
-         $('#id_edes_fecha_initrat').val(persona.edes_fecha_initrat)
-         $('#id_edes_entrat_diag').val(persona.edes_entrat_diag)
-         $('#id_edes_entrat_fecha_fintrat').val(persona.edes_entrat_fecha_fintrat)
-         $('#id_edes_intrat_diag').val(persona.edes_intrat_diag)
-         $('#id_edes_intrat_fecha_reitrat').val(persona.edes_intrat_fecha_reitrat)
+         $('#id_edes_'+(msg.persona.lic4-1)).prop('checked', true).trigger('change')
+         $('#id_edes_initrat_'+(msg.persona.edes_initrat-1)).prop('checked', true).trigger('change')
+         $('#id_edes_entrat_'+(msg.persona.edes_entrat-1)).prop('checked', true).trigger('change')
+         $('#id_edes_entrat_fintrat_'+(msg.persona.edes_entrat_fintrat-1)).prop('checked', true).trigger('change')
+         $('#id_edes_intrat_'+(msg.persona.edes_intrat-1)).prop('checked', true).trigger('change')
+         $('#id_edes_intrat_reitrat_'+(msg.persona.edes_intrat_reitrat-1)).prop('checked', true).trigger('change')
+         $('#id_edes_diag').val(msg.persona.edes_diag)
+         $('#id_edes_fecha_initrat').val(msg.persona.edes_fecha_initrat)
+         $('#id_edes_entrat_diag').val(msg.persona.edes_entrat_diag)
+         $('#id_edes_entrat_fecha_fintrat').val(msg.persona.edes_entrat_fecha_fintrat)
+         $('#id_edes_intrat_diag').val(msg.persona.edes_intrat_diag)
+         $('#id_edes_intrat_fecha_reitrat').val(msg.persona.edes_intrat_fecha_reitrat)
 
-         $('#id_verge_'+(persona.lic4-1)).prop('checked', true)
-         $('#id_verge_initrat_'+(persona.verge_initrat-1)).prop('checked', true)
-         $('#id_verge_entrat_'+(persona.verge_entrat-1)).prop('checked', true)
-         $('#id_verge_entrat_fintrat_'+(persona.verge_entrat_fintrat-1)).prop('checked', true)
-         $('#id_verge_intrat_'+(persona.verge_intrat-1)).prop('checked', true)
-         $('#id_verge_intrat_reitrat_'+(persona.verge_intrat_reitrat-1)).prop('checked', true)
-         $('#id_verge_diag').val(persona.verge_diag)
-         $('#id_verge_fecha_initrat').val(persona.verge_fecha_initrat)
-         $('#id_verge_entrat_diag').val(persona.verge_entrat_diag)
-         $('#id_verge_entrat_fecha_fintrat').val(persona.verge_entrat_fecha_fintrat)
-         $('#id_verge_intrat_diag').val(persona.verge_intrat_diag)
-         $('#id_verge_intrat_fecha_reitrat').val(persona.verge_intrat_fecha_reitrat)
+         $('#id_verge_'+(msg.persona.lic4-1)).prop('checked', true).trigger('change')
+         $('#id_verge_initrat_'+(msg.persona.verge_initrat-1)).prop('checked', true).trigger('change')
+         $('#id_verge_entrat_'+(msg.persona.verge_entrat-1)).prop('checked', true).trigger('change')
+         $('#id_verge_entrat_fintrat_'+(msg.persona.verge_entrat_fintrat-1)).prop('checked', true).trigger('change')
+         $('#id_verge_intrat_'+(msg.persona.verge_intrat-1)).prop('checked', true).trigger('change')
+         $('#id_verge_intrat_reitrat_'+(msg.persona.verge_intrat_reitrat-1)).prop('checked', true).trigger('change')
+         $('#id_verge_diag').val(msg.persona.verge_diag)
+         $('#id_verge_fecha_initrat').val(msg.persona.verge_fecha_initrat)
+         $('#id_verge_entrat_diag').val(msg.persona.verge_entrat_diag)
+         $('#id_verge_entrat_fecha_fintrat').val(msg.persona.verge_entrat_fecha_fintrat)
+         $('#id_verge_intrat_diag').val(msg.persona.verge_intrat_diag)
+         $('#id_verge_intrat_fecha_reitrat').val(msg.persona.verge_intrat_fecha_reitrat)
 
-         $('#id_trasex_'+(persona.lic4-1)).prop('checked', true)
-         $('#id_trasex_initrat_'+(persona.trasex_initrat-1)).prop('checked', true)
-         $('#id_trasex_entrat_'+(persona.trasex_entrat-1)).prop('checked', true)
-         $('#id_trasex_entrat_fintrat_'+(persona.trasex_entrat_fintrat-1)).prop('checked', true)
-         $('#id_trasex_intrat_'+(persona.trasex_intrat-1)).prop('checked', true)
-         $('#id_trasex_intrat_reitrat_'+(persona.trasex_intrat_reitrat-1)).prop('checked', true)
-         $('#id_trasex_diag').val(persona.trasex_diag)
-         $('#id_trasex_fecha_initrat').val(persona.trasex_fecha_initrat)
-         $('#id_trasex_entrat_diag').val(persona.trasex_entrat_diag)
-         $('#id_trasex_entrat_fecha_fintrat').val(persona.trasex_entrat_fecha_fintrat)
-         $('#id_trasex_intrat_diag').val(persona.trasex_intrat_diag)
-         $('#id_trasex_intrat_fecha_reitrat').val(persona.trasex_intrat_fecha_reitrat)
+         $('#id_trasex_'+(msg.persona.lic4-1)).prop('checked', true).trigger('change')
+         $('#id_trasex_initrat_'+(msg.persona.trasex_initrat-1)).prop('checked', true).trigger('change')
+         $('#id_trasex_entrat_'+(msg.persona.trasex_entrat-1)).prop('checked', true).trigger('change')
+         $('#id_trasex_entrat_fintrat_'+(msg.persona.trasex_entrat_fintrat-1)).prop('checked', true).trigger('change')
+         $('#id_trasex_intrat_'+(msg.persona.trasex_intrat-1)).prop('checked', true).trigger('change')
+         $('#id_trasex_intrat_reitrat_'+(msg.persona.trasex_intrat_reitrat-1)).prop('checked', true).trigger('change')
+         $('#id_trasex_diag').val(msg.persona.trasex_diag)
+         $('#id_trasex_fecha_initrat').val(msg.persona.trasex_fecha_initrat)
+         $('#id_trasex_entrat_diag').val(msg.persona.trasex_entrat_diag)
+         $('#id_trasex_entrat_fecha_fintrat').val(msg.persona.trasex_entrat_fecha_fintrat)
+         $('#id_trasex_intrat_diag').val(msg.persona.trasex_intrat_diag)
+         $('#id_trasex_intrat_fecha_reitrat').val(msg.persona.trasex_intrat_fecha_reitrat)
 
-         $('#id_proc_'+(persona.lic4-1)).prop('checked', true)
-         $('#id_proc_initrat_'+(persona.proc_initrat-1)).prop('checked', true)
-         $('#id_proc_entrat_'+(persona.proc_entrat-1)).prop('checked', true)
-         $('#id_proc_entrat_fintrat_'+(persona.proc_entrat_fintrat-1)).prop('checked', true)
-         $('#id_proc_intrat_'+(persona.proc_intrat-1)).prop('checked', true)
-         $('#id_proc_intrat_reitrat_'+(persona.proc_intrat_reitrat-1)).prop('checked', true)
-         $('#id_proc_diag').val(persona.proc_diag)
-         $('#id_proc_fecha_initrat').val(persona.proc_fecha_initrat)
-         $('#id_proc_entrat_diag').val(persona.proc_entrat_diag)
-         $('#id_proc_entrat_fecha_fintrat').val(persona.proc_entrat_fecha_fintrat)
-         $('#id_proc_intrat_diag').val(persona.proc_intrat_diag)
-         $('#id_proc_intrat_fecha_reitrat').val(persona.proc_intrat_fecha_reitrat)
+         $('#id_proc_'+(msg.persona.lic4-1)).prop('checked', true).trigger('change')
+         $('#id_proc_initrat_'+(msg.persona.proc_initrat-1)).prop('checked', true).trigger('change')
+         $('#id_proc_entrat_'+(msg.persona.proc_entrat-1)).prop('checked', true).trigger('change')
+         $('#id_proc_entrat_fintrat_'+(msg.persona.proc_entrat_fintrat-1)).prop('checked', true).trigger('change')
+         $('#id_proc_intrat_'+(msg.persona.proc_intrat-1)).prop('checked', true).trigger('change')
+         $('#id_proc_intrat_reitrat_'+(msg.persona.proc_intrat_reitrat-1)).prop('checked', true).trigger('change')
+         $('#id_proc_diag').val(msg.persona.proc_diag)
+         $('#id_proc_fecha_initrat').val(msg.persona.proc_fecha_initrat)
+         $('#id_proc_entrat_diag').val(msg.persona.proc_entrat_diag)
+         $('#id_proc_entrat_fecha_fintrat').val(msg.persona.proc_entrat_fecha_fintrat)
+         $('#id_proc_intrat_diag').val(msg.persona.proc_intrat_diag)
+         $('#id_proc_intrat_fecha_reitrat').val(msg.persona.proc_intrat_fecha_reitrat)
 
-         $('#id_infpel_'+(persona.lic4-1)).prop('checked', true)
-         $('#id_infpel_initrat_'+(persona.infpel_initrat-1)).prop('checked', true)
-         $('#id_infpel_entrat_'+(persona.infpel_entrat-1)).prop('checked', true)
-         $('#id_infpel_entrat_fintrat_'+(persona.infpel_entrat_fintrat-1)).prop('checked', true)
-         $('#id_infpel_intrat_'+(persona.infpel_intrat-1)).prop('checked', true)
-         $('#id_infpel_intrat_reitrat_'+(persona.infpel_intrat_reitrat-1)).prop('checked', true)
-         $('#id_infpel_diag').val(persona.infpel_diag)
-         $('#id_infpel_fecha_initrat').val(persona.infpel_fecha_initrat)
-         $('#id_infpel_entrat_diag').val(persona.infpel_entrat_diag)
-         $('#id_infpel_entrat_fecha_fintrat').val(persona.infpel_entrat_fecha_fintrat)
-         $('#id_infpel_intrat_diag').val(persona.infpel_intrat_diag)
-         $('#id_infpel_intrat_fecha_reitrat').val(persona.infpel_intrat_fecha_reitrat)
+         $('#id_infpel_'+(msg.persona.lic4-1)).prop('checked', true).trigger('change')
+         $('#id_infpel_initrat_'+(msg.persona.infpel_initrat-1)).prop('checked', true).trigger('change')
+         $('#id_infpel_entrat_'+(msg.persona.infpel_entrat-1)).prop('checked', true).trigger('change')
+         $('#id_infpel_entrat_fintrat_'+(msg.persona.infpel_entrat_fintrat-1)).prop('checked', true).trigger('change')
+         $('#id_infpel_intrat_'+(msg.persona.infpel_intrat-1)).prop('checked', true).trigger('change')
+         $('#id_infpel_intrat_reitrat_'+(msg.persona.infpel_intrat_reitrat-1)).prop('checked', true).trigger('change')
+         $('#id_infpel_diag').val(msg.persona.infpel_diag)
+         $('#id_infpel_fecha_initrat').val(msg.persona.infpel_fecha_initrat)
+         $('#id_infpel_entrat_diag').val(msg.persona.infpel_entrat_diag)
+         $('#id_infpel_entrat_fecha_fintrat').val(msg.persona.infpel_entrat_fecha_fintrat)
+         $('#id_infpel_intrat_diag').val(msg.persona.infpel_intrat_diag)
+         $('#id_infpel_intrat_fecha_reitrat').val(msg.persona.infpel_intrat_fecha_reitrat)
 
 
          //ESA ONDA DE EMBARADA
-         if (persona.boleta__sexo == 1){
+         if (msg.persona.boleta__sexo == 1){
             $("#id_condiciones option[value='"+ embarazada_id +"']").remove();
             $('#embarazada').hide()
          }else{
@@ -2456,14 +2741,12 @@ $('#search_identidad').click(function() {
             $('#encargados').hide().fadeOut();
          }
 
-         expediente = identidad + '-' + persona.boleta__fecha_nacimiento + '-' + persona.boleta__sexo
+         expediente = identidad + '-' + msg.persona.boleta__fecha_nacimiento + '-' + msg.persona.boleta__sexo
          $('#expediente').text(btoa(identidad) + '-'+ $('#id_fecha_nacimiento').val() + '-' + $('input[name=sexo]').val())
          $('#input_expediente, .expediente').val(btoa(identidad) + '-'+ $('#id_fecha_nacimiento').val() + '-' + $('input[name=sexo]').val())
       }
    });
 }); 
-
-
 
 
 //NO IDENTIDAD
@@ -3201,6 +3484,51 @@ $('#id_lic4_resultado').keyup(function(){
       $('#error_infeccion').show()
    }else{
       $('#error_infeccion').hide()
+   }
+})
+
+
+$('input[name=abandono]').click(function(){
+   console.log(';askdalksjdlaskjdlaskjdlasdl')
+   opcion = $("#id_abandono_0").prop("checked")
+
+   if (opcion == true){
+      $('#id_fecha_abandono').prop('disabled', false)
+   }else{
+      $('#id_fecha_abandono').val('').prop('disabled', true)
+   }
+})
+
+$('input[name=suspension]').click(function(){
+   console.log(';askdalksjdlaskjdlaskjdlasdl')
+   opcion = $("#id_suspension_0").prop("checked")
+
+   if (opcion == true){
+      $('#id_fecha_suspension, #id_fecha_reinicio').prop('disabled', false)
+   }else{
+      $('#id_fecha_suspension, #id_fecha_reinicio').val('').prop('disabled', true)
+   }
+})
+
+$('input[name=fallecido]').click(function(){
+   console.log(';askdalksjdlaskjdlaskjdlasdl')
+   opcion = $("#id_fallecido_0").prop("checked")
+
+   if (opcion == true){
+      $('#id_fecha_fallecido, input[name=causa_fallecido]').prop('disabled', false)
+   }else{
+      $('#id_fecha_fallecido, input[name=causa_fallecido]').val('').prop('disabled', true)
+   }
+})
+
+$('input[name=cambio_terapia]').click(function(){
+   console.log(';askdalksjdlaskjdlaskjdlasdl')
+   opcion = $("#id_cambio_terapia_0").prop("checked")
+
+   if (opcion == true){
+      $('#id_fecha_cambio_terapia').prop('disabled', false)
+   }else{
+      $('#id_fecha_cambio_terapia').val('').prop('disabled', true)
    }
 })
 </script>
