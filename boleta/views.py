@@ -703,6 +703,144 @@ def boleta_seguimiento(request):
 	if request.is_ajax():
 		identidad = request.GET['identidad']
 		try:
+			try:
+				seguimiento = dict(
+					BoletasSeguimientos.objects.values(
+						'motivo',
+						'profpri',
+						'fecha_consulta',
+						'fecha_proxima_cita',
+						'tmpsmx',
+						'tmpsmx_initrat',
+						'tmpsmx_fecha_initrat',
+						'tmpsmx_fintrat',
+						'tmpsmx_fecha_fintrat',
+						'tmpsmx_intrat',
+						'tmpsmx_fecha_intrat',
+						'tmpsmx_reitrat',
+						'tmpsmx_fecha_reitrat',
+						'isoniacida',
+						'isoniacida_initrat',
+						'isoniacida_fecha_initrat',
+						'isoniacida_fintrat',
+						'isoniacida_fecha_fintrat',
+						'isoniacida_intrat',
+						'isoniacida_fecha_intrat',
+						'isoniacida_reitrat',
+						'isoniacida_fecha_reitrat',
+						'azitromicida',
+						'azitromicida_initrat',
+						'azitromicida_fecha_initrat',
+						'azitromicida_fintrat',
+						'azitromicida_fecha_fintrat',
+						'azitromicida_intrat',
+						'azitromicida_fecha_intrat',
+						'azitromicida_reitrat',
+						'azitromicida_fecha_reitrat',
+						'arv_fecha_ini',
+						'conteo_cd4',
+						'abandono',
+						'fecha_abandono',
+						'suspension',
+						'fecha_suspension',
+						'fecha_reinicio',
+						'fallecido',
+						'fecha_fallecido',
+						'causa_fallecido',
+						'activo',
+						'esquema_arv',
+						'fecha_prescripcion_arv',
+						'cambio_terapia',
+						'fecha_cambio_terapia',
+						'motivo_cambio_terapia',
+						'documentado_con',
+						'esquema_actual_arv',
+						'fecha_entrega_arv',
+						'azt',
+						'abc',
+						'efv',
+						'rpv',
+						'dtf',
+						'lpv',
+						'abc_cant',
+						'ft_cant',
+						'd4t_cant',
+						'azt_cant',
+						'efv_cant',
+						'nvp_cant',
+						'ddi_cant',
+						'tc_cant',
+						'tdf_cant',
+						'rpv_cant',
+						'etr_cant',
+						'atv_cant',
+						'drv_cant',
+						'fpv_cant',
+						'idv_cant',
+						'nfv_cant',
+						'sqv_cant',
+						'tpv_cant',
+						'ral_cant',
+						'evg_cant',
+						'dtg_cant',
+						'abc_med',
+						'ft_med',
+						'd4t_med',
+						'azt_med',
+						'efv_med',
+						'nvp_med',
+						'ddi_med',
+						'tc_med',
+						'tdf_med',
+						'rpv_med',
+						'etr_med',
+						'atv_med',
+						'drv_med',
+						'fpv_med',
+						'idv_med',
+						'nfv_med',
+						'sqv_med',
+						'tpv_med',
+						'ral_med',
+						'evg_med',
+						'dtg_med',
+						'abc_ter',
+						'ft_ter',
+						'd4t_ter',
+						'azt_ter',
+						'efv_ter',
+						'nvp_ter',
+						'ddi_ter',
+						'tc_ter',
+						'tdf_ter',
+						'rpv_ter',
+						'etr_ter',
+						'atv_ter',
+						'drv_ter',
+						'fpv_ter',
+						'idv_ter',
+						'nfv_ter',
+						'sqv_ter',
+						'tpv_ter',
+						'ral_ter',
+						'evg_ter',
+						'dtg_ter',
+						'azt2_ter',
+						'abc2_ter',
+						'efv2_ter',
+						'rpv2_ter',
+						'dtf2_ter',
+						'lpv2_ter',
+						'cantidad_medicamento',
+						'adherencia',
+						'tiempo_arv',
+						'fecha_proxentrega_arv'
+					).filter(identidad=identidad)[:1].get()
+				)
+			except Exception, e:
+				seguimiento = False
+				print 'kjhkjhk'
+				pass
 			persona = dict(
 				BoletasClinicas.objects.values(
 					'boleta__primer_nombre', 
@@ -927,12 +1065,16 @@ def boleta_seguimiento(request):
 			)
 		except Exception, e:
 			print e, 'ERRORasdasdasda'
-			try:
-				persona = dict(RPN.objects.values('primer_nombre', 'segundo_nombre', 'primer_apellido', 'segundo_apellido', 'sexo', 'fecha_nacimiento').get(identidad=identidad))
-			except Exception, e:
-				persona = False
+			persona = False
+			seguimiento = False
 
-		return HttpResponse(json.dumps(persona, default=date_handler), content_type='application/json')
+
+		data = {
+			'persona' : persona,
+			'seg': seguimiento,
+		}
+
+		return HttpResponse(json.dumps(data, default=date_handler), content_type='application/json')
 	#GET
 	elif request.method == 'GET':
 		formulario = RPNForm()
@@ -979,7 +1121,6 @@ def boleta_seguimiento(request):
 					return render(request, 'boleta_seguimiento.html', ctx)
 				
 				formulario3 = BoletaClinicaSeguimientoForm(request.POST, instance=instance)
-
 				registro2 = formulario3.save(commit=False)
 				registro2.actualmente_tarv = request.POST.get('actualmente_tarv')
 				if request.POST.get('fecha_inicio_tarv') != '':
@@ -1116,6 +1257,12 @@ def boleta_seguimiento(request):
 					registro2.establecimiento = None
 
 				registro2.save()
+
+				try:
+					instance = BoletasSeguimientos.objects.filter(identidad=identidad)[:1].get()
+					formulario4 = BoletaSeguimientoForm(request.POST, instance=instance)
+				except Exception, e:
+					formulario4 = BoletaSeguimientoForm(request.POST)
 
 				registro = formulario4.save(commit=False)
 				registro.boleta_clinica = registro2
@@ -1258,6 +1405,7 @@ def boleta_seguimiento(request):
 				registro.abandono = request.POST.get('abandono')
 				registro.suspension = request.POST.get('suspension')
 				registro.activo = request.POST.get('activo')
+				registro.fallecido = request.POST.get('fallecido')
 				registro.fallecido = request.POST.get('fallecido')
 					 			
 	 			registro.save()
