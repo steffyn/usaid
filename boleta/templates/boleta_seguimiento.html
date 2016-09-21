@@ -1817,6 +1817,8 @@ $('#identidad').attr({
             $('#persona').val(3)
          }
          $('#error_identidad').hide()
+
+         $('#identidad').val(msg.persona.boleta__identidad)
          $('#id_primer_nombre').val(msg.persona.boleta__primer_nombre).prop('readonly', true)
          $('#id_segundo_nombre').val(msg.persona.boleta__segundo_nombre).prop('readonly', true)
          $('#id_primer_apellido').val(msg.persona.boleta__primer_apellido).prop('readonly', true)
@@ -2433,6 +2435,7 @@ $('#search_identidad').click(function() {
             $('#persona').val(3)
          }
          $('#error_identidad').hide()
+         $('#identidad').val(msg.persona.boleta__identidad)
          $('#id_primer_nombre').val(msg.persona.boleta__primer_nombre).prop('readonly', true)
          $('#id_segundo_nombre').val(msg.persona.boleta__segundo_nombre).prop('readonly', true)
          $('#id_primer_apellido').val(msg.persona.boleta__primer_apellido).prop('readonly', true)

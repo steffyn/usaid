@@ -1192,7 +1192,7 @@ function(start, end, label) {
 }).val('');
 
 vars = '#id_fecha_consejeria, #id_fecha_ultima_menstruacion, #id_fecha_cesaria, '
-vars += '#id_fecha_diagnostico, #id_fecha_primera_consulta, #id_fecha_proxima_cita, '
+vars += '#id_fecha_diagnostico, #id_fecha_primera_consulta, '
 vars += '#id_lic4_fecha_realizacion, #id_caviral_fecha_realizacion, #id_hepb_fecha_realizacion, '
 vars += '#id_hepc_fecha_realizacion, #id_rpr_fecha_realizacion, #id_rxtorax_fecha_realizacion, '
 vars += '#id_sespu_fecha_realizacion, #id_ppd_fecha_realizacion, #id_cultivo_fecha_realizacion, '
@@ -1217,6 +1217,38 @@ $(vars).daterangepicker({
    singleDatePicker: true,
    showDropdowns: true,
    maxDate: moment(),
+   locale: {
+      format: 'YYYY-MM-DD',
+      daysOfWeek: [
+         "Do",
+         "Lu",
+         "Ma",
+         "Mi",
+         "Ju",
+         "Vi",
+         "Sa"
+      ],
+      monthNames: [
+         "Enero",
+         "Febrero",
+         "Marzo",
+         "Abril",
+         "Mayo",
+         "Junio",
+         "Julio",
+         "Agosto",
+         "Septiembre",
+         "Octubre",
+         "Noviembre",
+         "Diciembre"
+      ],
+   },
+}).val('');
+
+$('#id_fecha_proxima_cita').daterangepicker({
+   //autoUpdateInput: false,
+   singleDatePicker: true,
+   showDropdowns: true,
    locale: {
       format: 'YYYY-MM-DD',
       daysOfWeek: [
