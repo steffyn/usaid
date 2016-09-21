@@ -1381,7 +1381,7 @@ $('#identidad').attr({
             $('#id_nombre_tutor').val(persona.nombre_tutor)
             $('#id_telefono_tutor').val(persona.telefono_tutor)
             $('#id_direccion_tutor').val(persona.direccion_tutor)
-            $('#id_poblacion').val(persona.poblacion)
+            $('#id_poblacion_'+(persona.poblacion__pk-1)).prop('checked', true)
             $('#id_actividad_economica').select2('val', String(persona.actividad_economica__pk))
             $('#id_fecha_ultima_menstruacion').val(persona.fecha_ultima_menstruacion)
             $('#id_condiciones').val(persona.condiciones)
