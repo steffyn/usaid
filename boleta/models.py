@@ -704,3 +704,6 @@ class BoletasSeguimientos(models.Model):
 	adherencia = models.IntegerField(blank=True, null=True, verbose_name='Porcentaje de Adherencia')
 	tiempo_arv = models.IntegerField(blank=True, null=True, verbose_name='Tiempo enn ARV')
 	fecha_proxentrega_arv = models.DateField(blank=True, null=True, verbose_name='Fecha de Próxima Entrega de ARV')
+
+	def __unicode__(self):
+		return u'[%s] %s' % (self.boleta_clinica.boleta.expediente, self.boleta_clinica.boleta.identidad)
