@@ -1794,7 +1794,465 @@ $('#identidad').attr({
 }); 
 
 $('#search_identidad').click(function (e) {
+   identidad = $('#identidad').val();
+
+   expediente = identidad + '-' + $('#id_fecha_nacimiento').val() + '-' + $('input[name=sexo]').val()
+   $('.identidad').val($('#identidad').val())
+   $('#expediente').text(btoa(identidad) + '-'+ $('#id_fecha_nacimiento').val() + '-' + $('input[name=sexo]').val())
+   $('#input_expediente, .expediente').val(btoa(identidad) + '-'+ $('#id_fecha_nacimiento').val() + '-' + $('input[name=sexo]').val())
+
+   $.ajax({
+      url: "{% url 'boleta_clinica' %}",
+      data: { 
+      identidad: identidad
+   }
+   })
+   .done(function( data ) {
+      if (data.persona==false){
+
+         $('#persona').val(1)
+         $('#error_identidad').show().delay(4000).fadeOut()
+         $('#id_primer_nombre, #id_segundo_nombre, #sexo_persona, #id_primer_apellido, #id_segundo_apellido, #id_fecha_nacimiento').prop('readonly', false).val('')
+         $('#id_fecha_nacimiento, input[name=sexo]').prop('disabled',false).val('')
+
+
+      }else{
+         console.log(data.persona)
+         console.log(data.clinica)
+         if(data.persona.edad_anios){
+            $('#persona').val(2)
+            console.log('lkasjdalskdjalsk', data.persona.ocupacion__pk)
+            $('#id_edad_anios').val(data.persona.edad_anios)
+            $('#id_edad_meses').val(data.persona.edad_meses)
+            $('#id_pseudonimo').val(data.persona.pseudonimo)
+            $('#id_estado_civil_'+(data.persona.estado_civil-1)).prop('checked', true)
+            $('#id_telefono_fijo').val(data.persona.telefono_fijo)
+            $('#id_telefono_celular').val(data.persona.telefono_celular)
+            $("#id_departamento").select2('val', String(data.persona.departamento__pk))
+            $("#id_departamento").val(data.persona.departamento__pk)
+            $("#id_ocupacion").select2('val', String(data.persona.ocupacion__pk))
+            $('#id_calle').val(data.persona.calle)
+            $('#id_bloque').val(data.persona.bloque)
+            $('#id_numero_casa').val(data.persona.numero_casa)
+            $('#id_referencias').val(data.persona.referencias)
+            $('#id_grupo_etnico_'+(data.persona.grupo_etnico__pk-1)).prop('checked', true)
+            $('#id_otro_grupo_etnico').val(data.persona.otro_grupo_etnico)
+            $('#id_identidad_madre').val(data.persona.identidad_madre)
+            $('#id_nombre_madre').val(data.persona.nombre_madre)
+            $('#id_telefono_madre').val(data.persona.telefono_madre)
+            $('#id_identidad_padre').val(data.persona.identidad_padre)
+            $('#id_nombre_padre').val(data.persona.nombre_padre)
+            $('#id_telefono_padre').val(data.persona.telefono_padre)
+            $('#id_identidad_tutor').val(data.persona.identidad_tutor)
+            $('#id_nombre_tutor').val(data.persona.nombre_tutor)
+            $('#id_telefono_tutor').val(data.persona.telefono_tutor)
+            $('#id_direccion_tutor').val(data.persona.direccion_tutor)
+            $('#id_poblacion_'+(data.persona.poblacion__pk-1)).prop('checked', true)
+            $('#id_actividad_economica').select2('val', String(data.persona.actividad_economica__pk))
+            $('#id_fecha_ultima_menstruacion').val(data.persona.fecha_ultima_menstruacion)
+            $('#id_condiciones').val(data.persona.condiciones)
+            $('#id_otro_condicion').val(data.persona.otro_condicion)
+            $('#id_barrio').val(data.persona.barrio)
+
+            setTimeout(function(){
+               $("#id_municipio").select2('val', String(data.persona.municipio__pk))
+            }, 2000);
+
+            setTimeout(function(){
+               $("#id_ciudad").select2('val', String(data.persona.ciudad__pk))
+            }, 4000);
+
+         }else{
+            $('#persona').val(3)
+            $('#id_edad_anios').val('')
+            $('#id_edad_meses').val('')
+            $('#id_pseudonimo').val('')
+            $('#id_estado_civil_1').prop('checked', true)
+            $('#id_telefono_fijo').val('')
+            $('#id_telefono_celular').val('')
+            $("#id_ocupacion").select2('val','')
+            $("#id_ocupacion").val('')
+            $('#id_departamento').val('')
+            $('#id_municipio').val('')
+            $('#id_calle').val('')
+            $('#id_bloque').val('')
+            $('#id_numero_casa').val('')
+            $('#id_referencias').val('')
+            $('#id_grupo_etnico').val('')
+            $('#id_otro_grupo_etnico').val('')
+            $('#id_identidad_madre').val('')
+            $('#id_nombre_madre').val('')
+            $('#id_telefono_madre').val('')
+            $('#id_identidad_padre').val('')
+            $('#id_nombre_padre').val('')
+            $('#id_telefono_padre').val('')
+            $('#id_identidad_tutor').val('')
+            $('#id_nombre_tutor').val('')
+            $('#id_telefono_tutor').val('')
+            $('#id_direccion_tutor').val('')
+            $('#id_poblacion').val('')
+            $('#id_actividad_economica').val('')
+            $('#id_fecha_ultima_menstruacion').val('')
+            $('#id_ciudad').val('')
+            $('#id_barrio').val('')
+            $('#id_condiciones').val('')
+            $('#id_otro_condicion').val('')
+         }
+         $('#error_identidad').hide()
+         $('#id_primer_nombre').val(data.persona.primer_nombre).prop('readonly', true)
+         $('#id_segundo_nombre').val(data.persona.segundo_nombre).prop('readonly', true)
+         $('#id_primer_apellido').val(data.persona.primer_apellido).prop('readonly', true)
+         $('#id_segundo_apellido').val(data.persona.segundo_apellido).prop('readonly', true)
+         $('#id_fecha_nacimiento').val(data.persona.fecha_nacimiento).prop('readonly', true).prop('disabled', true)
+
+         $('input[name=sexo]').prop('disabled',true).val('')
+         $('#id_sexo_'+(data.persona.sexo-1)).prop('checked', true)
+         $('#sexo_persona').val(data.persona.sexo)
+
+         //ESA ONDA DE EMBARADA
+         if (data.persona.sexo == 1){
+            $("#id_condiciones option[value='"+ embarazada_id +"']").remove();
+            $('#embarazada').hide()
+         }else{
+
+            $('#embarazada').show()
+            $("#id_condiciones").append('<option value="'+ embarazada_id +'">Embarazada</option>');
+         }
+
+         //CALCULO DE EDAD
+         edad = $('#id_fecha_nacimiento').val().split("-");
+         var mes = edad[1];
+         var anio = edad[0];
+              var dia = edad[2];
+              var anio_actual = new Date().getFullYear();
+              var edad_anios = anio_actual - anio;
+              var mes_actual = new Date().getMonth()+1;
+              var edad_mes = mes_actual - mes;
+              var ahora_dia = new Date().getDate();
+        
+              if (edad_mes < 0){
+                  if (edad_mes > 0){
+                     edad_anios = edad_anios-1
+                     edad_mes = ((12-mes)+mes_actual)
+                  }
+                }
+              var dias=0;
+              if(ahora_dia>dia)
+                  dias=ahora_dia-dia;
+              if(ahora_dia<dia)
+              {
+                  ultimoDiaMes=new Date(anio_actual, mes_actual, 0);
+                  dias=ultimoDiaMes.getDate()-(dia-ahora_dia);
+              }
+
+              $('#id_edad_anios').val(edad_anios)
+              $('#id_edad_meses').val(Math.abs(edad_mes))
+              $('#id_edad_dias').val(Math.abs(dias))
+
+      if (data.clinica!=false){
+         $('#boleta_clinica').val(data.clinica.id)
+         console.log(data.clinica)
+         $('#id_estado_inmunologico_'+(parseInt(data.clinica.estado_inmunologico)-1)).prop('checked', true).trigger('change')
+         $('#id_estadio_infeccion').val(data.clinica.estadio_infeccion)
+         console.log(data.clinica.estado_clinico, 'ESTADO CLINIC')
+         if(data.clinica.estado_clinico == 'A'){
+            $('#id_estado_clinico_0').prop('checked', true).trigger('change')
+         }
+         if(data.clinica.estado_clinico == 'B'){
+            $('#id_estado_clinico_1').prop('checked', true).trigger('change')
+         }
+         if(data.clinica.estado_clinico == 'C'){
+            $('#id_estado_clinico_2').prop('checked', true).trigger('change')
+         }
+
+         $('#id_lic4_'+(data.clinica.lic4-1)).prop('checked', true).trigger('change')
+         $('#id_lic4_ordenado_consulta_'+(data.clinica.lic4_ordenado_consulta-1)).prop('checked', true).trigger('change')
+         $('#id_lic4_resultado').val(data.clinica.lic4_resultado)
+         $('#id_lic4_fecha_realizacion').val(data.clinica.lic4_fecha_realizacion)
+
+         $('#id_caviral_'+(data.clinica.caviral-1)).prop('checked', true).trigger('change')
+         $('#id_caviral_ordenado_consulta_'+(data.clinica.caviral_ordenado_consulta-1)).prop('checked', true).trigger('change')
+         $('#id_caviral_resultado').val(data.clinica.caviral_resultado)
+         $('#id_caviral_fecha_realizacion').val(data.clinica.caviral_fecha_realizacion)
+
+         $('#id_hepb_'+(data.clinica.hepb-1)).prop('checked', true).trigger('change')
+         $('#id_hepb_ordenado_consulta_'+(data.clinica.hepb_ordenado_consulta-1)).prop('checked', true).trigger('change')
+         $('#id_hepb_resultado_'+(parseInt(data.clinica.hepb_resultado)-1)).prop('checked', true).trigger('change')
+          $('#id_hepb_fecha_realizacion').val(data.clinica.hepb_fecha_realizacion)
+
+         $('#id_hepc_'+(data.clinica.hepc-1)).prop('checked', true).trigger('change')
+         $('#id_hepc_ordenado_consulta_'+(data.clinica.hepc_ordenado_consulta-1)).prop('checked', true).trigger('change')
+         $('#id_hepc_resultado_'+(parseInt(data.clinica.hepc_resultado)-1)).prop('checked', true).trigger('change')
+         $('#id_hepc_fecha_realizacion').val(data.clinica.hepc_fecha_realizacion)
+
+         $('#id_rpr_'+(data.clinica.rpr-1)).prop('checked', true).trigger('change')
+         $('#id_rpr_ordenado_consulta_'+(data.clinica.rpr_ordenado_consulta-1)).prop('checked', true).trigger('change')
+         $('#id_rpr_resultado_'+(parseInt(data.clinica.rpr_resultado)-1)).prop('checked', true).trigger('change')
+         $('#id_rpr_fecha_realizacion').val(data.clinica.rpr_fecha_realizacion)
+
+         $('#id_rxtorax_'+(data.clinica.rxtorax-1)).prop('checked', true).trigger('change')
+         $('#id_rxtorax_ordenado_consulta_'+(data.clinica.rxtorax_ordenado_consulta-1)).prop('checked', true).trigger('change')
+         $('#id_rxtorax_resultado').val(data.clinica.rxtorax_resultado)
+         $('#id_rxtorax_fecha_realizacion').val(data.clinica.rxtorax_fecha_realizacion)
+
+         $('#id_sespu_'+(data.clinica.sespu-1)).prop('checked', true).trigger('change')
+         $('#id_sespu_ordenado_consulta_'+(data.clinica.sespu_ordenado_consulta-1)).prop('checked', true).trigger('change')
+         $('#id_sespu_resultado').val(data.clinica.sespu_resultado)
+         $('#id_sespu_fecha_realizacion').val(data.clinica.sespu_fecha_realizacion)
+
+         $('#id_ppd_'+(data.clinica.ppd-1)).prop('checked', true).trigger('change')
+         $('#id_ppd_ordenado_consulta_'+(data.clinica.ppd_ordenado_consulta-1)).prop('checked', true).trigger('change')
+         $('#id_ppd_resultado').val(data.clinica.ppd_resultado)
+         $('#id_ppd_fecha_realizacion').val(data.clinica.ppd_fecha_realizacion)
+
+         $('#id_cultivo_'+(data.clinica.cultivo-1)).prop('checked', true).trigger('change')
+         $('#id_cultivo_ordenado_consulta_'+(data.clinica.cultivo_ordenado_consulta-1)).prop('checked', true).trigger('change')
+         $('#id_cultivo_resultado').val(data.clinica.cultivo_resultado)
+         $('#id_cultivo_fecha_realizacion').val(data.clinica.cultivo_fecha_realizacion)
+
+         $('#id_usg_'+(data.clinica.usg-1)).prop('checked', true).trigger('change')
+         $('#id_usg_ordenado_consulta_'+(data.clinica.usg_ordenado_consulta-1)).prop('checked', true).trigger('change')
+         $('#id_usg_resultado').val(data.clinica.usg_resultado)
+         $('#id_usg_fecha_realizacion').val(data.clinica.usg_fecha_realizacion)
+
+         $('#id_biopsia_'+(data.clinica.biopsia-1)).prop('checked', true).trigger('change')
+         $('#id_biopsia_ordenado_consulta_'+(data.clinica.biopsia_ordenado_consulta-1)).prop('checked', true).trigger('change')
+         $('#id_biopsia_resultado').val(data.clinica.biopsia_resultado)
+         $('#id_biopsia_fecha_realizacion').val(data.clinica.biopsia_fecha_realizacion)
+
+         $('#id_otro_'+(data.clinica.otro-1)).prop('checked', true).trigger('change')
+         $('#id_otro_ordenado_consulta_'+(data.clinica.otro_ordenado_consulta-1)).prop('checked', true).trigger('change')
+         $('#id_otro_resultado').val(data.clinica.otro_resultado)
+         $('#id_otro_fecha_realizacion').val(data.clinica.otro_fecha_realizacion)
+
+
+         if (data.clinica.tupu_trat = "Isoniacida"){
+            $('#id_tupu_trat_0').prop('checked', true)
+         }
+         if (data.clinica.tupu_trat = "Rifampicina"){
+            $('#id_tupu_trat_1').prop('checked', true)
+         }
+         if (data.clinica.tupu_trat = "Pirazinamida"){
+            $('#id_tupu_trat_2').prop('checked', true)
+         }
+         if (data.clinica.tupu_trat = "Etambutol"){
+            $('#id_tupu_trat_3').prop('checked', true)
+         }
+         if (data.clinica.tupu_trat = "Estreptomicina"){
+            $('#id_tupu_trat_4').prop('checked', true)
+         }
+         $('#id_tupu_'+(data.clinica.tupu-1)).prop('checked', true).trigger('change')
+         $('#id_tupu_initrat_'+(data.clinica.tupu_initrat-1)).prop('checked', true).trigger('change')
+         $('#id_tupu_entrat_'+(data.clinica.tupu_entrat-1)).prop('checked', true).trigger('change')
+         $('#id_tupu_entrat_fintrat_'+(data.clinica.tupu_entrat_fintrat-1)).prop('checked', true).trigger('change')
+         $('#id_tupu_intrat_'+(data.clinica.tupu_intrat-1)).prop('checked', true).trigger('change')
+         $('#id_tupu_intrat_reitrat_'+(data.clinica.tupu_intrat_reitrat-1)).prop('checked', true).trigger('change')
+         $('#id_tupu_diag').val(data.clinica.tupu_diag)
+         $('#id_tupu_fecha_initrat').val(data.clinica.tupu_fecha_initrat)
+         $('#id_tupu_entrat_diag').val(data.clinica.tupu_entrat_diag)
+         $('#id_tupu_entrat_fecha_fintrat').val(data.clinica.tupu_entrat_fecha_fintrat)
+         $('#id_tupu_intrat_diag').val(data.clinica.tupu_intrat_diag)
+         $('#id_tupu_intrat_fecha_reitrat').val(data.clinica.tupu_intrat_fecha_reitrat)
+
+         $('#id_tudi_'+(data.clinica.tudi-1)).prop('checked', true).trigger('change')
+         $('#id_tudi_initrat_'+(data.clinica.tudi_initrat-1)).prop('checked', true).trigger('change')
+         $('#id_tudi_entrat_'+(data.clinica.tudi_entrat-1)).prop('checked', true).trigger('change')
+         $('#id_tudi_entrat_fintrat_'+(data.clinica.tudi_entrat_fintrat-1)).prop('checked', true).trigger('change')
+         $('#id_tudi_intrat_'+(data.clinica.tudi_intrat-1)).prop('checked', true).trigger('change')
+         $('#id_tudi_intrat_reitrat_'+(data.clinica.tudi_intrat_reitrat-1)).prop('checked', true).trigger('change')
+         $('#id_tudi_diag').val(data.clinica.tudi_diag)
+         $('#id_tudi_fecha_initrat').val(data.clinica.tudi_fecha_initrat)
+         $('#id_tudi_entrat_diag').val(data.clinica.tudi_entrat_diag)
+         $('#id_tudi_entrat_fecha_fintrat').val(data.clinica.tudi_entrat_fecha_fintrat)
+         $('#id_tudi_intrat_diag').val(data.clinica.tudi_intrat_diag)
+         $('#id_tudi_intrat_fecha_reitrat').val(data.clinica.tudi_intrat_fecha_reitrat)
+
+         $('#id_hepb_'+(data.clinica.hepb-1)).prop('checked', true).trigger('change')
+         $('#id_hepb_initrat_'+(data.clinica.hepb_initrat-1)).prop('checked', true).trigger('change')
+         $('#id_hepb_entrat_'+(data.clinica.hepb_entrat-1)).prop('checked', true).trigger('change')
+         $('#id_hepb_entrat_fintrat_'+(data.clinica.hepb_entrat_fintrat-1)).prop('checked', true).trigger('change')
+         $('#id_hepb_intrat_'+(data.clinica.hepb_intrat-1)).prop('checked', true).trigger('change')
+         $('#id_hepb_intrat_reitrat_'+(data.clinica.hepb_intrat_reitrat-1)).prop('checked', true).trigger('change')
+         $('#id_hepb_diag').val(data.clinica.hepb_diag)
+         $('#id_hepb_fecha_initrat').val(data.clinica.hepb_fecha_initrat)
+         $('#id_hepb_entrat_diag').val(data.clinica.hepb_entrat_diag)
+         $('#id_hepb_entrat_fecha_fintrat').val(data.clinica.hepb_entrat_fecha_fintrat)
+         $('#id_hepb_intrat_diag').val(data.clinica.hepb_intrat_diag)
+         $('#id_hepb_intrat_fecha_reitrat').val(data.clinica.hepb_intrat_fecha_reitrat)
+
+         $('#id_hepc_'+(data.clinica.hepc-1)).prop('checked', true).trigger('change')
+         $('#id_hepc_initrat_'+(data.clinica.hepc_initrat-1)).prop('checked', true).trigger('change')
+         $('#id_hepc_entrat_'+(data.clinica.hepc_entrat-1)).prop('checked', true).trigger('change')
+         $('#id_hepc_entrat_fintrat_'+(data.clinica.hepc_entrat_fintrat-1)).prop('checked', true).trigger('change')
+         $('#id_hepc_intrat_'+(data.clinica.hepc_intrat-1)).prop('checked', true).trigger('change')
+         $('#id_hepc_intrat_reitrat_'+(data.clinica.hepc_intrat_reitrat-1)).prop('checked', true).trigger('change')
+         $('#id_hepc_diag').val(data.clinica.hepc_diag)
+         $('#id_hepc_fecha_initrat').val(data.clinica.hepc_fecha_initrat)
+         $('#id_hepc_entrat_diag').val(data.clinica.hepc_entrat_diag)
+         $('#id_hepc_entrat_fecha_fintrat').val(data.clinica.hepc_entrat_fecha_fintrat)
+         $('#id_hepc_intrat_diag').val(data.clinica.hepc_intrat_diag)
+         $('#id_hepc_intrat_fecha_reitrat').val(data.clinica.hepc_intrat_fecha_reitrat)
+
+         $('#id_ulg_'+(data.clinica.ulg-1)).prop('checked', true).trigger('change')
+         $('#id_ulg_initrat_'+(data.clinica.ulg_initrat-1)).prop('checked', true).trigger('change')
+         $('#id_ulg_entrat_'+(data.clinica.ulg_entrat-1)).prop('checked', true).trigger('change')
+         $('#id_ulg_entrat_fintrat_'+(data.clinica.ulg_entrat_fintrat-1)).prop('checked', true).trigger('change')
+         $('#id_ulg_intrat_'+(data.clinica.ulg_intrat-1)).prop('checked', true).trigger('change')
+         $('#id_ulg_intrat_reitrat_'+(data.clinica.ulg_intrat_reitrat-1)).prop('checked', true).trigger('change')
+         $('#id_ulg_diag').val(data.clinica.ulg_diag)
+         $('#id_ulg_fecha_initrat').val(data.clinica.ulg_fecha_initrat)
+         $('#id_ulg_entrat_diag').val(data.clinica.ulg_entrat_diag)
+         $('#id_ulg_entrat_fecha_fintrat').val(data.clinica.ulg_entrat_fecha_fintrat)
+         $('#id_ulg_intrat_diag').val(data.clinica.ulg_intrat_diag)
+         $('#id_ulg_intrat_fecha_reitrat').val(data.clinica.ulg_intrat_fecha_reitrat)
+
+         $('#id_secure_'+(data.clinica.secure-1)).prop('checked', true).trigger('change')
+         $('#id_secure_initrat_'+(data.clinica.secure_initrat-1)).prop('checked', true).trigger('change')
+         $('#id_secure_entrat_'+(data.clinica.secure_entrat-1)).prop('checked', true).trigger('change')
+         $('#id_secure_entrat_fintrat_'+(data.clinica.secure_entrat_fintrat-1)).prop('checked', true).trigger('change')
+         $('#id_secure_intrat_'+(data.clinica.secure_intrat-1)).prop('checked', true).trigger('change')
+         $('#id_secure_intrat_reitrat_'+(data.clinica.secure_intrat_reitrat-1)).prop('checked', true).trigger('change')
+         $('#id_secure_diag').val(data.clinica.secure_diag)
+         $('#id_secure_fecha_initrat').val(data.clinica.secure_fecha_initrat)
+         $('#id_secure_entrat_diag').val(data.clinica.secure_entrat_diag)
+         $('#id_secure_entrat_fecha_fintrat').val(data.clinica.secure_entrat_fecha_fintrat)
+         $('#id_secure_intrat_diag').val(data.clinica.secure_intrat_diag)
+         $('#id_secure_intrat_fecha_reitrat').val(data.clinica.secure_intrat_fecha_reitrat)
+
+         $('#id_fluva_'+(data.clinica.fluva-1)).prop('checked', true).trigger('change')
+         $('#id_fluva_initrat_'+(data.clinica.fluva_initrat-1)).prop('checked', true).trigger('change')
+         $('#id_fluva_entrat_'+(data.clinica.fluva_entrat-1)).prop('checked', true).trigger('change')
+         $('#id_fluva_entrat_fintrat_'+(data.clinica.fluva_entrat_fintrat-1)).prop('checked', true).trigger('change')
+         $('#id_fluva_intrat_'+(data.clinica.fluva_intrat-1)).prop('checked', true).trigger('change')
+         $('#id_fluva_intrat_reitrat_'+(data.clinica.fluva_intrat_reitrat-1)).prop('checked', true).trigger('change')
+         $('#id_fluva_diag').val(data.clinica.fluva_diag)
+         $('#id_fluva_fecha_initrat').val(data.clinica.fluva_fecha_initrat)
+         $('#id_fluva_entrat_diag').val(data.clinica.fluva_entrat_diag)
+         $('#id_fluva_entrat_fecha_fintrat').val(data.clinica.fluva_entrat_fecha_fintrat)
+         $('#id_fluva_intrat_diag').val(data.clinica.fluva_intrat_diag)
+         $('#id_fluva_intrat_fecha_reitrat').val(data.clinica.fluva_intrat_fecha_reitrat)
+
+         $('#id_buin_'+(data.clinica.buin-1)).prop('checked', true).trigger('change')
+         $('#id_buin_initrat_'+(data.clinica.buin_initrat-1)).prop('checked', true).trigger('change')
+         $('#id_buin_entrat_'+(data.clinica.buin_entrat-1)).prop('checked', true).trigger('change')
+         $('#id_buin_entrat_fintrat_'+(data.clinica.buin_entrat_fintrat-1)).prop('checked', true).trigger('change')
+         $('#id_buin_intrat_'+(data.clinica.buin_intrat-1)).prop('checked', true).trigger('change')
+         $('#id_buin_intrat_reitrat_'+(data.clinica.buin_intrat_reitrat-1)).prop('checked', true).trigger('change')
+         $('#id_buin_diag').val(data.clinica.buin_diag)
+         $('#id_buin_fecha_initrat').val(data.clinica.buin_fecha_initrat)
+         $('#id_buin_entrat_diag').val(data.clinica.buin_entrat_diag)
+         $('#id_buin_entrat_fecha_fintrat').val(data.clinica.buin_entrat_fecha_fintrat)
+         $('#id_buin_intrat_diag').val(data.clinica.buin_intrat_diag)
+         $('#id_buin_intrat_fecha_reitrat').val(data.clinica.buin_intrat_fecha_reitrat)
+
+         $('#id_edes_'+(data.clinica.edes-1)).prop('checked', true).trigger('change')
+         $('#id_edes_initrat_'+(data.clinica.edes_initrat-1)).prop('checked', true).trigger('change')
+         $('#id_edes_entrat_'+(data.clinica.edes_entrat-1)).prop('checked', true).trigger('change')
+         $('#id_edes_entrat_fintrat_'+(data.clinica.edes_entrat_fintrat-1)).prop('checked', true).trigger('change')
+         $('#id_edes_intrat_'+(data.clinica.edes_intrat-1)).prop('checked', true).trigger('change')
+         $('#id_edes_intrat_reitrat_'+(data.clinica.edes_intrat_reitrat-1)).prop('checked', true).trigger('change')
+         $('#id_edes_diag').val(data.clinica.edes_diag)
+         $('#id_edes_fecha_initrat').val(data.clinica.edes_fecha_initrat)
+         $('#id_edes_entrat_diag').val(data.clinica.edes_entrat_diag)
+         $('#id_edes_entrat_fecha_fintrat').val(data.clinica.edes_entrat_fecha_fintrat)
+         $('#id_edes_intrat_diag').val(data.clinica.edes_intrat_diag)
+         $('#id_edes_intrat_fecha_reitrat').val(data.clinica.edes_intrat_fecha_reitrat)
+
+         $('#id_verge_'+(data.clinica.verge-1)).prop('checked', true).trigger('change')
+         $('#id_verge_initrat_'+(data.clinica.verge_initrat-1)).prop('checked', true).trigger('change')
+         $('#id_verge_entrat_'+(data.clinica.verge_entrat-1)).prop('checked', true).trigger('change')
+         $('#id_verge_entrat_fintrat_'+(data.clinica.verge_entrat_fintrat-1)).prop('checked', true).trigger('change')
+         $('#id_verge_intrat_'+(data.clinica.verge_intrat-1)).prop('checked', true).trigger('change')
+         $('#id_verge_intrat_reitrat_'+(data.clinica.verge_intrat_reitrat-1)).prop('checked', true).trigger('change')
+         $('#id_verge_diag').val(data.clinica.verge_diag)
+         $('#id_verge_fecha_initrat').val(data.clinica.verge_fecha_initrat)
+         $('#id_verge_entrat_diag').val(data.clinica.verge_entrat_diag)
+         $('#id_verge_entrat_fecha_fintrat').val(data.clinica.verge_entrat_fecha_fintrat)
+         $('#id_verge_intrat_diag').val(data.clinica.verge_intrat_diag)
+         $('#id_verge_intrat_fecha_reitrat').val(data.clinica.verge_intrat_fecha_reitrat)
+
+         $('#id_trasex_'+(data.clinica.trasex-1)).prop('checked', true).trigger('change')
+         $('#id_trasex_initrat_'+(data.clinica.trasex_initrat-1)).prop('checked', true).trigger('change')
+         $('#id_trasex_entrat_'+(data.clinica.trasex_entrat-1)).prop('checked', true).trigger('change')
+         $('#id_trasex_entrat_fintrat_'+(data.clinica.trasex_entrat_fintrat-1)).prop('checked', true).trigger('change')
+         $('#id_trasex_intrat_'+(data.clinica.trasex_intrat-1)).prop('checked', true).trigger('change')
+         $('#id_trasex_intrat_reitrat_'+(data.clinica.trasex_intrat_reitrat-1)).prop('checked', true).trigger('change')
+         $('#id_trasex_diag').val(data.clinica.trasex_diag)
+         $('#id_trasex_fecha_initrat').val(data.clinica.trasex_fecha_initrat)
+         $('#id_trasex_entrat_diag').val(data.clinica.trasex_entrat_diag)
+         $('#id_trasex_entrat_fecha_fintrat').val(data.clinica.trasex_entrat_fecha_fintrat)
+         $('#id_trasex_intrat_diag').val(data.clinica.trasex_intrat_diag)
+         $('#id_trasex_intrat_fecha_reitrat').val(data.clinica.trasex_intrat_fecha_reitrat)
+
+         $('#id_proc_'+(data.clinica.proc-1)).prop('checked', true).trigger('change')
+         $('#id_proc_initrat_'+(data.clinica.proc_initrat-1)).prop('checked', true).trigger('change')
+         $('#id_proc_entrat_'+(data.clinica.proc_entrat-1)).prop('checked', true).trigger('change')
+         $('#id_proc_entrat_fintrat_'+(data.clinica.proc_entrat_fintrat-1)).prop('checked', true).trigger('change')
+         $('#id_proc_intrat_'+(data.clinica.proc_intrat-1)).prop('checked', true).trigger('change')
+         $('#id_proc_intrat_reitrat_'+(data.clinica.proc_intrat_reitrat-1)).prop('checked', true).trigger('change')
+         $('#id_proc_diag').val(data.clinica.proc_diag)
+         $('#id_proc_fecha_initrat').val(data.clinica.proc_fecha_initrat)
+         $('#id_proc_entrat_diag').val(data.clinica.proc_entrat_diag)
+         $('#id_proc_entrat_fecha_fintrat').val(data.clinica.proc_entrat_fecha_fintrat)
+         $('#id_proc_intrat_diag').val(data.clinica.proc_intrat_diag)
+         $('#id_proc_intrat_fecha_reitrat').val(data.clinica.proc_intrat_fecha_reitrat)
+
+         $('#id_infpel_'+(data.clinica.infpel-1)).prop('checked', true).trigger('change')
+         $('#id_infpel_initrat_'+(data.clinica.infpel_initrat-1)).prop('checked', true).trigger('change')
+         $('#id_infpel_entrat_'+(data.clinica.infpel_entrat-1)).prop('checked', true).trigger('change')
+         $('#id_infpel_entrat_fintrat_'+(data.clinica.infpel_entrat_fintrat-1)).prop('checked', true).trigger('change')
+         $('#id_infpel_intrat_'+(data.clinica.infpel_intrat-1)).prop('checked', true).trigger('change')
+         $('#id_infpel_intrat_reitrat_'+(data.clinica.infpel_intrat_reitrat-1)).prop('checked', true).trigger('change')
+         $('#id_infpel_diag').val(data.clinica.infpel_diag)
+         $('#id_infpel_fecha_initrat').val(data.clinica.infpel_fecha_initrat)
+         $('#id_infpel_entrat_diag').val(data.clinica.infpel_entrat_diag)
+         $('#id_infpel_entrat_fecha_fintrat').val(data.clinica.infpel_entrat_fecha_fintrat)
+         $('#id_infpel_intrat_diag').val(data.clinica.infpel_intrat_diag)
+         $('#id_infpel_intrat_fecha_reitrat').val(data.clinica.infpel_intrat_fecha_reitrat)
+         
+         $('#id_semanas_gestacion').val(data.clinica.semanas_gestacion)
+         $('#id_fecha_primera_consulta').val(data.clinica.fecha_primera_consulta)
+         $('#id_fecha_cesaria').val(data.clinica.fecha_cesaria)
+         $('#id_clase_afiliacion').val(data.clinica.clase_afiliacion)
+         $('#id_nombre_aseguradora').val(data.clinica.nombre_aseguradora)
+         $('#id_fecha_inicio_tarv').val(data.clinica.fecha_inicio_tarv)
+         $('#id_fecha_diagnostico').val(data.clinica.fecha_diagnostico)
+         $('#id_fecha_proxima_cita').val(data.clinica.fecha_proxima_cita)
+         $('#id_cita_medica').val(data.clinica.cita_medica)
+         $('#id_retiro_medicamento').val(data.clinica.retiro_medicamento)
+         $('#id_talla').val(data.clinica.talla)
+         $('#id_peso').val(data.clinica.peso)
+         $('#id_imc').val(data.clinica.imc)
+
+         $('#id_relaciones_mismo_sexo_'+(parseInt(data.clinica.relaciones_mismo_sexo)-1)).prop('checked', true).trigger('change')
+         $('#id_dinero_por_relaciones_'+(parseInt(data.clinica.dinero_por_relaciones)-1)).prop('checked', true).trigger('change')
+         $('#id_identificacion_genero_'+(parseInt(data.clinica.identificacion_genero)-1)).prop('checked', true).trigger('change')
+         $('#id_embarazada_vih_'+(parseInt(data.clinica.embarazada_vih)-1)).prop('checked', true).trigger('change')
+         $('#id_fecha_ultima_menstruacion_'+(parseInt(data.clinica.fecha_ultima_menstruacion)-1)).prop('checked', true).trigger('change')
+         $('#id_evaluacion_go_'+(parseInt(data.clinica.evaluacion_go)-1)).prop('checked', true).trigger('change')
+         $('#id_programacion_cesaria_'+(parseInt(data.clinica.programacion_cesaria)-1)).prop('checked', true).trigger('change')
+         $('#id_afiliacion_seguridad_social_'+(parseInt(data.clinica.afiliacion_seguridad_social)-1)).prop('checked', true).trigger('change')
+         $('#id_seguro_privado_'+(parseInt(data.clinica.seguro_privado)-1)).prop('checked', true).trigger('change')
+         $('#id_actualmente_tarv_'+(parseInt(data.clinica.actualmente_tarv)-1)).prop('checked', true).trigger('change')
+         $('#id_estatus_actual_tarv_'+(parseInt(data.clinica.estatus_actual_tarv)-1)).prop('checked', true).trigger('change')
+         $('#id_estado_inmunologico_'+(parseInt(data.clinica.estado_inmunologico)-1)).prop('checked', true).trigger('change')
+         $('#id_estado_clinico_'+(parseInt(data.clinica.estado_clinico)-1)).prop('checked', true).trigger('change')
+         $('#id_estadio_infeccion_'+(parseInt(data.clinica.estadio_infeccion)-1)).prop('checked', true).trigger('change')
+
+      }
+
+         if(parseInt(edad_anios)<18){
+            $('#encargados').show().fadeIn();
+         }else{
+            $('#encargados').hide().fadeOut();
+         }
+
+         expediente = identidad + '-' + data.persona.fecha_nacimiento + '-' + data.persona.sexo
+         $('#expediente').text(btoa(identidad) + '-'+ $('#id_fecha_nacimiento').val() + '-' + $('input[name=sexo]').val())
+   $('#input_expediente, .expediente').val(btoa(identidad) + '-'+ $('#id_fecha_nacimiento').val() + '-' + $('input[name=sexo]').val())
+      }
    });
+});
 
 //NO IDENTIDAD
 $('#no_identidad').change(function(){
