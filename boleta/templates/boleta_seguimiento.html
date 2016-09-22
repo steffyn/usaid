@@ -1502,7 +1502,6 @@ $('#id_fecha_nacimiento').daterangepicker({
    },
 },
 function(start, end, label) {
-   console.log(start.format('YYYY-MM-DD'))
    edad = start.format('YYYY-MM-DD').split("-");
    var mes = edad[1];
    var anio = edad[0];
@@ -1676,7 +1675,6 @@ $('#identidad').attr({
       if (msg.seg == false){
          $('#formulario').trigger("reset");
       }else{
-         console.log("PASO POR AQUI",msg.seg.motivo)
          $('#id_motivo_'+(parseInt(msg.seg.motivo)-1)).prop('checked', true)
          $('#id_profpri_'+(parseInt(msg.seg.profpri)-1)).prop('checked', true)
          $('#id_fecha_consulta').val(msg.seg.fecha_consulta)
@@ -1946,7 +1944,6 @@ $('#identidad').attr({
 
 
       }else{
-         console.log(msg.persona)
          if(msg.persona.boleta__edad_anios){
             $('#persona').val(2)
             $('#id_edad_anios').val(msg.persona.boleta__edad_anios)
@@ -1988,7 +1985,6 @@ $('#identidad').attr({
             $('#id_estado_clinico_2').prop('checked', true).trigger('change')
          }
         
-         console.log(msg.persona.estado_clinico)
 
          $('#id_lic4_'+(msg.persona.lic4-1)).prop('checked', true).trigger('change')
          $('#id_lic4_ordenado_consulta_'+(msg.persona.lic4_ordenado_consulta-1)).prop('checked', true).trigger('change')
@@ -2052,19 +2048,19 @@ $('#identidad').attr({
 
 
 
-          if (data.clinica.tupu_trat = "Isoniacida"){
+          if (msg.persona.tupu_trat = "Isoniacida"){
             $('#id_tupu_trat_0').prop('checked', true)
          }
-         if (data.clinica.tupu_trat = "Rifampicina"){
+         if (msg.persona.tupu_trat = "Rifampicina"){
             $('#id_tupu_trat_1').prop('checked', true)
          }
-         if (data.clinica.tupu_trat = "Pirazinamida"){
+         if (msg.persona.tupu_trat = "Pirazinamida"){
             $('#id_tupu_trat_2').prop('checked', true)
          }
-         if (data.clinica.tupu_trat = "Etambutol"){
+         if (msg.persona.tupu_trat = "Etambutol"){
             $('#id_tupu_trat_3').prop('checked', true)
          }
-         if (data.clinica.tupu_trat = "Estreptomicina"){
+         if (msg.persona.tupu_trat = "Estreptomicina"){
             $('#id_tupu_trat_4').prop('checked', true)
          }
          $('#id_tupu_'+(msg.persona.tupu-1)).prop('checked', true).trigger('change')
@@ -2310,7 +2306,6 @@ $('#search_identidad').click(function() {
       if (msg.seg == false){
          $('#formulario').trigger("reset");
       }else{
-         console.log("PASO POR AQUI",msg.seg.motivo)
          $('#id_motivo_'+(parseInt(msg.seg.motivo)-1)).prop('checked', true)
          $('#id_profpri_'+(parseInt(msg.seg.profpri)-1)).prop('checked', true)
          $('#id_fecha_consulta').val(msg.seg.fecha_consulta)
@@ -2579,7 +2574,6 @@ $('#search_identidad').click(function() {
 
 
       }else{
-         console.log(msg.persona)
          if(msg.persona.boleta__edad_anios){
             $('#persona').val(2)
             $('#id_edad_anios').val(msg.persona.boleta__edad_anios)
@@ -2619,7 +2613,6 @@ $('#search_identidad').click(function() {
             $('#id_estado_clinico_3').prop('checked', true).trigger('change')
          }
         
-         console.log(msg.persona.estado_clinico)
 
          $('#id_lic4_'+(msg.persona.lic4-1)).prop('checked', true).trigger('change')
          $('#id_lic4_ordenado_consulta_'+(msg.persona.lic4_ordenado_consulta-1)).prop('checked', true).trigger('change')
@@ -2682,19 +2675,19 @@ $('#search_identidad').click(function() {
          $('#id_otro_fecha_realizacion').val(msg.persona.otro_fecha_realizacion)
 
 
-         if (data.clinica.tupu_trat = "Isoniacida"){
+         if (msg.persona.tupu_trat = "Isoniacida"){
             $('#id_tupu_trat_0').prop('checked', true)
          }
-         if (data.clinica.tupu_trat = "Rifampicina"){
+         if (msg.persona.tupu_trat = "Rifampicina"){
             $('#id_tupu_trat_1').prop('checked', true)
          }
-         if (data.clinica.tupu_trat = "Pirazinamida"){
+         if (msg.persona.tupu_trat = "Pirazinamida"){
             $('#id_tupu_trat_2').prop('checked', true)
          }
-         if (data.clinica.tupu_trat = "Etambutol"){
+         if (msg.persona.tupu_trat = "Etambutol"){
             $('#id_tupu_trat_3').prop('checked', true)
          }
-         if (data.clinica.tupu_trat = "Estreptomicina"){
+         if (msg.persona.tupu_trat = "Estreptomicina"){
             $('#id_tupu_trat_4').prop('checked', true)
          }
          $('#id_tupu_'+(msg.persona.tupu-1)).prop('checked', true).trigger('change')
