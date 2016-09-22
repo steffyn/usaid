@@ -853,7 +853,6 @@ def boleta_clinica(request):
 				registro2.tupu_intrat= request.POST.get('tupu_intrat')
 				registro2.tupu_intrat_reitrat= request.POST.get('tupu_intrat_reitrat')
 				registro2.tupu_trat= request.POST.get('tupu_trat')
-				print 'ASPSADPSAPDIASPODIPSAOIDPSAOIDPAOSDIPSAODIP', request.POST.get('tupu_trat')
 				registro2.tudi= request.POST.get('tudi')
 				registro2.tudi_initrat= request.POST.get('tudi_initrat')
 				registro2.tudi_entrat= request.POST.get('tudi_entrat')
@@ -939,6 +938,390 @@ def boleta_clinica(request):
 				registro2.infpel_intrat_reitrat= request.POST.get('infpel_intrat_reitrat')
 				registro2.infpel_trat= request.POST.get('infpel_trat')
 				registro2.actualizado_por = request.user
+				if request.POST.get('fecha_ultima_menstruacion') != '':
+					registro2.fecha_ultima_menstruacion = request.POST.get('fecha_ultima_menstruacion')
+				else:
+					registro2.fecha_ultima_menstruacion = None
+				if request.POST.get('fecha_cesaria') != '':
+					registro2.fecha_cesaria = request.POST.get('fecha_cesaria')
+				else:
+					registro2.fecha_cesaria = None
+				if request.POST.get('fecha_inicio_tarv') != '':
+					registro2.fecha_inicio_tarv = request.POST.get('fecha_inicio_tarv')
+				else:
+					registro2.fecha_inicio_tarv = None
+				if request.POST.get('fecha_diagnostico') != '':
+					registro2.fecha_diagnostico = request.POST.get('fecha_diagnostico')
+				else:
+					registro2.fecha_diagnostico = None
+				if request.POST.get('fecha_primera_consulta') != '':
+					registro2.fecha_primera_consulta = request.POST.get('fecha_primera_consulta')
+				else:
+					registro2.fecha_primera_consulta = None
+				if request.POST.get('fecha_proxima_cita') != '':
+					registro2.fecha_proxima_cita = request.POST.get('fecha_proxima_cita')
+				else:
+					registro2.fecha_proxima_cita = None
+				if request.POST.get('lic4_fecha_realizacion') != '':
+					registro2.lic4_fecha_realizacion = request.POST.get('lic4_fecha_realizacion')
+				else:
+					registro2.lic4_fecha_realizacion = None
+				if request.POST.get('caviral_fecha_realizacion') != '':
+					registro2.caviral_fecha_realizacion = request.POST.get('caviral_fecha_realizacion')
+				else:
+					registro2.caviral_fecha_realizacion = None
+				if request.POST.get('hepb_fecha_realizacion') != '':
+					registro2.hepb_fecha_realizacion = request.POST.get('hepb_fecha_realizacion')
+				else:
+					registro2.hepb_fecha_realizacion = None
+				if request.POST.get('hepc_fecha_realizacion') != '':
+					registro2.hepc_fecha_realizacion = request.POST.get('hepc_fecha_realizacion')
+				else:
+					registro2.hepc_fecha_realizacion = None
+				if request.POST.get('rpr_fecha_realizacion') != '':
+					registro2.rpr_fecha_realizacion = request.POST.get('rpr_fecha_realizacion')
+				else:
+					registro2.rpr_fecha_realizacion = None
+				if request.POST.get('rxtorax_fecha_realizacion') != '':
+					registro2.rxtorax_fecha_realizacion = request.POST.get('rxtorax_fecha_realizacion')
+				else:
+					registro2.rxtorax_fecha_realizacion = None
+				if request.POST.get('sespu_fecha_realizacion') != '':
+					registro2.sespu_fecha_realizacion = request.POST.get('sespu_fecha_realizacion')
+				else:
+					registro2.sespu_fecha_realizacion = None
+				if request.POST.get('ppd_fecha_realizacion') != '':
+					registro2.ppd_fecha_realizacion = request.POST.get('ppd_fecha_realizacion')
+				else:
+					registro2.ppd_fecha_realizacion = None
+				if request.POST.get('cultivo_fecha_realizacion') != '':
+					registro2.cultivo_fecha_realizacion = request.POST.get('cultivo_fecha_realizacion')
+				else:
+					registro2.cultivo_fecha_realizacion = None
+				if request.POST.get('usg_fecha_realizacion') != '':
+					registro2.usg_fecha_realizacion = request.POST.get('usg_fecha_realizacion')
+				else:
+					registro2.usg_fecha_realizacion = None
+				if request.POST.get('biopsia_fecha_realizacion') != '':
+					registro2.biopsia_fecha_realizacion = request.POST.get('biopsia_fecha_realizacion')
+				else:
+					registro2.biopsia_fecha_realizacion = None
+				if request.POST.get('otro_fecha_realizacion') != '':
+					registro2.otro_fecha_realizacion = request.POST.get('otro_fecha_realizacion')
+				else:
+					registro2.otro_fecha_realizacion = None
+				if request.POST.get('tupu_diag') != '':
+					registro2.tupu_diag = request.POST.get('tupu_diag')
+				else:
+					registro2.tupu_diag = None
+				if request.POST.get('tupu_fecha_initrat') != '':
+					registro2.tupu_fecha_initrat = request.POST.get('tupu_fecha_initrat')
+				else:
+					registro2.tupu_fecha_initrat = None
+				if request.POST.get('tupu_entrat_diag') != '':
+					registro2.tupu_entrat_diag = request.POST.get('tupu_entrat_diag')
+				else:
+					registro2.tupu_entrat_diag = None
+				if request.POST.get('tupu_entrat_fecha_fintrat') != '':
+					registro2.tupu_entrat_fecha_fintrat = request.POST.get('tupu_entrat_fecha_fintrat')
+				else:
+					registro2.tupu_entrat_fecha_fintrat = None
+				if request.POST.get('tupu_intrat_diag') != '':
+					registro2.tupu_intrat_diag = request.POST.get('tupu_intrat_diag')
+				else:
+					registro2.tupu_intrat_diag = None
+				if request.POST.get('tupu_intrat_fecha_reitrat') != '':
+					registro2.tupu_intrat_fecha_reitrat = request.POST.get('tupu_intrat_fecha_reitrat')
+				else:
+					registro2.tupu_intrat_fecha_reitrat = None
+				if request.POST.get('tudi_diag') != '':
+					registro2.tudi_diag = request.POST.get('tudi_diag')
+				else:
+					registro2.tudi_diag = None
+				if request.POST.get('tudi_fecha_initrat') != '':
+					registro2.tudi_fecha_initrat = request.POST.get('tudi_fecha_initrat')
+				else:
+					registro2.tudi_fecha_initrat = None
+				if request.POST.get('tudi_entrat_diag') != '':
+					registro2.tudi_entrat_diag = request.POST.get('tudi_entrat_diag')
+				else:
+					registro2.tudi_entrat_diag = None
+				if request.POST.get('tudi_entrat_fecha_fintrat') != '':
+					registro2.tudi_entrat_fecha_fintrat = request.POST.get('tudi_entrat_fecha_fintrat')
+				else:
+					registro2.tudi_entrat_fecha_fintrat = None
+				if request.POST.get('tudi_intrat_diag') != '':
+					registro2.tudi_intrat_diag = request.POST.get('tudi_intrat_diag')
+				else:
+					registro2.tudi_intrat_diag = None
+				if request.POST.get('tudi_intrat_fecha_reitrat') != '':
+					registro2.tudi_intrat_fecha_reitrat = request.POST.get('tudi_intrat_fecha_reitrat')
+				else:
+					registro2.tudi_intrat_fecha_reitrat = None
+				if request.POST.get('hepb_diag') != '':
+					registro2.hepb_diag = request.POST.get('hepb_diag')
+				else:
+					registro2.hepb_diag = None
+				if request.POST.get('hepb_fecha_initrat') != '':
+					registro2.hepb_fecha_initrat = request.POST.get('hepb_fecha_initrat')
+				else:
+					registro2.hepb_fecha_initrat = None
+				if request.POST.get('hepb_entrat_diag') != '':
+					registro2.hepb_entrat_diag = request.POST.get('hepb_entrat_diag')
+				else:
+					registro2.hepb_entrat_diag = None
+				if request.POST.get('hepb_entrat_fecha_fintrat') != '':
+					registro2.hepb_entrat_fecha_fintrat = request.POST.get('hepb_entrat_fecha_fintrat')
+				else:
+					registro2.hepb_entrat_fecha_fintrat = None
+				if request.POST.get('hepb_intrat_diag') != '':
+					registro2.hepb_intrat_diag = request.POST.get('hepb_intrat_diag')
+				else:
+					registro2.hepb_intrat_diag = None
+				if request.POST.get('hepb_intrat_fecha_reitrat') != '':
+					registro2.hepb_intrat_fecha_reitrat = request.POST.get('hepb_intrat_fecha_reitrat')
+				else:
+					registro2.hepb_intrat_fecha_reitrat = None
+				if request.POST.get('hepc_diag') != '':
+					registro2.hepc_diag = request.POST.get('hepc_diag')
+				else:
+					registro2.hepc_diag = None
+				if request.POST.get('hepc_fecha_initrat') != '':
+					registro2.hepc_fecha_initrat = request.POST.get('hepc_fecha_initrat')
+				else:
+					registro2.hepc_fecha_initrat = None
+				if request.POST.get('hepc_entrat_diag') != '':
+					registro2.hepc_entrat_diag = request.POST.get('hepc_entrat_diag')
+				else:
+					registro2.hepc_entrat_diag = None
+				if request.POST.get('hepc_entrat_fecha_fintrat') != '':
+					registro2.hepc_entrat_fecha_fintrat = request.POST.get('hepc_entrat_fecha_fintrat')
+				else:
+					registro2.hepc_entrat_fecha_fintrat = None
+				if request.POST.get('hepc_intrat_diag') != '':
+					registro2.hepc_intrat_diag = request.POST.get('hepc_intrat_diag')
+				else:
+					registro2.hepc_intrat_diag = None
+				if request.POST.get('hepc_intrat_fecha_reitrat') != '':
+					registro2.hepc_intrat_fecha_reitrat = request.POST.get('hepc_intrat_fecha_reitrat')
+				else:
+					registro2.hepc_intrat_fecha_reitrat = None
+				if request.POST.get('ulg_diag') != '':
+					registro2.ulg_diag = request.POST.get('ulg_diag')
+				else:
+					registro2.ulg_diag = None
+				if request.POST.get('ulg_fecha_initrat') != '':
+					registro2.ulg_fecha_initrat = request.POST.get('ulg_fecha_initrat')
+				else:
+					registro2.ulg_fecha_initrat = None
+				if request.POST.get('ulg_entrat_diag') != '':
+					registro2.ulg_entrat_diag = request.POST.get('ulg_entrat_diag')
+				else:
+					registro2.ulg_entrat_diag = None
+				if request.POST.get('ulg_entrat_fecha_fintrat') != '':
+					registro2.ulg_entrat_fecha_fintrat = request.POST.get('ulg_entrat_fecha_fintrat')
+				else:
+					registro2.ulg_entrat_fecha_fintrat = None
+				if request.POST.get('ulg_intrat_diag') != '':
+					registro2.ulg_intrat_diag = request.POST.get('ulg_intrat_diag')
+				else:
+					registro2.ulg_intrat_diag = None
+				if request.POST.get('ulg_intrat_fecha_reitrat') != '':
+					registro2.ulg_intrat_fecha_reitrat = request.POST.get('ulg_intrat_fecha_reitrat')
+				else:
+					registro2.ulg_intrat_fecha_reitrat = None
+				if request.POST.get('secure_diag') != '':
+					registro2.secure_diag = request.POST.get('secure_diag')
+				else:
+					registro2.secure_diag = None
+				if request.POST.get('secure_fecha_initrat') != '':
+					registro2.secure_fecha_initrat = request.POST.get('secure_fecha_initrat')
+				else:
+					registro2.secure_fecha_initrat = None
+				if request.POST.get('secure_entrat_diag') != '':
+					registro2.secure_entrat_diag = request.POST.get('secure_entrat_diag')
+				else:
+					registro2.secure_entrat_diag = None
+				if request.POST.get('secure_entrat_fecha_fintrat') != '':
+					registro2.secure_entrat_fecha_fintrat = request.POST.get('secure_entrat_fecha_fintrat')
+				else:
+					registro2.secure_entrat_fecha_fintrat = None
+				if request.POST.get('secure_intrat_diag') != '':
+					registro2.secure_intrat_diag = request.POST.get('secure_intrat_diag')
+				else:
+					registro2.secure_intrat_diag = None
+				if request.POST.get('secure_intrat_fecha_reitrat') != '':
+					registro2.secure_intrat_fecha_reitrat = request.POST.get('secure_intrat_fecha_reitrat')
+				else:
+					registro2.secure_intrat_fecha_reitrat = None
+				if request.POST.get('fluva_diag') != '':
+					registro2.fluva_diag = request.POST.get('fluva_diag')
+				else:
+					registro2.fluva_diag = None
+				if request.POST.get('fluva_fecha_initrat') != '':
+					registro2.fluva_fecha_initrat = request.POST.get('fluva_fecha_initrat')
+				else:
+					registro2.fluva_fecha_initrat = None
+				if request.POST.get('fluva_entrat_diag') != '':
+					registro2.fluva_entrat_diag = request.POST.get('fluva_entrat_diag')
+				else:
+					registro2.fluva_entrat_diag = None
+				if request.POST.get('fluva_entrat_fecha_fintrat') != '':
+					registro2.fluva_entrat_fecha_fintrat = request.POST.get('fluva_entrat_fecha_fintrat')
+				else:
+					registro2.fluva_entrat_fecha_fintrat = None
+				if request.POST.get('fluva_intrat_diag') != '':
+					registro2.fluva_intrat_diag = request.POST.get('fluva_intrat_diag')
+				else:
+					registro2.fluva_intrat_diag = None
+				if request.POST.get('fluva_intrat_fecha_reitrat') != '':
+					registro2.fluva_intrat_fecha_reitrat = request.POST.get('fluva_intrat_fecha_reitrat')
+				else:
+					registro2.fluva_intrat_fecha_reitrat = None
+				if request.POST.get('buin_diag') != '':
+					registro2.buin_diag = request.POST.get('buin_diag')
+				else:
+					registro2.buin_diag = None
+				if request.POST.get('buin_fecha_initrat') != '':
+					registro2.buin_fecha_initrat = request.POST.get('buin_fecha_initrat')
+				else:
+					registro2.buin_fecha_initrat = None
+				if request.POST.get('buin_entrat_diag') != '':
+					registro2.buin_entrat_diag = request.POST.get('buin_entrat_diag')
+				else:
+					registro2.buin_entrat_diag = None
+				if request.POST.get('buin_entrat_fecha_fintrat') != '':
+					registro2.buin_entrat_fecha_fintrat = request.POST.get('buin_entrat_fecha_fintrat')
+				else:
+					registro2.buin_entrat_fecha_fintrat = None
+				if request.POST.get('buin_intrat_diag') != '':
+					registro2.buin_intrat_diag = request.POST.get('buin_intrat_diag')
+				else:
+					registro2.buin_intrat_diag = None
+				if request.POST.get('buin_intrat_fecha_reitrat') != '':
+					registro2.buin_intrat_fecha_reitrat = request.POST.get('buin_intrat_fecha_reitrat')
+				else:
+					registro2.buin_intrat_fecha_reitrat = None
+				if request.POST.get('edes_diag') != '':
+					registro2.edes_diag = request.POST.get('edes_diag')
+				else:
+					registro2.edes_diag = None
+				if request.POST.get('edes_fecha_initrat') != '':
+					registro2.edes_fecha_initrat = request.POST.get('edes_fecha_initrat')
+				else:
+					registro2.edes_fecha_initrat = None
+				if request.POST.get('edes_entrat_diag') != '':
+					registro2.edes_entrat_diag = request.POST.get('edes_entrat_diag')
+				else:
+					registro2.edes_entrat_diag = None
+				if request.POST.get('edes_entrat_fecha_fintrat') != '':
+					registro2.edes_entrat_fecha_fintrat = request.POST.get('edes_entrat_fecha_fintrat')
+				else:
+					registro2.edes_entrat_fecha_fintrat = None
+				if request.POST.get('edes_intrat_diag') != '':
+					registro2.edes_intrat_diag = request.POST.get('edes_intrat_diag')
+				else:
+					registro2.edes_intrat_diag = None
+				if request.POST.get('edes_intrat_fecha_reitrat') != '':
+					registro2.edes_intrat_fecha_reitrat = request.POST.get('edes_intrat_fecha_reitrat')
+				else:
+					registro2.edes_intrat_fecha_reitrat = None
+				if request.POST.get('verge_diag') != '':
+					registro2.verge_diag = request.POST.get('verge_diag')
+				else:
+					registro2.verge_diag = None
+				if request.POST.get('verge_fecha_initrat') != '':
+					registro2.verge_fecha_initrat = request.POST.get('verge_fecha_initrat')
+				else:
+					registro2.verge_fecha_initrat = None
+				if request.POST.get('verge_entrat_diag') != '':
+					registro2.verge_entrat_diag = request.POST.get('verge_entrat_diag')
+				else:
+					registro2.verge_entrat_diag = None
+				if request.POST.get('verge_entrat_fecha_fintrat') != '':
+					registro2.verge_entrat_fecha_fintrat = request.POST.get('verge_entrat_fecha_fintrat')
+				else:
+					registro2.verge_entrat_fecha_fintrat = None
+				if request.POST.get('verge_intrat_diag') != '':
+					registro2.verge_intrat_diag = request.POST.get('verge_intrat_diag')
+				else:
+					registro2.verge_intrat_diag = None
+				if request.POST.get('verge_intrat_fecha_reitrat') != '':
+					registro2.verge_intrat_fecha_reitrat = request.POST.get('verge_intrat_fecha_reitrat')
+				else:
+					registro2.verge_intrat_fecha_reitrat = None
+				if request.POST.get('trasex_diag') != '':
+					registro2.trasex_diag = request.POST.get('trasex_diag')
+				else:
+					registro2.trasex_diag = None
+				if request.POST.get('trasex_fecha_initrat') != '':
+					registro2.trasex_fecha_initrat = request.POST.get('trasex_fecha_initrat')
+				else:
+					registro2.trasex_fecha_initrat = None
+				if request.POST.get('trasex_entrat_diag') != '':
+					registro2.trasex_entrat_diag = request.POST.get('trasex_entrat_diag')
+				else:
+					registro2.trasex_entrat_diag = None
+				if request.POST.get('trasex_entrat_fecha_fintrat') != '':
+					registro2.trasex_entrat_fecha_fintrat = request.POST.get('trasex_entrat_fecha_fintrat')
+				else:
+					registro2.trasex_entrat_fecha_fintrat = None
+				if request.POST.get('trasex_intrat_diag') != '':
+					registro2.trasex_intrat_diag = request.POST.get('trasex_intrat_diag')
+				else:
+					registro2.trasex_intrat_diag = None
+				if request.POST.get('trasex_intrat_fecha_reitrat') != '':
+					registro2.trasex_intrat_fecha_reitrat = request.POST.get('trasex_intrat_fecha_reitrat')
+				else:
+					registro2.trasex_intrat_fecha_reitrat = None
+				if request.POST.get('proc_diag') != '':
+					registro2.proc_diag = request.POST.get('proc_diag')
+				else:
+					registro2.proc_diag = None
+				if request.POST.get('proc_fecha_initrat') != '':
+					registro2.proc_fecha_initrat = request.POST.get('proc_fecha_initrat')
+				else:
+					registro2.proc_fecha_initrat = None
+				if request.POST.get('proc_entrat_diag') != '':
+					registro2.proc_entrat_diag = request.POST.get('proc_entrat_diag')
+				else:
+					registro2.proc_entrat_diag = None
+				if request.POST.get('proc_entrat_fecha_fintrat') != '':
+					registro2.proc_entrat_fecha_fintrat = request.POST.get('proc_entrat_fecha_fintrat')
+				else:
+					registro2.proc_entrat_fecha_fintrat = None
+				if request.POST.get('proc_intrat_diag') != '':
+					registro2.proc_intrat_diag = request.POST.get('proc_intrat_diag')
+				else:
+					registro2.proc_intrat_diag = None
+				if request.POST.get('proc_intrat_fecha_reitrat') != '':
+					registro2.proc_intrat_fecha_reitrat = request.POST.get('proc_intrat_fecha_reitrat')
+				else:
+					registro2.proc_intrat_fecha_reitrat = None
+				if request.POST.get('infpel_diag') != '':
+					registro2.infpel_diag = request.POST.get('infpel_diag')
+				else:
+					registro2.infpel_diag = None
+				if request.POST.get('infpel_fecha_initrat') != '':
+					registro2.infpel_fecha_initrat = request.POST.get('infpel_fecha_initrat')
+				else:
+					registro2.infpel_fecha_initrat = None
+				if request.POST.get('infpel_entrat_diag') != '':
+					registro2.infpel_entrat_diag = request.POST.get('infpel_entrat_diag')
+				else:
+					registro2.infpel_entrat_diag = None
+				if request.POST.get('infpel_entrat_fecha_fintrat') != '':
+					registro2.infpel_entrat_fecha_fintrat = request.POST.get('infpel_entrat_fecha_fintrat')
+				else:
+					registro2.infpel_entrat_fecha_fintrat = None
+				if request.POST.get('infpel_intrat_diag') != '':
+					registro2.infpel_intrat_diag = request.POST.get('infpel_intrat_diag')
+				else:
+					registro2.infpel_intrat_diag = None
+				if request.POST.get('infpel_intrat_fecha_reitrat') != '':	
+					registro2.infpel_intrat_fecha_reitrat = request.POST.get('infpel_intrat_fecha_reitrat')
+				else:
+					registro2.infpel_intrat_fecha_reitrat = None
 				registro2.creado_por = request.user
 				try:
 					responsable = Responsables.objects.get(usuario_sistema=request.user)
@@ -1545,6 +1928,391 @@ def boleta_seguimiento(request):
 				registro2.infpel_trat= request.POST.get('infpel_trat')
 				registro2.actualizado_por = request.user
 				registro2.creado_por = request.user
+				if request.POST.get('fecha_ultima_menstruacion') != '':
+					registro2.fecha_ultima_menstruacion = request.POST.get('fecha_ultima_menstruacion')
+				else:
+					registro2.fecha_ultima_menstruacion = None
+				if request.POST.get('fecha_cesaria') != '':
+					registro2.fecha_cesaria = request.POST.get('fecha_cesaria')
+				else:
+					registro2.fecha_cesaria = None
+				if request.POST.get('fecha_inicio_tarv') != '':
+					registro2.fecha_inicio_tarv = request.POST.get('fecha_inicio_tarv')
+				else:
+					registro2.fecha_inicio_tarv = None
+				if request.POST.get('fecha_diagnostico') != '':
+					registro2.fecha_diagnostico = request.POST.get('fecha_diagnostico')
+				else:
+					registro2.fecha_diagnostico = None
+				if request.POST.get('fecha_primera_consulta') != '':
+					registro2.fecha_primera_consulta = request.POST.get('fecha_primera_consulta')
+				else:
+					registro2.fecha_primera_consulta = None
+				if request.POST.get('fecha_proxima_cita') != '':
+					registro2.fecha_proxima_cita = request.POST.get('fecha_proxima_cita')
+				else:
+					registro2.fecha_proxima_cita = None
+				if request.POST.get('lic4_fecha_realizacion') != '':
+					registro2.lic4_fecha_realizacion = request.POST.get('lic4_fecha_realizacion')
+				else:
+					registro2.lic4_fecha_realizacion = None
+				if request.POST.get('caviral_fecha_realizacion') != '':
+					registro2.caviral_fecha_realizacion = request.POST.get('caviral_fecha_realizacion')
+				else:
+					registro2.caviral_fecha_realizacion = None
+				if request.POST.get('hepb_fecha_realizacion') != '':
+					registro2.hepb_fecha_realizacion = request.POST.get('hepb_fecha_realizacion')
+				else:
+					registro2.hepb_fecha_realizacion = None
+				if request.POST.get('hepc_fecha_realizacion') != '':
+					registro2.hepc_fecha_realizacion = request.POST.get('hepc_fecha_realizacion')
+				else:
+					registro2.hepc_fecha_realizacion = None
+				if request.POST.get('rpr_fecha_realizacion') != '':
+					registro2.rpr_fecha_realizacion = request.POST.get('rpr_fecha_realizacion')
+				else:
+					registro2.rpr_fecha_realizacion = None
+				if request.POST.get('rxtorax_fecha_realizacion') != '':
+					registro2.rxtorax_fecha_realizacion = request.POST.get('rxtorax_fecha_realizacion')
+				else:
+					registro2.rxtorax_fecha_realizacion = None
+				if request.POST.get('sespu_fecha_realizacion') != '':
+					registro2.sespu_fecha_realizacion = request.POST.get('sespu_fecha_realizacion')
+				else:
+					registro2.sespu_fecha_realizacion = None
+				if request.POST.get('ppd_fecha_realizacion') != '':
+					registro2.ppd_fecha_realizacion = request.POST.get('ppd_fecha_realizacion')
+				else:
+					registro2.ppd_fecha_realizacion = None
+				if request.POST.get('cultivo_fecha_realizacion') != '':
+					registro2.cultivo_fecha_realizacion = request.POST.get('cultivo_fecha_realizacion')
+				else:
+					registro2.cultivo_fecha_realizacion = None
+				if request.POST.get('usg_fecha_realizacion') != '':
+					registro2.usg_fecha_realizacion = request.POST.get('usg_fecha_realizacion')
+				else:
+					registro2.usg_fecha_realizacion = None
+				if request.POST.get('biopsia_fecha_realizacion') != '':
+					registro2.biopsia_fecha_realizacion = request.POST.get('biopsia_fecha_realizacion')
+				else:
+					registro2.biopsia_fecha_realizacion = None
+				if request.POST.get('otro_fecha_realizacion') != '':
+					registro2.otro_fecha_realizacion = request.POST.get('otro_fecha_realizacion')
+				else:
+					registro2.otro_fecha_realizacion = None
+				if request.POST.get('tupu_diag') != '':
+					registro2.tupu_diag = request.POST.get('tupu_diag')
+				else:
+					registro2.tupu_diag = None
+				if request.POST.get('tupu_fecha_initrat') != '':
+					registro2.tupu_fecha_initrat = request.POST.get('tupu_fecha_initrat')
+				else:
+					registro2.tupu_fecha_initrat = None
+				if request.POST.get('tupu_entrat_diag') != '':
+					registro2.tupu_entrat_diag = request.POST.get('tupu_entrat_diag')
+				else:
+					registro2.tupu_entrat_diag = None
+				if request.POST.get('tupu_entrat_fecha_fintrat') != '':
+					registro2.tupu_entrat_fecha_fintrat = request.POST.get('tupu_entrat_fecha_fintrat')
+				else:
+					registro2.tupu_entrat_fecha_fintrat = None
+				if request.POST.get('tupu_intrat_diag') != '':
+					registro2.tupu_intrat_diag = request.POST.get('tupu_intrat_diag')
+				else:
+					registro2.tupu_intrat_diag = None
+				if request.POST.get('tupu_intrat_fecha_reitrat') != '':
+					registro2.tupu_intrat_fecha_reitrat = request.POST.get('tupu_intrat_fecha_reitrat')
+				else:
+					registro2.tupu_intrat_fecha_reitrat = None
+				if request.POST.get('tudi_diag') != '':
+					registro2.tudi_diag = request.POST.get('tudi_diag')
+				else:
+					registro2.tudi_diag = None
+				if request.POST.get('tudi_fecha_initrat') != '':
+					registro2.tudi_fecha_initrat = request.POST.get('tudi_fecha_initrat')
+				else:
+					registro2.tudi_fecha_initrat = None
+				if request.POST.get('tudi_entrat_diag') != '':
+					registro2.tudi_entrat_diag = request.POST.get('tudi_entrat_diag')
+				else:
+					registro2.tudi_entrat_diag = None
+				if request.POST.get('tudi_entrat_fecha_fintrat') != '':
+					registro2.tudi_entrat_fecha_fintrat = request.POST.get('tudi_entrat_fecha_fintrat')
+				else:
+					registro2.tudi_entrat_fecha_fintrat = None
+				if request.POST.get('tudi_intrat_diag') != '':
+					registro2.tudi_intrat_diag = request.POST.get('tudi_intrat_diag')
+				else:
+					registro2.tudi_intrat_diag = None
+				if request.POST.get('tudi_intrat_fecha_reitrat') != '':
+					registro2.tudi_intrat_fecha_reitrat = request.POST.get('tudi_intrat_fecha_reitrat')
+				else:
+					registro2.tudi_intrat_fecha_reitrat = None
+				if request.POST.get('hepb_diag') != '':
+					registro2.hepb_diag = request.POST.get('hepb_diag')
+				else:
+					registro2.hepb_diag = None
+				if request.POST.get('hepb_fecha_initrat') != '':
+					registro2.hepb_fecha_initrat = request.POST.get('hepb_fecha_initrat')
+				else:
+					registro2.hepb_fecha_initrat = None
+				if request.POST.get('hepb_entrat_diag') != '':
+					registro2.hepb_entrat_diag = request.POST.get('hepb_entrat_diag')
+				else:
+					registro2.hepb_entrat_diag = None
+				if request.POST.get('hepb_entrat_fecha_fintrat') != '':
+					registro2.hepb_entrat_fecha_fintrat = request.POST.get('hepb_entrat_fecha_fintrat')
+				else:
+					registro2.hepb_entrat_fecha_fintrat = None
+				if request.POST.get('hepb_intrat_diag') != '':
+					registro2.hepb_intrat_diag = request.POST.get('hepb_intrat_diag')
+				else:
+					registro2.hepb_intrat_diag = None
+				if request.POST.get('hepb_intrat_fecha_reitrat') != '':
+					registro2.hepb_intrat_fecha_reitrat = request.POST.get('hepb_intrat_fecha_reitrat')
+				else:
+					registro2.hepb_intrat_fecha_reitrat = None
+				if request.POST.get('hepc_diag') != '':
+					registro2.hepc_diag = request.POST.get('hepc_diag')
+				else:
+					registro2.hepc_diag = None
+				if request.POST.get('hepc_fecha_initrat') != '':
+					registro2.hepc_fecha_initrat = request.POST.get('hepc_fecha_initrat')
+				else:
+					registro2.hepc_fecha_initrat = None
+				if request.POST.get('hepc_entrat_diag') != '':
+					registro2.hepc_entrat_diag = request.POST.get('hepc_entrat_diag')
+				else:
+					registro2.hepc_entrat_diag = None
+				if request.POST.get('hepc_entrat_fecha_fintrat') != '':
+					registro2.hepc_entrat_fecha_fintrat = request.POST.get('hepc_entrat_fecha_fintrat')
+				else:
+					registro2.hepc_entrat_fecha_fintrat = None
+				if request.POST.get('hepc_intrat_diag') != '':
+					registro2.hepc_intrat_diag = request.POST.get('hepc_intrat_diag')
+				else:
+					registro2.hepc_intrat_diag = None
+				if request.POST.get('hepc_intrat_fecha_reitrat') != '':
+					registro2.hepc_intrat_fecha_reitrat = request.POST.get('hepc_intrat_fecha_reitrat')
+				else:
+					registro2.hepc_intrat_fecha_reitrat = None
+				if request.POST.get('ulg_diag') != '':
+					registro2.ulg_diag = request.POST.get('ulg_diag')
+				else:
+					registro2.ulg_diag = None
+				if request.POST.get('ulg_fecha_initrat') != '':
+					registro2.ulg_fecha_initrat = request.POST.get('ulg_fecha_initrat')
+				else:
+					registro2.ulg_fecha_initrat = None
+				if request.POST.get('ulg_entrat_diag') != '':
+					registro2.ulg_entrat_diag = request.POST.get('ulg_entrat_diag')
+				else:
+					registro2.ulg_entrat_diag = None
+				if request.POST.get('ulg_entrat_fecha_fintrat') != '':
+					registro2.ulg_entrat_fecha_fintrat = request.POST.get('ulg_entrat_fecha_fintrat')
+				else:
+					registro2.ulg_entrat_fecha_fintrat = None
+				if request.POST.get('ulg_intrat_diag') != '':
+					registro2.ulg_intrat_diag = request.POST.get('ulg_intrat_diag')
+				else:
+					registro2.ulg_intrat_diag = None
+				if request.POST.get('ulg_intrat_fecha_reitrat') != '':
+					registro2.ulg_intrat_fecha_reitrat = request.POST.get('ulg_intrat_fecha_reitrat')
+				else:
+					registro2.ulg_intrat_fecha_reitrat = None
+				if request.POST.get('secure_diag') != '':
+					registro2.secure_diag = request.POST.get('secure_diag')
+				else:
+					registro2.secure_diag = None
+				if request.POST.get('secure_fecha_initrat') != '':
+					registro2.secure_fecha_initrat = request.POST.get('secure_fecha_initrat')
+				else:
+					registro2.secure_fecha_initrat = None
+				if request.POST.get('secure_entrat_diag') != '':
+					registro2.secure_entrat_diag = request.POST.get('secure_entrat_diag')
+				else:
+					registro2.secure_entrat_diag = None
+				if request.POST.get('secure_entrat_fecha_fintrat') != '':
+					registro2.secure_entrat_fecha_fintrat = request.POST.get('secure_entrat_fecha_fintrat')
+				else:
+					registro2.secure_entrat_fecha_fintrat = None
+				if request.POST.get('secure_intrat_diag') != '':
+					registro2.secure_intrat_diag = request.POST.get('secure_intrat_diag')
+				else:
+					registro2.secure_intrat_diag = None
+				if request.POST.get('secure_intrat_fecha_reitrat') != '':
+					registro2.secure_intrat_fecha_reitrat = request.POST.get('secure_intrat_fecha_reitrat')
+				else:
+					registro2.secure_intrat_fecha_reitrat = None
+				if request.POST.get('fluva_diag') != '':
+					registro2.fluva_diag = request.POST.get('fluva_diag')
+				else:
+					registro2.fluva_diag = None
+				if request.POST.get('fluva_fecha_initrat') != '':
+					registro2.fluva_fecha_initrat = request.POST.get('fluva_fecha_initrat')
+				else:
+					registro2.fluva_fecha_initrat = None
+				if request.POST.get('fluva_entrat_diag') != '':
+					registro2.fluva_entrat_diag = request.POST.get('fluva_entrat_diag')
+				else:
+					registro2.fluva_entrat_diag = None
+				if request.POST.get('fluva_entrat_fecha_fintrat') != '':
+					registro2.fluva_entrat_fecha_fintrat = request.POST.get('fluva_entrat_fecha_fintrat')
+				else:
+					registro2.fluva_entrat_fecha_fintrat = None
+				if request.POST.get('fluva_intrat_diag') != '':
+					registro2.fluva_intrat_diag = request.POST.get('fluva_intrat_diag')
+				else:
+					registro2.fluva_intrat_diag = None
+				if request.POST.get('fluva_intrat_fecha_reitrat') != '':
+					registro2.fluva_intrat_fecha_reitrat = request.POST.get('fluva_intrat_fecha_reitrat')
+				else:
+					registro2.fluva_intrat_fecha_reitrat = None
+				if request.POST.get('buin_diag') != '':
+					registro2.buin_diag = request.POST.get('buin_diag')
+				else:
+					registro2.buin_diag = None
+				if request.POST.get('buin_fecha_initrat') != '':
+					registro2.buin_fecha_initrat = request.POST.get('buin_fecha_initrat')
+				else:
+					registro2.buin_fecha_initrat = None
+				if request.POST.get('buin_entrat_diag') != '':
+					registro2.buin_entrat_diag = request.POST.get('buin_entrat_diag')
+				else:
+					registro2.buin_entrat_diag = None
+				if request.POST.get('buin_entrat_fecha_fintrat') != '':
+					registro2.buin_entrat_fecha_fintrat = request.POST.get('buin_entrat_fecha_fintrat')
+				else:
+					registro2.buin_entrat_fecha_fintrat = None
+				if request.POST.get('buin_intrat_diag') != '':
+					registro2.buin_intrat_diag = request.POST.get('buin_intrat_diag')
+				else:
+					registro2.buin_intrat_diag = None
+				if request.POST.get('buin_intrat_fecha_reitrat') != '':
+					registro2.buin_intrat_fecha_reitrat = request.POST.get('buin_intrat_fecha_reitrat')
+				else:
+					registro2.buin_intrat_fecha_reitrat = None
+				if request.POST.get('edes_diag') != '':
+					registro2.edes_diag = request.POST.get('edes_diag')
+				else:
+					registro2.edes_diag = None
+				if request.POST.get('edes_fecha_initrat') != '':
+					registro2.edes_fecha_initrat = request.POST.get('edes_fecha_initrat')
+				else:
+					registro2.edes_fecha_initrat = None
+				if request.POST.get('edes_entrat_diag') != '':
+					registro2.edes_entrat_diag = request.POST.get('edes_entrat_diag')
+				else:
+					registro2.edes_entrat_diag = None
+				if request.POST.get('edes_entrat_fecha_fintrat') != '':
+					registro2.edes_entrat_fecha_fintrat = request.POST.get('edes_entrat_fecha_fintrat')
+				else:
+					registro2.edes_entrat_fecha_fintrat = None
+				if request.POST.get('edes_intrat_diag') != '':
+					registro2.edes_intrat_diag = request.POST.get('edes_intrat_diag')
+				else:
+					registro2.edes_intrat_diag = None
+				if request.POST.get('edes_intrat_fecha_reitrat') != '':
+					registro2.edes_intrat_fecha_reitrat = request.POST.get('edes_intrat_fecha_reitrat')
+				else:
+					registro2.edes_intrat_fecha_reitrat = None
+				if request.POST.get('verge_diag') != '':
+					registro2.verge_diag = request.POST.get('verge_diag')
+				else:
+					registro2.verge_diag = None
+				if request.POST.get('verge_fecha_initrat') != '':
+					registro2.verge_fecha_initrat = request.POST.get('verge_fecha_initrat')
+				else:
+					registro2.verge_fecha_initrat = None
+				if request.POST.get('verge_entrat_diag') != '':
+					registro2.verge_entrat_diag = request.POST.get('verge_entrat_diag')
+				else:
+					registro2.verge_entrat_diag = None
+				if request.POST.get('verge_entrat_fecha_fintrat') != '':
+					registro2.verge_entrat_fecha_fintrat = request.POST.get('verge_entrat_fecha_fintrat')
+				else:
+					registro2.verge_entrat_fecha_fintrat = None
+				if request.POST.get('verge_intrat_diag') != '':
+					registro2.verge_intrat_diag = request.POST.get('verge_intrat_diag')
+				else:
+					registro2.verge_intrat_diag = None
+				if request.POST.get('verge_intrat_fecha_reitrat') != '':
+					registro2.verge_intrat_fecha_reitrat = request.POST.get('verge_intrat_fecha_reitrat')
+				else:
+					registro2.verge_intrat_fecha_reitrat = None
+				if request.POST.get('trasex_diag') != '':
+					registro2.trasex_diag = request.POST.get('trasex_diag')
+				else:
+					registro2.trasex_diag = None
+				if request.POST.get('trasex_fecha_initrat') != '':
+					registro2.trasex_fecha_initrat = request.POST.get('trasex_fecha_initrat')
+				else:
+					registro2.trasex_fecha_initrat = None
+				if request.POST.get('trasex_entrat_diag') != '':
+					registro2.trasex_entrat_diag = request.POST.get('trasex_entrat_diag')
+				else:
+					registro2.trasex_entrat_diag = None
+				if request.POST.get('trasex_entrat_fecha_fintrat') != '':
+					registro2.trasex_entrat_fecha_fintrat = request.POST.get('trasex_entrat_fecha_fintrat')
+				else:
+					registro2.trasex_entrat_fecha_fintrat = None
+				if request.POST.get('trasex_intrat_diag') != '':
+					registro2.trasex_intrat_diag = request.POST.get('trasex_intrat_diag')
+				else:
+					registro2.trasex_intrat_diag = None
+				if request.POST.get('trasex_intrat_fecha_reitrat') != '':
+					registro2.trasex_intrat_fecha_reitrat = request.POST.get('trasex_intrat_fecha_reitrat')
+				else:
+					registro2.trasex_intrat_fecha_reitrat = None
+				if request.POST.get('proc_diag') != '':
+					registro2.proc_diag = request.POST.get('proc_diag')
+				else:
+					registro2.proc_diag = None
+				if request.POST.get('proc_fecha_initrat') != '':
+					registro2.proc_fecha_initrat = request.POST.get('proc_fecha_initrat')
+				else:
+					registro2.proc_fecha_initrat = None
+				if request.POST.get('proc_entrat_diag') != '':
+					registro2.proc_entrat_diag = request.POST.get('proc_entrat_diag')
+				else:
+					registro2.proc_entrat_diag = None
+				if request.POST.get('proc_entrat_fecha_fintrat') != '':
+					registro2.proc_entrat_fecha_fintrat = request.POST.get('proc_entrat_fecha_fintrat')
+				else:
+					registro2.proc_entrat_fecha_fintrat = None
+				if request.POST.get('proc_intrat_diag') != '':
+					registro2.proc_intrat_diag = request.POST.get('proc_intrat_diag')
+				else:
+					registro2.proc_intrat_diag = None
+				if request.POST.get('proc_intrat_fecha_reitrat') != '':
+					registro2.proc_intrat_fecha_reitrat = request.POST.get('proc_intrat_fecha_reitrat')
+				else:
+					registro2.proc_intrat_fecha_reitrat = None
+				if request.POST.get('infpel_diag') != '':
+					registro2.infpel_diag = request.POST.get('infpel_diag')
+				else:
+					registro2.infpel_diag = None
+				if request.POST.get('infpel_fecha_initrat') != '':
+					registro2.infpel_fecha_initrat = request.POST.get('infpel_fecha_initrat')
+				else:
+					registro2.infpel_fecha_initrat = None
+				if request.POST.get('infpel_entrat_diag') != '':
+					registro2.infpel_entrat_diag = request.POST.get('infpel_entrat_diag')
+				else:
+					registro2.infpel_entrat_diag = None
+				if request.POST.get('infpel_entrat_fecha_fintrat') != '':
+					registro2.infpel_entrat_fecha_fintrat = request.POST.get('infpel_entrat_fecha_fintrat')
+				else:
+					registro2.infpel_entrat_fecha_fintrat = None
+				if request.POST.get('infpel_intrat_diag') != '':
+					registro2.infpel_intrat_diag = request.POST.get('infpel_intrat_diag')
+				else:
+					registro2.infpel_intrat_diag = None
+				if request.POST.get('infpel_intrat_fecha_reitrat') != '':	
+					registro2.infpel_intrat_fecha_reitrat = request.POST.get('infpel_intrat_fecha_reitrat')
+				else:
+					registro2.infpel_intrat_fecha_reitrat = None
+					
 				try:
 					responsable = Responsables.objects.get(usuario_sistema=request.user)
 					registro2.establecimiento = responsable.establecimiento
@@ -1811,7 +2579,98 @@ def boleta_seguimiento(request):
 				registro.activo = request.POST.get('activo')
 				registro.fallecido = request.POST.get('fallecido')
 				registro.fallecido = request.POST.get('fallecido')
-					 			
+				if request.POST.get('fecha_consulta') != '':
+					registro.fecha_consulta = request.POST.get('fecha_consulta')
+				else:
+					registro.fecha_consulta = None
+				if request.POST.get('fecha_proxima_cita') != '':
+					registro.fecha_proxima_cita = request.POST.get('fecha_proxima_cita')
+				else:
+					registro.fecha_proxima_cita = None
+				if request.POST.get('tmpsmx_fecha_initrat') != '':
+					registro.tmpsmx_fecha_initrat = request.POST.get('tmpsmx_fecha_initrat')
+				else:
+					registro.tmpsmx_fecha_initrat = None
+				if request.POST.get('tmpsmx_fecha_fintrat') != '':
+					registro.tmpsmx_fecha_fintrat = request.POST.get('tmpsmx_fecha_fintrat')
+				else:
+					registro.tmpsmx_fecha_fintrat = None
+				if request.POST.get('tmpsmx_fecha_intrat') != '':
+					registro.tmpsmx_fecha_intrat = request.POST.get('tmpsmx_fecha_intrat')
+				else:
+					registro.tmpsmx_fecha_intrat = None
+				if request.POST.get('tmpsmx_fecha_reitrat') != '':
+					registro.tmpsmx_fecha_reitrat = request.POST.get('tmpsmx_fecha_reitrat')
+				else:
+					registro.tmpsmx_fecha_reitrat = None
+				if request.POST.get('isoniacida_fecha_initrat') != '':
+					registro.isoniacida_fecha_initrat = request.POST.get('isoniacida_fecha_initrat')
+				else:
+					registro.isoniacida_fecha_initrat = None
+				if request.POST.get('isoniacida_fecha_fintrat') != '':
+					registro.isoniacida_fecha_fintrat = request.POST.get('isoniacida_fecha_fintrat')
+				else:
+					registro.isoniacida_fecha_fintrat = None
+				if request.POST.get('isoniacida_fecha_intrat') != '':
+					registro.isoniacida_fecha_intrat = request.POST.get('isoniacida_fecha_intrat')
+				else:
+					registro.isoniacida_fecha_intrat = None
+				if request.POST.get('isoniacida_fecha_reitrat') != '':
+					registro.isoniacida_fecha_reitrat = request.POST.get('isoniacida_fecha_reitrat')
+				else:
+					registro.isoniacida_fecha_reitrat = None
+				if request.POST.get('azitromicida_fecha_initrat') != '':
+					registro.azitromicida_fecha_initrat = request.POST.get('azitromicida_fecha_initrat')
+				else:
+					registro.azitromicida_fecha_initrat = None
+				if request.POST.get('azitromicida_fecha_fintrat') != '':
+					registro.azitromicida_fecha_fintrat = request.POST.get('azitromicida_fecha_fintrat')
+				else:
+					registro.azitromicida_fecha_fintrat = None
+				if request.POST.get('azitromicida_fecha_intrat') != '':
+					registro.azitromicida_fecha_intrat = request.POST.get('azitromicida_fecha_intrat')
+				else:
+					registro.azitromicida_fecha_intrat = None
+				if request.POST.get('azitromicida_fecha_reitrat') != '':
+					registro.azitromicida_fecha_reitrat = request.POST.get('azitromicida_fecha_reitrat')
+				else:
+					registro.azitromicida_fecha_reitrat = None
+				if request.POST.get('arv_fecha_ini') != '':
+					registro.arv_fecha_ini = request.POST.get('arv_fecha_ini')
+				else:
+					registro.arv_fecha_ini = None
+				if request.POST.get('fecha_abandono') != '':
+					registro.fecha_abandono = request.POST.get('fecha_abandono')
+				else:
+					registro.fecha_abandono = None
+				if request.POST.get('fecha_suspension') != '':
+					registro.fecha_suspension = request.POST.get('fecha_suspension')
+				else:
+					registro.fecha_suspension = None
+				if request.POST.get('fecha_reinicio') != '':
+					registro.fecha_reinicio = request.POST.get('fecha_reinicio')
+				else:
+					registro.fecha_reinicio = None
+				if request.POST.get('fecha_fallecido') != '':
+					registro.fecha_fallecido = request.POST.get('fecha_fallecido')
+				else:
+					registro.fecha_fallecido = None
+				if request.POST.get('fecha_prescripcion_arv') != '':
+					registro.fecha_prescripcion_arv = request.POST.get('fecha_prescripcion_arv')
+				else:
+					registro.fecha_prescripcion_arv = None
+				if request.POST.get('fecha_cambio_terapia') != '':
+					registro.fecha_cambio_terapia = request.POST.get('fecha_cambio_terapia')
+				else:
+					registro.fecha_cambio_terapia = None
+				if request.POST.get('fecha_entrega_arv') != '':
+					registro.fecha_entrega_arv = request.POST.get('fecha_entrega_arv')
+				else:
+					registro.fecha_entrega_arv = None
+				if request.POST.get('fecha_proxentrega_arv') != '':
+					registro.fecha_proxentrega_arv = request.POST.get('fecha_proxentrega_arv')
+				else:
+					registro.fecha_proxentrega_arv = None	 			
 	 			registro.save()
 
 
