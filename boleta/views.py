@@ -85,8 +85,15 @@ def pre_prueba_vih(request):
 			try:
 				registro = formulario2.save(commit=False)
 				registro.expediente =  request.POST['expediente']
-				registro.ciudad =  Ciudades.objects.get(pk=request.POST['ciudad'])
-				registro.municipio =  Municipios.objects.get(pk=request.POST['municipio'])
+				try:
+					registro.ciudad =  Ciudades.objects.get(pk=request.POST['ciudad'])
+				except Exception, e:
+					registro.ciudad =  None
+				try:
+					registro.municipio =  Municipios.objects.get(pk=request.POST['municipio'])
+				except Exception, e:
+					registro.municipio =  None
+				
 				registro.identidad =  identidad
 				registro.sexo =  request.POST['sexo_persona']
 				registro.primer_nombre =  request.POST['primer_nombre']
@@ -395,6 +402,7 @@ def boleta_clinica(request):
 		try:
 			persona = dict(
 				Boletas.objects.values(
+					'id',
 					'primer_nombre', 
 					'segundo_nombre', 
 					'primer_apellido', 
@@ -434,14 +442,274 @@ def boleta_clinica(request):
 					'otro_condicion',
 				).filter(identidad=identidad).order_by('-fecha_actualizacion')[:1].get()
 			)
+			try:
+				clinica = dict(
+					BoletasClinicas.objects.values(
+						'id',
+						'boleta__identidad', 
+						'boleta__primer_nombre', 
+						'boleta__segundo_nombre', 
+						'boleta__primer_apellido', 
+						'boleta__segundo_apellido', 
+						'boleta__sexo', 
+						'boleta__fecha_nacimiento',
+						'boleta__edad_anios',
+						'boleta__edad_meses',
+						'boleta__edad_dias',
+						'estado_inmunologico',
+						'estado_clinico',
+						'estadio_infeccion',
+						'lic4',
+						'lic4_resultado',
+						'lic4_fecha_realizacion',
+						'lic4_ordenado_consulta',
+						'caviral',
+						'caviral_resultado',
+						'caviral_fecha_realizacion',
+						'caviral_ordenado_consulta',
+						'hepb',
+						'hepb_resultado',
+						'hepb_fecha_realizacion',
+						'hepb_ordenado_consulta',
+						'hepc',
+						'hepc_resultado',
+						'hepc_fecha_realizacion',
+						'hepc_ordenado_consulta',
+						'rpr',
+						'rpr_resultado',
+						'rpr_fecha_realizacion',
+						'rpr_ordenado_consulta',
+						'rxtorax',
+						'rxtorax_resultado',
+						'rxtorax_fecha_realizacion',
+						'rxtorax_ordenado_consulta',
+						'sespu',
+						'sespu_resultado',
+						'sespu_fecha_realizacion',
+						'sespu_ordenado_consulta',
+						'ppd',
+						'ppd_resultado',
+						'ppd_fecha_realizacion',
+						'ppd_ordenado_consulta',
+						'cultivo',
+						'cultivo_resultado',
+						'cultivo_fecha_realizacion',
+						'cultivo_ordenado_consulta',
+						'usg',
+						'usg_resultado',
+						'usg_fecha_realizacion',
+						'usg_ordenado_consulta',
+						'biopsia',
+						'biopsia_resultado',
+						'biopsia_fecha_realizacion',
+						'biopsia_ordenado_consulta',
+						'otro',
+						'otro_resultado',
+						'otro_fecha_realizacion',
+						'otro_ordenado_consulta',
+						'tupu',
+						'tupu_diag',
+						'tupu_initrat',
+						'tupu_fecha_initrat',
+						'tupu_entrat',
+						'tupu_entrat_diag',
+						'tupu_entrat_fintrat',
+						'tupu_entrat_fecha_fintrat',
+						'tupu_intrat',
+						'tupu_intrat_diag',
+						'tupu_intrat_reitrat',
+						'tupu_intrat_fecha_reitrat',
+						'tupu_trat',
+						'tudi',
+						'tudi_diag',
+						'tudi_initrat',
+						'tudi_fecha_initrat',
+						'tudi_entrat',
+						'tudi_entrat_diag',
+						'tudi_entrat_fintrat',
+						'tudi_entrat_fecha_fintrat',
+						'tudi_intrat',
+						'tudi_intrat_diag',
+						'tudi_intrat_reitrat',
+						'tudi_intrat_fecha_reitrat',
+						'hepb',
+						'hepb_diag',
+						'hepb_initrat',
+						'hepb_fecha_initrat',
+						'hepb_entrat',
+						'hepb_entrat_diag',
+						'hepb_entrat_fintrat',
+						'hepb_entrat_fecha_fintrat',
+						'hepb_intrat',
+						'hepb_intrat_diag',
+						'hepb_intrat_reitrat',
+						'hepb_intrat_fecha_reitrat',
+						'hepc',
+						'hepc_diag',
+						'hepc_initrat',
+						'hepc_fecha_initrat',
+						'hepc_entrat',
+						'hepc_entrat_diag',
+						'hepc_entrat_fintrat',
+						'hepc_entrat_fecha_fintrat',
+						'hepc_intrat',
+						'hepc_intrat_diag',
+						'hepc_intrat_reitrat',
+						'hepc_intrat_fecha_reitrat',
+						'ulg',
+						'ulg_diag',
+						'ulg_initrat',
+						'ulg_fecha_initrat',
+						'ulg_entrat',
+						'ulg_entrat_diag',
+						'ulg_entrat_fintrat',
+						'ulg_entrat_fecha_fintrat',
+						'ulg_intrat',
+						'ulg_intrat_diag',
+						'ulg_intrat_reitrat',
+						'ulg_intrat_fecha_reitrat',
+						'secure',
+						'secure_diag',
+						'secure_initrat',
+						'secure_fecha_initrat',
+						'secure_entrat',
+						'secure_entrat_diag',
+						'secure_entrat_fintrat',
+						'secure_entrat_fecha_fintrat',
+						'secure_intrat',
+						'secure_intrat_diag',
+						'secure_intrat_reitrat',
+						'secure_intrat_fecha_reitrat',
+						'fluva',
+						'fluva_diag',
+						'fluva_initrat',
+						'fluva_fecha_initrat',
+						'fluva_entrat',
+						'fluva_entrat_diag',
+						'fluva_entrat_fintrat',
+						'fluva_entrat_fecha_fintrat',
+						'fluva_intrat',
+						'fluva_intrat_diag',
+						'fluva_intrat_reitrat',
+						'fluva_intrat_fecha_reitrat',
+						'buin',
+						'buin_diag',
+						'buin_initrat',
+						'buin_fecha_initrat',
+						'buin_entrat',
+						'buin_entrat_diag',
+						'buin_entrat_fintrat',
+						'buin_entrat_fecha_fintrat',
+						'buin_intrat',
+						'buin_intrat_diag',
+						'buin_intrat_reitrat',
+						'buin_intrat_fecha_reitrat',
+						'edes',
+						'edes_diag',
+						'edes_initrat',
+						'edes_fecha_initrat',
+						'edes_entrat',
+						'edes_entrat_diag',
+						'edes_entrat_fintrat',
+						'edes_entrat_fecha_fintrat',
+						'edes_intrat',
+						'edes_intrat_diag',
+						'edes_intrat_reitrat',
+						'edes_intrat_fecha_reitrat',
+						'verge',
+						'verge_diag',
+						'verge_initrat',
+						'verge_fecha_initrat',
+						'verge_entrat',
+						'verge_entrat_diag',
+						'verge_entrat_fintrat',
+						'verge_entrat_fecha_fintrat',
+						'verge_intrat',
+						'verge_intrat_diag',
+						'verge_intrat_reitrat',
+						'verge_intrat_fecha_reitrat',
+						'trasex',
+						'trasex_diag',
+						'trasex_initrat',
+						'trasex_fecha_initrat',
+						'trasex_entrat',
+						'trasex_entrat_diag',
+						'trasex_entrat_fintrat',
+						'trasex_entrat_fecha_fintrat',
+						'trasex_intrat',
+						'trasex_intrat_diag',
+						'trasex_intrat_reitrat',
+						'trasex_intrat_fecha_reitrat',
+						'proc',
+						'proc_diag',
+						'proc_initrat',
+						'proc_fecha_initrat',
+						'proc_entrat',
+						'proc_entrat_diag',
+						'proc_entrat_fintrat',
+						'proc_entrat_fecha_fintrat',
+						'proc_intrat',
+						'proc_intrat_diag',
+						'proc_intrat_reitrat',
+						'proc_intrat_fecha_reitrat',
+						'infpel',
+						'infpel_diag',
+						'infpel_initrat',
+						'infpel_fecha_initrat',
+						'infpel_entrat',
+						'infpel_entrat_diag',
+						'infpel_entrat_fintrat',
+						'infpel_entrat_fecha_fintrat',
+						'infpel_intrat',
+						'infpel_intrat_diag',
+						'infpel_intrat_reitrat',
+						'infpel_intrat_fecha_reitrat',
+						'fecha_creacion',
+						'fecha_actualizacion',
+						'relaciones_mismo_sexo',
+						'dinero_por_relaciones',
+						'identificacion_genero',
+						'embarazada_vih',
+						'fecha_ultima_menstruacion',
+						'semanas_gestacion',
+						'evaluacion_go',
+						'programacion_cesaria',
+						'fecha_cesaria',
+						'afiliacion_seguridad_social',
+						'clase_afiliacion',
+						'seguro_privado',
+						'nombre_aseguradora',
+						'actualmente_tarv',
+						'fecha_inicio_tarv',
+						'estatus_actual_tarv',
+						'fecha_diagnostico',
+						'fecha_primera_consulta',
+						'fecha_proxima_cita',
+						'cita_medica',
+						'retiro_medicamento',
+						'talla',
+						'peso',
+						'imc',
+					).filter(boleta=persona['id']).order_by('-fecha_actualizacion')[:1].get()
+				)
+						
+			except Exception, e:
+				print e
+				clinica = False
+				pass
 		except Exception, e:
-			print e, 'ERROR'
+			boleta = False
 			try:
 				persona = dict(RPN.objects.values('primer_nombre', 'segundo_nombre', 'primer_apellido', 'segundo_apellido', 'sexo', 'fecha_nacimiento').get(identidad=identidad))
 			except Exception, e:
 				persona = False
 
-		return HttpResponse(json.dumps(persona, default=date_handler), content_type='application/json')
+		data ={
+			'persona': persona,
+			'clinica': clinica,
+		}
+
+		return HttpResponse(json.dumps(data, default=date_handler), content_type='application/json')
 	#GET
 	elif request.method == 'GET':
 		formulario = RPNForm()
@@ -475,8 +743,14 @@ def boleta_clinica(request):
 					print 'SIN BOLETA'
 					registro = formulario2.save(commit=False)
 					registro.expediente =  identidad +'-'+ request.POST['fecha_nacimiento'] +'-'+ request.POST['sexo_persona']
-					registro.ciudad =  Ciudades.objects.get(pk=request.POST['ciudad'])
-					registro.municipio =  Municipios.objects.get(pk=request.POST['municipio'])
+					try:
+						registro.ciudad =  Ciudades.objects.get(pk=request.POST['ciudad'])
+					except Exception, e:
+						registro.ciudad =  None
+					try:
+						registro.municipio =  Municipios.objects.get(pk=request.POST['municipio'])
+					except Exception, e:
+						registro.municipio =  None
 					registro.identidad =  identidad
 					registro.sexo = request.POST['sexo_persona']
 					registro.primer_nombre =  request.POST['primer_nombre']
@@ -494,13 +768,20 @@ def boleta_clinica(request):
 					formulario2.save_m2m()
 				else:
 					#CON BOLETA
-					instance = Boletas.objects.get(identidad=identidad)
+					instance = Boletas.objects.filter(identidad=identidad).order_by('-fecha_actualizacion')[:1].get()
 					formulario2 = BoletaForm(request.POST, instance=instance)
 					registro = formulario2.save(commit=False)
 					registro.sexo = request.POST['sexo_persona']
 					registro.expediente =  identidad +'-'+ request.POST['fecha_nacimiento'] +'-'+ request.POST['sexo_persona']
-					registro.municipio =  Municipios.objects.get(pk=request.POST['municipio'])
-					registro.ciudad =  Ciudades.objects.get(pk=request.POST['ciudad'])
+					
+					try:
+						registro.ciudad =  Ciudades.objects.get(pk=request.POST['ciudad'])
+					except Exception, e:
+						registro.ciudad =  None
+					try:
+						registro.municipio =  Municipios.objects.get(pk=request.POST['municipio'])
+					except Exception, e:
+						registro.municipio =  None
 					registro.identidad_madre = request.POST['identidad_madre'].replace("-", "")
 					registro.identidad_padre = request.POST['identidad_padre'].replace("-", "")
 					registro.identidad_tutor = request.POST['identidad_tutor'].replace("-", "")
@@ -513,6 +794,12 @@ def boleta_clinica(request):
 					registro.actualizado_por = request.user
 					registro.save()
 					formulario2.save_m2m()
+
+				try:
+					instance = BoletasClinicas.objects.get(pk=request.POST.get('boleta_clinica'))
+					formulario3 = BoletaClinicaForm(request.POST, instance=instance)
+				except Exception, e:
+					formulario3 = BoletaClinicaForm(request.POST)
 
 				registro2 = formulario3.save(commit=False)
 				registro2.boleta = registro
@@ -566,6 +853,7 @@ def boleta_clinica(request):
 				registro2.tupu_intrat= request.POST.get('tupu_intrat')
 				registro2.tupu_intrat_reitrat= request.POST.get('tupu_intrat_reitrat')
 				registro2.tupu_trat= request.POST.get('tupu_trat')
+				print 'ASPSADPSAPDIASPODIPSAOIDPSAOIDPAOSDIPSAODIP', request.POST.get('tupu_trat')
 				registro2.tudi= request.POST.get('tudi')
 				registro2.tudi_initrat= request.POST.get('tudi_initrat')
 				registro2.tudi_entrat= request.POST.get('tudi_entrat')
@@ -1129,6 +1417,7 @@ def boleta_seguimiento(request):
 				formulario3 = BoletaClinicaSeguimientoForm(request.POST, instance=instance)
 				registro2 = formulario3.save(commit=False)
 				registro2.actualmente_tarv = request.POST.get('actualmente_tarv')
+				
 				if request.POST.get('fecha_inicio_tarv') != '':
 					registro2.fecha_inicio_tarv = request.POST.get('fecha_inicio_tarv')
 				else:

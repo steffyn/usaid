@@ -80,7 +80,7 @@
             <div class="row">
                <div class="col-sm-7">
                   <div class="form-group">
-                     <label class="control-label col-md-5 " for="identidad">Identidad</label>
+                     <label class="control-label col-md-5 " for="identidad">Identidad*</label>
                      <div class=" col-md-7 form-inline">
                         <input type="text" name="identidad" class="form-control" id='identidad' required> 
                         <button type="button" class="btn btn-primary" id="search_identidad"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button><br>
@@ -1121,7 +1121,7 @@
          <p class="page-header"></p>
 
          <div class="row">
-            <div class="col-sm-4">
+            <div class="col-sm-6">
                <label for="medicamento_preinscritos">Medicamentos Prescritos en la Consulta Actual</label>
                <select class="form-control" id="medicamento_preinscritos" multiple name="medicamento_prescritos">
                   <option value='1'> Abacavir (ABC) </option>
@@ -1147,7 +1147,7 @@
                   <option value='21'> Dolutegravir (DTG) </option>
                </select>
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-6">
                <label for="sel1">Co-Formulaciones</label>
                <select class="form-control" id="sel1" multiple name="co1">
                   <option value='1'> AZT/3TC </option>
@@ -1188,7 +1188,7 @@
 
          <p class="page-header"></p>
          <div class="row">
-            <div class="col-sm-4">
+            <div class="col-sm-6">
                <label for="terapia">Nueva Terapia</label>
                <select class="form-control" id="terapia" multiple name="terapia">
                   <option value='1'> Abacavir (ABC) </option>
@@ -1214,7 +1214,7 @@
                   <option value='21'> Dolutegravir (DTG) </option>
                </select>
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-6">
                <label for="sel2">Co-Formulaciones</label>
                <select class="form-control" id="sel2" multiple name="co2">
                   <option value='1'> AZT/3TC </option>
@@ -1423,7 +1423,7 @@ function(start, end, label) {
    $('#input_expediente, .expediente').val(btoa(identidad) + '-'+ start.format('YYYY-MM-DD') + '-' + $('input[name=sexo]').val())
 }).val('');
 
-vars = '#id_fecha_consejeria, #id_fecha_ultima_menstruacion, #id_fecha_cesaria, '
+var vars = '#id_fecha_consejeria, #id_fecha_ultima_menstruacion, #id_fecha_cesaria, '
 vars += '#id_fecha_diagnostico, #id_fecha_primera_consulta, '
 vars += '#id_lic4_fecha_realizacion, #id_caviral_fecha_realizacion, #id_hepb_fecha_realizacion, '
 vars += '#id_hepc_fecha_realizacion, #id_rpr_fecha_realizacion, #id_rxtorax_fecha_realizacion, '
@@ -1448,6 +1448,16 @@ vars += '#id_tmpsmx_fecha_initrat, #id_tmpsmx_fecha_fintrat, #id_tmpsmx_fecha_in
 vars += '#id_azitromicida_fecha_initrat, #id_azitromicida_fecha_fintrat, #id_azitromicida_fecha_intrat, #id_azitromicida_fecha_reitrat, #id_fecha_consulta,'
 vars += '#id_arv_fecha_ini, #id_fecha_abandono, #id_fecha_suspension, #id_fecha_reinicio, #id_fecha_fallecido, #id_fecha_entrega_arv, #id_fecha_prescripcion_arv, #id_fecha_cambio_terapia'
 
+function cb(start, end) {
+  if(start._isValid && end._isValid)
+  {
+      $(vars).val(start.format('Do MMM YYYY') + ' - ' + end.format('Do MMM YYYY'));
+  }
+  else
+  {
+      $(vars).val('');
+  }
+}
  
 $(vars).daterangepicker({
    //autoUpdateInput: false,
@@ -1481,6 +1491,11 @@ $(vars).daterangepicker({
       ],
    },
 }).val('');
+
+$(vars).on('cancel.daterangepicker', function(ev, picker) {
+  //do something, like clearing an input
+  $(vars).val('');
+});
 
 $('#id_fecha_proxima_cita,#id_fecha_proxentrega_arv').daterangepicker({
    //autoUpdateInput: false,
@@ -1842,13 +1857,13 @@ $('#identidad').attr({
          $('#id_estadio_infeccion').val(msg.persona.estadio_infeccion)
 
          if(msg.persona.estado_clinico == 'A'){
-            $('#id_estado_clinico_1').prop('checked', true).trigger('change')
+            $('#id_estado_clinico_0').prop('checked', true).trigger('change')
          }
          if(msg.persona.estado_clinico == 'B'){
-            $('#id_estado_clinico_2').prop('checked', true).trigger('change')
+            $('#id_estado_clinico_1').prop('checked', true).trigger('change')
          }
          if(msg.persona.estado_clinico == 'C'){
-            $('#id_estado_clinico_3').prop('checked', true).trigger('change')
+            $('#id_estado_clinico_2').prop('checked', true).trigger('change')
          }
         
          console.log(msg.persona.estado_clinico)
@@ -1915,7 +1930,21 @@ $('#identidad').attr({
 
 
 
-         $('#id_tupu_trat_'+(msg.persona.tupu_trat-1)).prop('checked', true).trigger('change')
+          if (data.clinica.tupu_trat = "Isoniacida"){
+            $('#id_tupu_trat_0').prop('checked', true)
+         }
+         if (data.clinica.tupu_trat = "Rifampicina"){
+            $('#id_tupu_trat_1').prop('checked', true)
+         }
+         if (data.clinica.tupu_trat = "Pirazinamida"){
+            $('#id_tupu_trat_2').prop('checked', true)
+         }
+         if (data.clinica.tupu_trat = "Etambutol"){
+            $('#id_tupu_trat_3').prop('checked', true)
+         }
+         if (data.clinica.tupu_trat = "Estreptomicina"){
+            $('#id_tupu_trat_4').prop('checked', true)
+         }
          $('#id_tupu_'+(msg.persona.tupu-1)).prop('checked', true).trigger('change')
          $('#id_tupu_initrat_'+(msg.persona.tupu_initrat-1)).prop('checked', true).trigger('change')
          $('#id_tupu_entrat_'+(msg.persona.tupu_entrat-1)).prop('checked', true).trigger('change')
@@ -2531,7 +2560,21 @@ $('#search_identidad').click(function() {
          $('#id_otro_fecha_realizacion').val(msg.persona.otro_fecha_realizacion)
 
 
-         $('#id_tupu_trat_'+(msg.persona.tupu_trat-1)).prop('checked', true).trigger('change')
+         if (data.clinica.tupu_trat = "Isoniacida"){
+            $('#id_tupu_trat_0').prop('checked', true)
+         }
+         if (data.clinica.tupu_trat = "Rifampicina"){
+            $('#id_tupu_trat_1').prop('checked', true)
+         }
+         if (data.clinica.tupu_trat = "Pirazinamida"){
+            $('#id_tupu_trat_2').prop('checked', true)
+         }
+         if (data.clinica.tupu_trat = "Etambutol"){
+            $('#id_tupu_trat_3').prop('checked', true)
+         }
+         if (data.clinica.tupu_trat = "Estreptomicina"){
+            $('#id_tupu_trat_4').prop('checked', true)
+         }
          $('#id_tupu_'+(msg.persona.tupu-1)).prop('checked', true).trigger('change')
          $('#id_tupu_initrat_'+(msg.persona.tupu_initrat-1)).prop('checked', true).trigger('change')
          $('#id_tupu_entrat_'+(msg.persona.tupu_entrat-1)).prop('checked', true).trigger('change')
@@ -3473,7 +3516,8 @@ $('input[name=estado_inmunologico], input[name=estado_clinico]').change(function
    }
 })
 
-$('#id_talla, #id_peso').attr('type', 'number')
+$('#id_talla, #id_peso').attr({ type:'number' , step:'00.01'})
+$('#id_lic4_resultado, #id_caviral_resultado').attr({ type:'number' , step:'00.01'})
 
 $('#id_lic4_resultado').keyup(function(){
    inmunologico = $('input[name=estado_inmunologico]:checked').val()

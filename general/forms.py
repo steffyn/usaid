@@ -34,4 +34,4 @@ class RPNForm(ModelForm):
 			'segundo_apellido': TextInput(attrs={'readonly': 'readonly'}),
 			'fecha_nacimiento': TextInput(attrs={'disabled': 'disabled', 'required': 'required'}),
 		}
-	sexo =  forms.ChoiceField(choices=GENERO, widget=RadioSelect)
+	sexo =  forms.ChoiceField(choices=GENERO, widget=RadioSelect, label='Sexo*')

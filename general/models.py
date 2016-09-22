@@ -65,13 +65,13 @@ class Ocupaciones(models.Model):
 
 class RPN(models.Model):
 	identidad = models.CharField(max_length=13)
-	primer_nombre = models.CharField(max_length=50)
+	primer_nombre = models.CharField(max_length=50, verbose_name='Primer Nombre*')
 	segundo_nombre = models.CharField(max_length=50,  blank=True, null=True)
-	primer_apellido = models.CharField(max_length=50)
+	primer_apellido = models.CharField(max_length=50, verbose_name='Primer Apellido*')
 	segundo_apellido = models.CharField(max_length=50,  blank=True, null=True)
-	fecha_nacimiento = models.DateField(verbose_name='Fecha de Nacimiento')
-	sexo = models.IntegerField(choices=GENERO)
-	estado_civil = models.IntegerField(choices=ESTADO_CIVIL)
+	fecha_nacimiento = models.DateField(verbose_name='Fecha de Nacimiento*')
+	sexo = models.IntegerField(choices=GENERO, verbose_name='Sexo*')
+	estado_civil = models.IntegerField(choices=ESTADO_CIVIL, verbose_name='Estado Civil*')
 	fotografia = models.ImageField( blank=True, null=True)
 
 	def __unicode__(self):
