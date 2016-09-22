@@ -698,7 +698,7 @@ def boleta_clinica(request):
 				clinica = False
 				pass
 		except Exception, e:
-			boleta = False
+			clinica = False
 			try:
 				persona = dict(RPN.objects.values('primer_nombre', 'segundo_nombre', 'primer_apellido', 'segundo_apellido', 'sexo', 'fecha_nacimiento').get(identidad=identidad))
 			except Exception, e:
@@ -2312,7 +2312,7 @@ def boleta_seguimiento(request):
 					registro2.infpel_intrat_fecha_reitrat = request.POST.get('infpel_intrat_fecha_reitrat')
 				else:
 					registro2.infpel_intrat_fecha_reitrat = None
-					
+
 				try:
 					responsable = Responsables.objects.get(usuario_sistema=request.user)
 					registro2.establecimiento = responsable.establecimiento
@@ -2673,9 +2673,6 @@ def boleta_seguimiento(request):
 					registro.fecha_proxentrega_arv = None	 			
 	 			registro.save()
 
-
-
-
 				formulario = RPNForm()
 				formulario.fields['sexo'].widget.attrs['disabled'] = True
 
@@ -2685,7 +2682,6 @@ def boleta_seguimiento(request):
 				exito = True
 
 			else:
-				print 'AAAAAAAAAAAAAAAAAAAAAAAAA'
 				pass
 		#except Exception, e:
 		#	raise e
