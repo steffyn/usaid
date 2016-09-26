@@ -80,7 +80,6 @@ def pre_prueba_vih(request):
 		formulario = RPNForm()
 		formulario2 = BoletaForm(request.POST)
 		formulario3 = BoletaConsejeriaForm(request.POST)
-		print request.POST['expediente'], 'EXPEDIENTE', request.POST['fecha_nacimiento']
 		if formulario2.is_valid() and formulario3.is_valid():
 			try:
 				registro = formulario2.save(commit=False)
@@ -137,9 +136,8 @@ def pre_prueba_vih(request):
 				formulario3 = BoletaConsejeriaForm()
 				exito = True
 			except Exception, e:
-				print e, 'E!'
+				pass
 		else:
-			print 'PASO POR AQUI'
 			pass
 		ctx = {
 			'formulario' : formulario,
@@ -184,7 +182,6 @@ def prueba_vih(request):
 
 			persona = True
 		except Exception, e:
-			print 'ERROR' , e
 			persona = False
 			expediente = False
 			cantidad_boleta = False
@@ -211,7 +208,6 @@ def prueba_vih(request):
 
 	#POST
 	elif request.method == 'POST':
-		print 'aksjhdkajshdkasd',request.POST['boleta']
 		formulario = BoletaPruebaForm(request.POST)
 		if formulario.is_valid():
 			registro = formulario.save(commit=False)
@@ -263,7 +259,6 @@ def post_prueba_vih(request):
 			persona = True
 
 		except Exception, e:
-			print 'ERROR',e
 			persona = False
 			expediente = False
 			boleta = False
@@ -374,7 +369,7 @@ def listado_asistencia(request):
 
 				
 		except Exception, e:
-			print 'ERROR', e
+			pass
 		ctx = {
 			'formulario' : formulario,
 			'exito': exito,
@@ -694,7 +689,6 @@ def boleta_clinica(request):
 				)
 						
 			except Exception, e:
-				print e
 				clinica = False
 				pass
 		except Exception, e:
@@ -730,17 +724,12 @@ def boleta_clinica(request):
 		#try:
 		with transaction.atomic():
 			tipo_persona = request.POST['persona']
-			print tipo_persona, request.POST.get('sexo_persona'), 'PASO POR AQUI'
-
-			print '---------------------------------------------------------' 
-			#print request.POST
 			
 			formulario = RPNForm(request.POST)
 			formulario2 = BoletaForm(request.POST)
 			formulario3 = BoletaClinicaForm(request.POST)
 			if  formulario2.is_valid() and formulario3.is_valid():
 				if str(tipo_persona) != '2':
-					print 'SIN BOLETA'
 					registro = formulario2.save(commit=False)
 					registro.expediente =  identidad +'-'+ request.POST['fecha_nacimiento'] +'-'+ request.POST['sexo_persona']
 					try:
@@ -1339,7 +1328,6 @@ def boleta_clinica(request):
 				exito = True
 
 			else:
-				print 'AAAAAAAAAAAAAAAAAAAAAAAAA'
 				pass
 		#except Exception, e:
 		#	raise e
@@ -1737,11 +1725,9 @@ def boleta_seguimiento(request):
 				)
 			except Exception, e:
 				seguimiento = False
-				print e,'kjhkjhk'
 				pass
 			
 		except Exception, e:
-			print e, 'ERRORasdasdasda'
 			persona = False
 			seguimiento = False
 
@@ -1776,7 +1762,6 @@ def boleta_seguimiento(request):
 			
 			formulario4 = BoletaSeguimientoForm(request.POST)
 			if  formulario4.is_valid():
-				print identidad, 'IDENTIDAD'
 				try:
 					instance = BoletasClinicas.objects.get(pk=request.POST.get('boleta_clinica'))
 				except Exception, e:
@@ -2324,10 +2309,13 @@ def boleta_seguimiento(request):
 				try:
 					instance = BoletasSeguimientos.objects.get(pk=request.POST.get('boleta_seg'))
 					formulario4 = BoletaSeguimientoForm(request.POST, instance=instance)
+					registro = formulario4.save(commit=False)
 				except Exception, e:
 					formulario4 = BoletaSeguimientoForm(request.POST)
+					registro = formulario4.save(commit=False)
+					registro.creado_por = request.user
 
-				registro = formulario4.save(commit=False)
+				registro.actualizado_por = request.user
 				registro.boleta_clinica = registro2
 				if '1' in request.POST.getlist('co1'):
 					registro.azt = True
@@ -2464,7 +2452,6 @@ def boleta_seguimiento(request):
 				else:
 					registro.lpv2_ter = False 
 
-				print request.POST.getlist('terapia')
 				if '1' in request.POST.getlist('terapia'):
 					registro.abc_ter = True
 				else:
