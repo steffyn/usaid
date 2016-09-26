@@ -81,16 +81,6 @@
 
 <script type="text/javascript">
 
-  $('#id_responsable').attr({
-      readonly:'readonly',
-      value : '{{responsable.nombres}} {{responsable.primer_apellido}}'
-  })
-
-  $('#id_coordinador').attr({
-      readonly:'readonly',
-      value : '{{responsable.coordinador.first_name}} {{responsable.coordinador.last_name}}'
-  })
-
   function quitar(identidad){
     $('#'+identidad).remove()
   }
@@ -163,9 +153,13 @@
 
   $("#id_identidad, #id_identidad_reclutador").attr({
     type: 'number',
-    onKeyDown:"if(this.value.length==13 && event.keyCode!=8 && event.keyCode!=13) return false;"
+    onKeyDown:"if(this.value.length==13 && event.keyCode!=8 && event.keyCode!=13) return false;",
+    placeholder: 'Ej. 0801199010000'
   });
 
+  $('#id_identidad_reclutador').keyup(function(event) {
+    console.log(event.keyCode)
+  })
 
   $('#id_identidad').attr({
     type:'number',

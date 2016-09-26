@@ -229,7 +229,7 @@ class Asistencia(models.Model):
 	intervencion = models.IntegerField(choices=TIPO_INTERVENCION, verbose_name='Tipo de Intervensión')
 	responsable = models.CharField(max_length=100,blank=True, null=True, verbose_name='Nombre del/la Responsable de la Actividad')
 	coordinador = models.CharField(max_length=100,blank=True, null=True, verbose_name='Nombre del/la Coordinador de Proyecto')
-	identidad_reclutador = models.IntegerField(blank=True, null=True, verbose_name='Identidad del Reclutador')
+	identidad_reclutador = models.CharField(max_length=50,blank=True, null=True, verbose_name='Identidad del Reclutador')
 
 	creado_por = models.ForeignKey(User, related_name='creado_por_asistencia')
 	fecha_creacion = models.DateTimeField(auto_now_add=True)
