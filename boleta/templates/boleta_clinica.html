@@ -2360,15 +2360,12 @@ $('#search_identidad').click(function (e) {
 $('#no_identidad').change(function(){
    no_identidad = $(this).prop('checked')
    if (no_identidad == true){
+      $('#formulario').trigger("reset");
       rand = Math.floor(Math.random()*99999999999999+1);
       $('#identidad').val(rand)
-      $('#formulario').trigger("reset");
       $(this).prop('checked', true)
-      $('#id_fecha_nacimiento').prop('readonly', false).prop('disabled', false).val('')
-      $('#expediente').text('')
+      $('#id_fecha_nacimiento, #id_primer_nombre, #id_segundo_nombre, #id_primer_apellido, #id_segundo_apellido').prop('readonly', false).prop('disabled', false).val('')
       $('#id_fecha_nacimiento, input[name=sexo]').prop('disabled',false).val('')
-      
-      $("#id_departamento,#id_municipio, #id_ciudad ").select2('val', null)
    }else{
       $('#identidad').val('')
       $('#formulario').trigger("reset");
