@@ -84,6 +84,7 @@ def pre_prueba_vih(request):
 			try:
 				registro = formulario2.save(commit=False)
 				registro.expediente =  request.POST['expediente']
+				registro.grupo_etnico =  None if request.POST.get('grupo_etnico') == '' or request.POST.get('grupo_etnico') == None else GruposEtnicos.objects.get(pk=request.POST.get('grupo_etnico'))
 				try:
 					registro.ciudad =  Ciudades.objects.get(pk=request.POST['ciudad'])
 				except Exception, e:
@@ -725,6 +726,7 @@ def boleta_clinica(request):
 		with transaction.atomic():
 			tipo_persona = request.POST['persona']
 			
+			print request.POST.get('grupo_etnico') 
 			formulario = RPNForm(request.POST)
 			formulario2 = BoletaForm(request.POST)
 			formulario3 = BoletaClinicaForm(request.POST)
@@ -732,6 +734,7 @@ def boleta_clinica(request):
 				if str(tipo_persona) != '2':
 					registro = formulario2.save(commit=False)
 					registro.expediente =  identidad +'-'+ request.POST['fecha_nacimiento'] +'-'+ request.POST['sexo_persona']
+					registro.grupo_etnico =  None if request.POST.get('grupo_etnico') == '' or request.POST.get('grupo_etnico') == None  else GruposEtnicos.objects.get(pk=request.POST.get('grupo_etnico'))
 					try:
 						registro.ciudad =  Ciudades.objects.get(pk=request.POST['ciudad'])
 					except Exception, e:
@@ -762,7 +765,7 @@ def boleta_clinica(request):
 					registro = formulario2.save(commit=False)
 					registro.sexo = request.POST['sexo_persona']
 					registro.expediente =  identidad +'-'+ request.POST['fecha_nacimiento'] +'-'+ request.POST['sexo_persona']
-					
+					registro.grupo_etnico =  None if request.POST.get('grupo_etnico') == '' or request.POST.get('grupo_etnico') == None else GruposEtnicos.objects.get(pk=request.POST.get('grupo_etnico'))
 					try:
 						registro.ciudad =  Ciudades.objects.get(pk=request.POST['ciudad'])
 					except Exception, e:

@@ -2919,7 +2919,7 @@ $('#no_identidad').change(function(){
    no_identidad = $(this).prop('checked')
    if (no_identidad == true){
       $('#formulario').trigger("reset");
-      rand = Math.floor(Math.random()*99999999999999+1);
+      rand = Math.floor(Math.random()*9999999999999+1);
       $('#identidad').val(rand)
       $(this).prop('checked', true)
       $('#id_fecha_nacimiento, #id_primer_nombre, #id_segundo_nombre, #id_primer_apellido, #id_segundo_apellido').prop('readonly', false).prop('disabled', false).val('')

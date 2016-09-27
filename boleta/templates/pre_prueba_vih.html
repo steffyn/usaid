@@ -636,7 +636,7 @@ function calcularEdad()
 $('#no_identidad').change(function(){
   no_identidad = $(this).prop('checked')
   if (no_identidad == true){
-    rand = Math.floor(Math.random()*99999999999999+1);
+    rand = Math.floor(Math.random()*9999999999999+1);
     $('#identidad').val(rand)
     $('#id_primer_nombre').prop('readonly', false).val('')
     $('#id_segundo_nombre').prop('readonly', false).val('')
