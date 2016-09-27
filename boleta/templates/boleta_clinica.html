@@ -1253,7 +1253,6 @@ $('#id_fecha_nacimiento').daterangepicker({
    },
 },
 function(start, end, label) {
-   console.log(start.format('YYYY-MM-DD'))
    edad = start.format('YYYY-MM-DD').split("-");
    var mes = edad[1];
    var anio = edad[0];
@@ -1457,11 +1456,8 @@ $('#identidad').attr({
 
 
       }else{
-         console.log(data.persona)
-         console.log(data.clinica)
          if(data.persona.edad_anios){
             $('#persona').val(2)
-            console.log('lkasjdalskdjalsk', data.persona.ocupacion__pk)
             $('#id_edad_anios').val(data.persona.edad_anios)
             $('#id_edad_meses').val(data.persona.edad_meses)
             $('#id_pseudonimo').val(data.persona.pseudonimo)
@@ -1591,10 +1587,8 @@ $('#identidad').attr({
 
       if (data.clinica!=false){
          $('#boleta_clinica').val(data.clinica.id)
-         console.log(data.clinica)
          $('#id_estado_inmunologico_'+(parseInt(data.clinica.estado_inmunologico)-1)).prop('checked', true).trigger('change')
          $('#id_estadio_infeccion').val(data.clinica.estadio_infeccion)
-         console.log(data.clinica.estado_clinico, 'ESTADO CLINIC')
          if(data.clinica.estado_clinico == 'A'){
             $('#id_estado_clinico_0').prop('checked', true).trigger('change')
          }
@@ -1919,11 +1913,8 @@ $('#search_identidad').click(function (e) {
 
 
       }else{
-         console.log(data.persona)
-         console.log(data.clinica)
          if(data.persona.edad_anios){
             $('#persona').val(2)
-            console.log('lkasjdalskdjalsk', data.persona.ocupacion__pk)
             $('#id_edad_anios').val(data.persona.edad_anios)
             $('#id_edad_meses').val(data.persona.edad_meses)
             $('#id_pseudonimo').val(data.persona.pseudonimo)
@@ -2053,10 +2044,8 @@ $('#search_identidad').click(function (e) {
 
       if (data.clinica!=false){
          $('#boleta_clinica').val(data.clinica.id)
-         console.log(data.clinica)
          $('#id_estado_inmunologico_'+(parseInt(data.clinica.estado_inmunologico)-1)).prop('checked', true).trigger('change')
          $('#id_estadio_infeccion').val(data.clinica.estadio_infeccion)
-         console.log(data.clinica.estado_clinico, 'ESTADO CLINIC')
          if(data.clinica.estado_clinico == 'A'){
             $('#id_estado_clinico_0').prop('checked', true).trigger('change')
          }
@@ -2421,7 +2410,6 @@ $('#id_condiciones').change(function(){
    valores = $(this).val()
    embarazada = jQuery.inArray( embarazada_id.toString(), valores )
    if( embarazada >= 0) {
-      console.log('PASO POR AQUI')
       $('#embarazada').show()
    }else{
       $('#embarazada').hide()

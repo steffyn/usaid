@@ -294,6 +294,7 @@ def post_prueba_vih(request):
 			
 			registro = formulario.save(commit=False)
 			registro.nombre_consejero =  responsable_nombre
+			registro.resultado_prueba_confirmatoria =  None if request.POST.get('resultado_prueba_confirmatoria') == None and request.POST.get('resultado_prueba_confirmatoria') == '' else request.POST.get('resultado_prueba_confirmatoria')
 			registro.boleta =  Boletas.objects.get(pk=request.POST['boleta'])
 			registro.creado_por = request.user
 			registro.actualizado_por = request.user
@@ -725,8 +726,8 @@ def boleta_clinica(request):
 		#try:
 		with transaction.atomic():
 			tipo_persona = request.POST['persona']
+	
 			
-			print request.POST.get('grupo_etnico') 
 			formulario = RPNForm(request.POST)
 			formulario2 = BoletaForm(request.POST)
 			formulario3 = BoletaClinicaForm(request.POST)

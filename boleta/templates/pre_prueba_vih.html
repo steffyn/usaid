@@ -330,7 +330,6 @@ function calcularEdad()
         },
     },
     function(start, end, label) {
-      console.log(start.format('YYYY-MM-DD'))
       edad = start.format('YYYY-MM-DD').split("-");
       var mes = edad[1];
       var anio = edad[0];
@@ -699,7 +698,6 @@ $('#id_condiciones').change(function(){
   valores = $(this).val()
   embarazada = jQuery.inArray( embarazada_id.toString(), valores )
   if( embarazada >= 0) {
-    console.log('PASO POR AQUI')
     $('#embarazada').show()
   }else{
     $('#embarazada').hide()

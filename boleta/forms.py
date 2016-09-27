@@ -144,9 +144,9 @@ class BoletaPruebaForm(ModelForm):
 			'nombre_persona_prueba': TextInput(attrs={'readonly': 'readonly'}),
 		}
 		fields = "__all__"
-		exclude = ['actualizado_por', 'nombre_persona_solicitante', 'nombre_consejero', 'creado_por', 'fecha_creacion', 'fecha_actualizacion', 'boleta']
+		exclude = ['actualizado_por', 'resultado_prueba_confirmatoria', 'nombre_persona_solicitante', 'nombre_consejero', 'creado_por', 'fecha_creacion', 'fecha_actualizacion', 'boleta']
 	resultado_prueba_tamizaje =  forms.ChoiceField(choices=RESULTADOS, widget=RadioSelect)
-	resultado_prueba_confirmatoria =  forms.ChoiceField(choices=RESULTADOS, widget=RadioSelect)
+	resultado_prueba_confirmatoria =  forms.ChoiceField(choices=RESULTADOS, widget=RadioSelect, required=False)
 
 
 class AsistenciaForm(ModelForm):
