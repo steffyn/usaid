@@ -142,12 +142,12 @@
                 }
         })
           .done(function( data ) {
-            console.log(data)
+          
             if (data.persona==false){
               $('#error_identidad').show()
               $('#expediente,#id_fecha_solicitud, #id_numero_prueba, #id_fecha_extraccion, #id_fecha_muestra, #id_fecha_prueba, #id_kit_prueba_tamizaje, #id_resultado_prueba_tamizaje, #id_nombre_persona_prueba, #id_fecha_prueba_confirmatoria, #id_related_name, #id_institucion_prueba_confirmatoria, #id_resultado_prueba_confirmatoria, #id_nombre_laboratorio, #id_fecha_refirio_prueba_confirmatoria').val('')
             }else{
-              console.log(data)
+            
               $('#error_identidad').hide()
               $('#id_numero_prueba').val(data.numero_prueba)
               $('#expediente').val(data.expediente)
@@ -160,7 +160,6 @@
 
   $('#search_identidad').click(function (e) {
       identidad = $('#identidad').val()
-      console.log(identidad)
       var key = e.which;
         $.ajax({
           url: "{% url 'prueba_vih' %}",
@@ -169,12 +168,12 @@
                 }
         })
           .done(function( data ) {
-            console.log(data)
+          
             if (data.persona==false){
               $('#error_identidad').show()
               $('#expediente,#id_fecha_solicitud, #id_numero_prueba, #id_fecha_extraccion, #id_fecha_muestra, #id_fecha_prueba, #id_kit_prueba_tamizaje, #id_resultado_prueba_tamizaje, #id_nombre_persona_prueba, #id_fecha_prueba_confirmatoria, #id_related_name, #id_institucion_prueba_confirmatoria, #id_resultado_prueba_confirmatoria, #id_nombre_laboratorio, #id_fecha_refirio_prueba_confirmatoria').val('')
             }else{
-              console.log(data)
+            
               $('#error_identidad').hide()
               $('#id_numero_prueba').val(data.numero_prueba)
               $('#expediente').val(data.expediente)
