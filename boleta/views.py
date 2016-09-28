@@ -15,6 +15,8 @@ from boleta.forms import *
 
 
 import json
+import datetime
+import calendar
 
 def usuario(id):
 	return Responsables.objects.get(usuario_sistema__id=id)
@@ -26,6 +28,16 @@ def date_handler(obj):
 		return obj.isoformat()
 	else:
 		raise TypeError
+
+
+
+def add_months(sourcedate,months):
+	month = sourcedate.month - 1 + months
+	year = int(sourcedate.year + month / 12 )
+	month = month % 12 + 1
+	day = min(sourcedate.day,calendar.monthrange(year,month)[1])
+	return datetime.date(year,month,day)
+
 
 @login_required()
 def pre_prueba_vih(request):
@@ -42,18 +54,31 @@ def pre_prueba_vih(request):
 	#AJAX
 	if request.is_ajax():
 		identidad = request.GET['identidad']
+		
+		#VALIDACIONES DONDE SI TIENE BOLETA INGRESADA MAYOR DE 3
+		hoy = datetime.date.today()
 		try:
-			persona = dict(RPN.objects.values('primer_nombre', 'segundo_nombre', 'primer_apellido', 'segundo_apellido', 'sexo', 'fecha_nacimiento').get(identidad=identidad))
-			query = BoletasConsejeria.objects.filter(boleta__identidad=identidad)
-			periodicidad = query.count()
+			ultima_boleta = Boletas.objects.filter(identidad=identidad).order_by('-fecha_actualizacion')[:1].get()
+			fecha = add_months(ultima_boleta.fecha_actualizacion, 3)
+			if fecha > hoy:
+				persona = 'existe'
+			else:
+				try:
+					persona = dict(RPN.objects.values('primer_nombre', 'segundo_nombre', 'primer_apellido', 'segundo_apellido', 'sexo', 'fecha_nacimiento').get(identidad=identidad))
+					query = BoletasConsejeria.objects.filter(boleta__identidad=identidad)
+					periodicidad = query.count()
+				except Exception, e:
+					persona = False
+					periodicidad = 0
 		except Exception, e:
-			persona = False
-			periodicidad = 0
-
-		data = {
-			'persona': persona,
-			'periodicidad': periodicidad
-		}
+			try:
+				persona = dict(RPN.objects.values('primer_nombre', 'segundo_nombre', 'primer_apellido', 'segundo_apellido', 'sexo', 'fecha_nacimiento').get(identidad=identidad))
+				query = BoletasConsejeria.objects.filter(boleta__identidad=identidad)
+				periodicidad = query.count()
+			except Exception, e:
+				persona = False
+				periodicidad = 0
+			
 		return HttpResponse(json.dumps(persona, default=date_handler), content_type='application/json')
 	
 	#GET
@@ -160,33 +185,72 @@ def prueba_vih(request):
 	#AJAX
 	if request.is_ajax():
 		identidad = request.GET['identidad']
+		#VALIDACIONES DONDE SI TIENE BOLETA INGRESADA MAYOR DE 3
+		hoy = datetime.date.today()
 		try:
-
-			boleta = Boletas.objects.values(
-				'expediente', 
-				'pk',
-				'primer_nombre', 
-				'segundo_nombre', 
-				'primer_apellido', 
-				'segundo_apellido', 
-				'sexo', 
-				'fecha_nacimiento'
-			).get(identidad=identidad)
-			expediente = boleta['expediente']
-			#boleta = boleta['pk']
-
-			cantidad = BoletasPruebas.objects.filter(boleta__identidad=identidad)
-			if not cantidad:
-				cantidad_boleta = 1
+			ultima_boleta = BoletasPruebas.objects.filter(boleta__identidad=identidad).order_by('-fecha_actualizacion')[:1].get()
+			fecha = add_months(ultima_boleta.fecha_actualizacion, 3)
+			if fecha > hoy:
+				persona = 'existe'
+				expediente = False
+				cantidad_boleta = False
+				boleta = False
 			else:
-				cantidad_boleta = int(cantidad.count()) + 1
+				try:
+					boleta = Boletas.objects.values(
+						'expediente', 
+						'pk',
+						'primer_nombre', 
+						'segundo_nombre', 
+						'primer_apellido', 
+						'segundo_apellido', 
+						'sexo', 
+						'fecha_nacimiento'
+					).filter(identidad=identidad).order_by('-fecha_actualizacion')[:1].get()
+					expediente = boleta['expediente']
 
-			persona = True
+					cantidad = BoletasPruebas.objects.filter(boleta__identidad=identidad)
+					if not cantidad:
+						cantidad_boleta = 1
+					else:
+						cantidad_boleta = int(cantidad.count()) + 1
+
+					persona = True
+				except Exception, e:
+					print e
+					persona = False
+					expediente = False
+					cantidad_boleta = False
+					boleta = False
 		except Exception, e:
-			persona = False
-			expediente = False
-			cantidad_boleta = False
-			boleta = False
+			print 'ERROR',e	
+			try:
+				boleta = Boletas.objects.values(
+					'expediente', 
+					'pk',
+					'primer_nombre', 
+					'segundo_nombre', 
+					'primer_apellido', 
+					'segundo_apellido', 
+					'sexo', 
+					'fecha_nacimiento'
+				).filter(identidad=identidad).order_by('-fecha_actualizacion')[:1].get()
+				expediente = boleta['expediente']
+				#boleta = boleta['pk']
+
+				cantidad = BoletasPruebas.objects.filter(boleta__identidad=identidad)
+				if not cantidad:
+					cantidad_boleta = 1
+				else:
+					cantidad_boleta = int(cantidad.count()) + 1
+
+				persona = True
+			except Exception, e:
+				print e
+				persona = False
+				expediente = False
+				cantidad_boleta = False
+				boleta = False
 
 
 		data = {
@@ -239,30 +303,67 @@ def post_prueba_vih(request):
 	#AJAX
 	if request.is_ajax():
 		identidad = request.GET['identidad']
+		#VALIDACIONES DONDE SI TIENE BOLETA INGRESADA MAYOR DE 3
+		hoy = datetime.date.today()
 		try:
+			ultima_boleta = BoletasConsejeriaPostPrueba.objects.filter(boleta__identidad=identidad).order_by('-fecha_actualizacion')[:1].get()
+			fecha = add_months(ultima_boleta.fecha_actualizacion, 3)
+			if fecha > hoy:
+				persona = 'existe'
+				expediente = False
+				cantidad_boleta = False
+				boleta = False
+			else:
+				try:
+					boleta = dict(BoletasPruebas.objects.values(
+						'boleta__primer_nombre', 
+						'boleta__segundo_nombre', 
+						'boleta__primer_apellido', 
+						'boleta__segundo_apellido', 
+						'boleta__sexo', 
+						'boleta__expediente', 
+						'boleta__pk', 
+						'boleta__nombre_madre', 
+						'boleta__nombre_padre', 
+						'boleta__nombre_tutor', 
+						'boleta__edad_anios',
+						'resultado_prueba_tamizaje',
+						'resultado_prueba_confirmatoria',
+					).filter(boleta__identidad=identidad).order_by('-fecha_actualizacion')[:1].get())
+					expediente = boleta['boleta__expediente']
+					persona = True
 
-			boleta = dict(BoletasPruebas.objects.values(
-				'boleta__primer_nombre', 
-				'boleta__segundo_nombre', 
-				'boleta__primer_apellido', 
-				'boleta__segundo_apellido', 
-				'boleta__sexo', 
-				'boleta__expediente', 
-				'boleta__pk', 
-				'boleta__nombre_madre', 
-				'boleta__nombre_padre', 
-				'boleta__nombre_tutor', 
-				'boleta__edad_anios',
-				'resultado_prueba_tamizaje',
-				'resultado_prueba_confirmatoria',
-			).get(boleta__identidad=identidad))
-			expediente = boleta['boleta__expediente']
-			persona = True
-
+				except Exception, e:
+					print e
+					persona = False
+					expediente = False
+					boleta = False
 		except Exception, e:
-			persona = False
-			expediente = False
-			boleta = False
+			try:
+
+				boleta = dict(BoletasPruebas.objects.values(
+					'boleta__primer_nombre', 
+					'boleta__segundo_nombre', 
+					'boleta__primer_apellido', 
+					'boleta__segundo_apellido', 
+					'boleta__sexo', 
+					'boleta__expediente', 
+					'boleta__pk', 
+					'boleta__nombre_madre', 
+					'boleta__nombre_padre', 
+					'boleta__nombre_tutor', 
+					'boleta__edad_anios',
+					'resultado_prueba_tamizaje',
+					'resultado_prueba_confirmatoria',
+				).filter(boleta__identidad=identidad).order_by('-fecha_actualizacion')[:1].get())
+				expediente = boleta['boleta__expediente']
+				persona = True
+
+			except Exception, e:
+				print e
+				persona = False
+				expediente = False
+				boleta = False
 
 
 		data = {
@@ -700,6 +801,16 @@ def boleta_clinica(request):
 			except Exception, e:
 				persona = False
 
+		#VALIDACIONES DONDE SI TIENE BOLETA INGRESADA MAYOR DE 3
+		hoy = datetime.date.today()
+		try:
+			ultima_boleta = BoletasClinicas.objects.filter(boleta__identidad=identidad).order_by('-fecha_actualizacion')[:1].get()
+			fecha = add_months(ultima_boleta.fecha_actualizacion, 3)
+			if fecha > hoy:
+				persona = 'existe'
+				clinica = False
+		except Exception, e:
+			pass
 		data ={
 			'persona': persona,
 			'clinica': clinica,
@@ -1735,6 +1846,18 @@ def boleta_seguimiento(request):
 			persona = False
 			seguimiento = False
 
+		#VALIDACIONES DONDE SI TIENE BOLETA INGRESADA MAYOR DE 3
+		hoy = datetime.date.today()
+		try:
+			ultima_boleta = BoletasSeguimientos.objects.filter(boleta_clinica__boleta__identidad=identidad).order_by('-fecha_actualizacion')[:1].get()
+			fecha = add_months(ultima_boleta.fecha_actualizacion, 3)
+			print fecha , hoy
+			if fecha > hoy:
+				print 'PASO POR AQUI?'
+				persona = 'existe'
+				seg = False
+		except Exception, e:
+			pass
 
 		data = {
 			'persona' : persona,

@@ -31,6 +31,7 @@
                 <input type="text" class="form-control" id='identidad' name="identidad">
                 <button type="button" class="btn btn-primary" id="search_identidad"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button><br>
                 <span class="label label-danger "  id='error_identidad' style="display:none">No se encontraron registros con la identidad ingresadda</span>
+                <span class="label label-warning "  id='error_identidad2' style="display:none">Existe una Prueba Activa con la Identidad Ingresada</span>
               </div>
             </div>
             <div class="form-group">
@@ -146,6 +147,9 @@
             if (data.persona==false){
               $('#error_identidad').show()
               $('#expediente,#id_fecha_solicitud, #id_numero_prueba, #id_fecha_extraccion, #id_fecha_muestra, #id_fecha_prueba, #id_kit_prueba_tamizaje, #id_resultado_prueba_tamizaje, #id_nombre_persona_prueba, #id_fecha_prueba_confirmatoria, #id_related_name, #id_institucion_prueba_confirmatoria, #id_resultado_prueba_confirmatoria, #id_nombre_laboratorio, #id_fecha_refirio_prueba_confirmatoria').val('')
+            }else if (data.persona=='existe'){
+              $('#error_identidad2').show()
+              $('#expediente,#id_fecha_solicitud, #id_numero_prueba, #id_fecha_extraccion, #id_fecha_muestra, #id_fecha_prueba, #id_kit_prueba_tamizaje, #id_resultado_prueba_tamizaje, #id_nombre_persona_prueba, #id_fecha_prueba_confirmatoria, #id_related_name, #id_institucion_prueba_confirmatoria, #id_resultado_prueba_confirmatoria, #id_nombre_laboratorio, #id_fecha_refirio_prueba_confirmatoria').val('')
             }else{
             
               $('#error_identidad').hide()
@@ -171,6 +175,9 @@
           
             if (data.persona==false){
               $('#error_identidad').show()
+              $('#expediente,#id_fecha_solicitud, #id_numero_prueba, #id_fecha_extraccion, #id_fecha_muestra, #id_fecha_prueba, #id_kit_prueba_tamizaje, #id_resultado_prueba_tamizaje, #id_nombre_persona_prueba, #id_fecha_prueba_confirmatoria, #id_related_name, #id_institucion_prueba_confirmatoria, #id_resultado_prueba_confirmatoria, #id_nombre_laboratorio, #id_fecha_refirio_prueba_confirmatoria').val('')
+           }else if (data.persona=='existe'){
+              $('#error_identidad2').show()
               $('#expediente,#id_fecha_solicitud, #id_numero_prueba, #id_fecha_extraccion, #id_fecha_muestra, #id_fecha_prueba, #id_kit_prueba_tamizaje, #id_resultado_prueba_tamizaje, #id_nombre_persona_prueba, #id_fecha_prueba_confirmatoria, #id_related_name, #id_institucion_prueba_confirmatoria, #id_resultado_prueba_confirmatoria, #id_nombre_laboratorio, #id_fecha_refirio_prueba_confirmatoria').val('')
             }else{
             

@@ -34,6 +34,7 @@
                 <input type="text" class="form-control" id='identidad' name="identidad">
                 <button type="button" class="btn btn-primary" id="search_identidad"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button><br>
                 <span class="label label-danger "  id='error_identidad' style="display:none">No se encontraron registros con la identidad ingresada</span>
+                <span class="label label-warning "  id='error_identidad2' style="display:none">Existe una Consejería Post Prueba Activa con la Identidad Ingresada</span>
               </div>
             </div>
             <div class="form-group">
@@ -139,10 +140,15 @@
           .done(function( data ) {
             if (data.persona==false){
               $('#error_identidad').show()
+              $('#error_identidad2').hide()
+              $('#expediente,#id_fecha_consejeria, #id_observaciones, #id_referido').val('')
+            }else if (data.persona=='existe'){
+              $('#error_identidad').hide()
+              $('#error_identidad2').show()
               $('#expediente,#id_fecha_consejeria, #id_observaciones, #id_referido').val('')
             }else{
-              console.log(data.boleta.boleta__pk, data.boleta)
               $('#error_identidad').hide()
+              $('#error_identidad2').hide()
               $('#boleta').val(data.boleta.boleta__pk)
               $('#expediente').val(data.expediente)
 
@@ -197,6 +203,10 @@
           .done(function( data ) {
             if (data.persona==false){
               $('#error_identidad').show()
+              $('#expediente,#id_fecha_consejeria, #id_observaciones, #id_referido').val('')
+            }else if (data.persona=='existe'){
+              $('#error_identidad').hide()
+              $('#error_identidad2').show()
               $('#expediente,#id_fecha_consejeria, #id_observaciones, #id_referido').val('')
             }else{
               console.log(data.boleta.boleta__pk, data.boleta)

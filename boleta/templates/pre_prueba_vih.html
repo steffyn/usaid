@@ -58,7 +58,8 @@
                 <input type="checkbox" id="no_identidad"> No tiene Identidad
                 <input type="hidden" class="form-control" id='input_expediente' name='expediente'>
                 <input type="hidden" name="sexo_persona" id='sexo_persona' value="" placeholder="">
-                <span class="label label-danger "  id='error_identidad' style="display:none">No se encontraron registros con la identidad ingresadda</span>
+                <span class="label label-danger "  id='error_identidad' style="display:none">No se encontraron registros con la Identidad Ingresada</span><br>
+                <span class="label label-warning "  id='error_identidad2' style="display:none">Existe una Boleta Activa con la Identidad Ingresada</span>
 
               </div>
             </div>
@@ -448,6 +449,10 @@ function calcularEdad()
               $('#id_fecha_nacimiento, input[name=sexo]').prop('disabled',false).val('')
 
 
+            }else if (persona == 'existe'){
+              $('#error_identidad2').show().delay(4000).fadeOut()
+              $('#id_primer_nombre, #id_segundo_nombre, #id_primer_apellido, #id_segundo_apellido, #id_fecha_nacimiento').prop('readonly', true).val('')
+              $('#id_fecha_nacimiento, input[name=sexo]').prop('disabled',true).val('')
             }else{
               $('#error_identidad').hide()
               $('#id_primer_nombre').val(persona.primer_nombre).prop('readonly', true)
@@ -535,6 +540,10 @@ function calcularEdad()
               $('#id_fecha_nacimiento, input[name=sexo]').prop('disabled',false).val('')
 
 
+            }else if (persona == 'existe'){
+              $('#error_identidad2').show().delay(4000).fadeOut()
+              $('#id_primer_nombre, #id_segundo_nombre, #id_primer_apellido, #id_segundo_apellido, #id_fecha_nacimiento').prop('readonly', true).val('')
+              $('#id_fecha_nacimiento, input[name=sexo]').prop('disabled',true).val('')
             }else{
               $('#error_identidad').hide()
               $('#id_primer_nombre').val(persona.primer_nombre).prop('readonly', true)

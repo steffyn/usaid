@@ -84,9 +84,9 @@
                      <div class=" col-md-7 form-inline">
                         <input type="text" name="identidad" class="form-control" id='identidad' required> 
                         <button type="button" class="btn btn-primary" id="search_identidad"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button><br>
-                        <input type="checkbox" id="no_identidad"> No tiene Identidad
                         <input type="hidden" class="form-control" id='input_expediente' name='expediente'>
                         <span class="label label-danger "  id='error_identidad' style="display:none">No se encontraron registros con la identidad ingresadda</span>
+                        <span class="label label-warning "  id='error_identidad2' style="display:none">Existe una Ficha Clinica Activa con la Identidad Ingresada</span>
                      </div>
                   </div>
 
@@ -1938,9 +1938,17 @@ $('#identidad').attr({
 
          $('#persona').val(1)
          $('#error_identidad').show().delay(4000).fadeOut()
-         $('#id_primer_nombre, #id_segundo_nombre, #sexo_persona, #id_primer_apellido, #id_segundo_apellido, #id_fecha_nacimiento').prop('readonly', false).val('')
-         $('#id_fecha_nacimiento, input[name=sexo]').prop('disabled',false).val('')
+         $('#id_primer_nombre, #id_segundo_nombre, #sexo_persona, #id_primer_apellido, #id_segundo_apellido, #id_fecha_nacimiento').prop('readonly', true).val('')
+         $('#id_fecha_nacimiento, input[name=sexo]').prop('disabled',true).val('')
          $('#formulario').trigger("reset");
+
+
+      }if (msg.persona=='existe'){
+
+         $('#persona').val(1)
+         $('#formulario').trigger('reset')
+         $('#identidad').val(identidad)
+         $('#error_identidad2').show().delay(5000).fadeOut()
 
 
       }else{
@@ -2568,9 +2576,17 @@ $('#search_identidad').click(function() {
 
          $('#persona').val(1)
          $('#error_identidad').show().delay(4000).fadeOut()
-         $('#id_primer_nombre, #id_segundo_nombre, #sexo_persona, #id_primer_apellido, #id_segundo_apellido, #id_fecha_nacimiento').prop('readonly', false).val('')
-         $('#id_fecha_nacimiento, input[name=sexo]').prop('disabled',false).val('')
+         $('#id_primer_nombre, #id_segundo_nombre, #sexo_persona, #id_primer_apellido, #id_segundo_apellido, #id_fecha_nacimiento').prop('readonly', true).val('')
+         $('#id_fecha_nacimiento, input[name=sexo]').prop('disabled',true).val('')
          $('#formulario').trigger("reset");
+
+
+      }if (msg.persona=='existe'){
+
+         $('#persona').val(1)
+         $('#formulario').trigger('reset')
+         $('#identidad').val(identidad)
+         $('#error_identidad2').show().delay(5000).fadeOut()
 
 
       }else{
