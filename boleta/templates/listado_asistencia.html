@@ -43,12 +43,12 @@
           <div class="row text-center">
             <div class="col-md-3">Edad<br> <input class="form-control" type="number" id="id_edad" name=""> </div>
             <div class="col-md-3">Telefono <br><input class="form-control" type="text" id="id_telefono" name=""> </div>
-            <div class="col-md-3">Cantidad de Condones que recibio<br> <input class="form-control" type="number" id="id_cantidad" name=""></div>
+            <div class="col-md-3">Cantidad de Condones que recibio<br> <input class="form-control" type="number" id="id_cantidad" name="" value="0"></div>
             <div class="col-md-3"><br> <button type="button" id="agregar_participante" class="btn btn-warning">Agregar Participante</button></div>
           </div>
 
           <div class="label label-danger" style="display:none" role="alert" id='validacion_participante'> 
-            Error! Los campos Identidad, Nombre, Edad, Telefono y Cantidad de Condones Recibidos son <b> Obligatorios, por favor revise dichos campos. </b>
+            Error! Los campos Identidad, Nombre, Edad, Telefono son <b> Obligatorios, por favor revise dichos campos. </b>
           </div>
         </div>
 
@@ -170,7 +170,7 @@
       if(key == 13){
       event.preventDefault();
         $.ajax({
-          url: "{% url 'pre_prueba_vih' %}",
+          url: "{% url 'identidad' %}",
           data: { 
                   identidad: identidad
                 }
@@ -179,8 +179,6 @@
             if (persona==false){
               $('#error_identidad').show().delay(4000).fadeOut()
               $('#id_nombre, #id_edad').prop('readonly', false).val('')
-
-
             }else{
               $('#error_identidad').hide()
               $('#id_nombre').val(persona.primer_nombre + ' ' + persona.segundo_nombre  + ' ' + persona.primer_apellido  + ' ' + persona.segundo_apellido).prop('readonly', true)
@@ -199,7 +197,7 @@
   $('#search_identidad').click(function (e) {
     identidad = $('#id_identidad').val()
         $.ajax({
-          url: "{% url 'pre_prueba_vih' %}",
+          url: "{% url 'identidad' %}",
           data: { 
                   identidad: identidad
                 }

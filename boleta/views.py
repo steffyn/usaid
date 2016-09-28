@@ -38,6 +38,18 @@ def add_months(sourcedate,months):
 	day = min(sourcedate.day,calendar.monthrange(year,month)[1])
 	return datetime.date(year,month,day)
 
+def identidad(request):
+
+	identidad = request.GET['identidad']
+	try:
+		persona = dict(RPN.objects.values('primer_nombre', 'segundo_nombre', 'primer_apellido', 'segundo_apellido', 'sexo', 'fecha_nacimiento').get(identidad=identidad))
+		query = BoletasConsejeria.objects.filter(boleta__identidad=identidad)
+		periodicidad = query.count()
+	except Exception, e:
+		persona = False
+		periodicidad = 0
+		
+	return HttpResponse(json.dumps(persona, default=date_handler), content_type='application/json')
 
 @login_required()
 def pre_prueba_vih(request):
