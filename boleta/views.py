@@ -484,6 +484,7 @@ def listado_asistencia(request):
 
 				
 		except Exception, e:
+			raise e
 			print 'EROOOOOOOOOOOOOOOOOOOOOOR', e
 			pass
 		ctx = {
