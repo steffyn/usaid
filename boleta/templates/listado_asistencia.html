@@ -17,6 +17,11 @@
   <!-- /.box-header -->
   <!-- form start -->
   <form role="form" class="form-horizontal"  method="POST" id='formulario'>
+  {% for field in formulario %}
+    <div class="fieldWrapper">
+        {{ field.errors }}
+    </div>
+{% endfor %}
   {{formulario.errors}}
     {% csrf_token %}
     <div class="box-body">
