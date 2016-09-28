@@ -480,12 +480,10 @@ def listado_asistencia(request):
 					formulario = AsistenciaForm()
 					exito = True
 				else:
-					raise e
+					pass
 
 				
 		except Exception, e:
-			raise e
-			print 'EROOOOOOOOOOOOOOOOOOOOOOR', e
 			pass
 		ctx = {
 			'formulario' : formulario,
