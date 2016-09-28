@@ -480,7 +480,7 @@ def listado_asistencia(request):
 					formulario = AsistenciaForm()
 					exito = True
 				else:
-					pass
+					raise e
 
 				
 		except Exception, e:
