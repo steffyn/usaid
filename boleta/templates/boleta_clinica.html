@@ -1423,13 +1423,13 @@ $("#id_telefono_fijo, #id_telefono_celular, #id_telefono_madre, #id_telefono_pad
 
 $("#id_identidad_madre, #id_identidad_padre, #id_identidad_tutor").attr({
    type: 'number',
-   onKeyDown:"if(this.value.length==15 && event.keyCode!=8 && event.keyCode!=13) return false;"
+   onKeyDown:"if(this.value.length==13 && event.keyCode!=8 && event.keyCode!=13) return false;"
 });
 
 //BUSQUEDA DE IDENTIDAD
 $('#identidad').attr({
    type: 'number',
-   onKeyDown:"if(this.value.length==15 && event.keyCode!=8 && event.keyCode!=13) return false;"
+   onKeyDown:"if(this.value.length==13 && event.keyCode!=8 && event.keyCode!=13) return false;"
 }).keypress(function (e) {
    identidad = $(this).val();
 
@@ -1448,6 +1448,7 @@ $('#identidad').attr({
    }
    })
    .done(function( data ) {
+      console.log(data)
       if (data.persona==false){
 
          $('#persona').val(1)
@@ -1456,7 +1457,7 @@ $('#identidad').attr({
          $('#id_fecha_nacimiento, input[name=sexo]').prop('disabled',false).val('')
 
 
-      }if (data.persona=='existe'){
+      }else if (data.persona=='existe'){
 
          $('#persona').val(1)
          $('#formulario').trigger('reset')
@@ -1913,6 +1914,7 @@ $('#search_identidad').click(function (e) {
    }
    })
    .done(function( data ) {
+      console.log(data)
       if (data.persona==false){
 
          $('#persona').val(1)
@@ -1921,8 +1923,7 @@ $('#search_identidad').click(function (e) {
          $('#id_fecha_nacimiento, input[name=sexo]').prop('disabled',false).val('')
 
 
-      }if (data.persona=='existe'){
-
+      }else if (data.persona=='existe'){
          $('#persona').val(1)
          $('#formulario').trigger('reset')
          $('#identidad').val(identidad)

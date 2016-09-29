@@ -154,7 +154,7 @@
 
   $("#id_telefono").attr({
     type: 'number',
-    onKeyDown:"if(this.value.length==9 && event.keyCode!=8 && event.keyCode!=13) return false;"
+    onKeyDown:"if(this.value.length==8 && event.keyCode!=8 && event.keyCode!=13) return false;"
   });
 
   $("#id_identidad, #id_identidad_reclutador").attr({
@@ -169,7 +169,7 @@
 
   $('#id_identidad').attr({
     type:'number',
-   onKeyDown:"if(this.value.length==15 && event.keyCode!=8 && event.keyCode!=13) return false;"
+   onKeyDown:"if(this.value.length==13 && event.keyCode!=8 && event.keyCode!=13) return false;"
   }).keypress(function (e) {
       identidad = $(this).val()
       var key = e.which;
