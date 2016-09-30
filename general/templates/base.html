@@ -86,6 +86,7 @@
       
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
+      {% if perms.boleta.ver_boleta %}
         <li class="header">MENU PRINCIPAL</li>
         <li class="treeview">
           <a href="#">
@@ -197,6 +198,7 @@
             <li><a href="#"><i class="fa fa-circle-o"></i> Accion 2</a></li>
           </ul>
         </li>
+        {% endif %}
         {% if perms.boleta.ver_administracion %}
           <li class="header">ADMINISTRATIVO</li>
           {% if perms.boleta.ver_monitoreo_boleta %}
