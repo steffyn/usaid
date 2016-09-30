@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load bootstrap %}
+
+
+{% block contenido %}
+<link rel="stylesheet" href="{% static 'plugins/select2/select2.css' %}">
+<link rel="stylesheet" href="{% static 'plugins/daterangepicker/daterangepicker.css' %}">
+<link rel="stylesheet" href="{% static 'plugins/datatables/dataTables.bootstrap.css' %}">
+
+<script src="{% static 'plugins/select2/select2.min.js' %}"></script>
+<script src="{% static 'plugins/daterangepicker/moment.min.js' %}"></script>
+<script src="{% static 'plugins/daterangepicker/daterangepicker.js' %}"></script>
+<script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'plugins/datatables/dataTables.bootstrap.min.js' %}"></script>
+
+<div class="box box-primary">
+  <div class="box-header with-border">
+    <h3 class="box-title">Reporte General</h3>
+  </div>
+  <form  class="form-horizontal" role="form"  method="POST">
+    {% csrf_token %}
+    <div class="box-body table-responsive no-padding">
+      <table id="tabla" class="table">
+        <thead>
+          <tr>
+             <th>Identidad</th>
+             <th>Expediente</th>
+             <th>Fecha</th>
+             <th>Usuario</th>
+             <th>Pre Prueba</th>
+             <th>Prueba</th>
+             <th>Post Prueba</th>
+             <th>Ficha Clinica</th>
+             <th>Ficha Seguimiento</th>
+          </tr>            
+        </thead>
+        <tbody>
+          {% for data in listado  %}
+             <tr>
+                <td>{{data.identidad}} </td>
+                <td>{{data.expediente}}</td>
+                <td> {{data.fecha_creacion|date:"Y-m-d"}}</td>
+                <td>{{data.creado_por__username}} </td>
+                {% if data.consejeria > 0 %}
+                  <td> <span class=" glyphicon glyphicon-ok"></span>  </td>
+                {% else %}
+                  <td> <span class=" glyphicon glyphicon-remove"></span>  </td>
+                {% endif %}
+
+                {% if data.prueba > 0 %}
+                  <td> <span class=" glyphicon glyphicon-ok"></span>  </td>
+                {% else %}
+                  <td> <span class=" glyphicon glyphicon-remove"></span>  </td>
+                {% endif %}
+
+                {% if data.postprueba > 0 %}
+                  <td> <span class=" glyphicon glyphicon-ok"></span>  </td>
+                {% else %}
+                  <td> <span class=" glyphicon glyphicon-remove"></span>  </td>
+                {% endif %}
+
+                {% if data.clinica > 0 %}
+                  <td> <span class=" glyphicon glyphicon-ok"></span>  </td>
+                {% else %}
+                  <td> <span class=" glyphicon glyphicon-remove"></span>  </td>
+                {% endif %}
+
+                {% if data.seguimiento > 0 %}
+                  <td> <span class=" glyphicon glyphicon-ok"></span>  </td>
+                {% else %}
+                  <td> <span class=" glyphicon glyphicon-remove"></span>  </td>
+                {% endif %}
+             </tr>
+          {% endfor %}
+        </tbody>
+       </table>
+    </div> 
+  </form>     
+</div>
+<script type="text/javascript">
+  $(function () {
+    $('#tabla').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": true,
+      "ordering": true,
+      "info": false,
+      "autoWidth": false
+    });
+  });
+</script>
+{% endblock %}
+

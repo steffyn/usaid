@@ -2823,3 +2823,32 @@ def boleta_seguimiento(request):
 			'embarazada': embarazada,
 		}
 		return render(request, 'boleta_seguimiento.html', ctx)
+
+
+@transaction.atomic
+@login_required()
+def reporte_general(request):
+	try:
+		responsable = usuario(request.user.pk)
+	except Exception, e:
+		responsable = ''
+
+	listado = Boletas.objects.values(
+		'identidad',
+		'expediente',
+		'fecha_creacion',
+		'creado_por__username'
+	).filter().order_by('-fecha_actualizacion').annotate(
+		consejeria=Count('boletasconsejeria__id'), 
+		postprueba=Count('boletasconsejeriapostprueba__id'),  
+		prueba=Count('boletaspruebas__id'), 
+		clinica=Count('boletasclinicas__id'),
+		seguimiento=Count('boletasclinicas__boletasseguimientos__id')
+	)
+
+
+	ctx = {
+		'responsable' : responsable,
+		'listado': listado,
+	}
+	return render(request, 'reporte_general.html', ctx)

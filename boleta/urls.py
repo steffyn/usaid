@@ -10,4 +10,5 @@ urlpatterns = [
 	url(r'^seguimiento/$', views.boleta_seguimiento, name='boleta_seguimiento'),
 	url(r'^ajax/$', views.ajax, name='ajax'),
 	url(r'^identidad/$', views.identidad, name='identidad'),
+	url(r'^reporte/general/$', views.reporte_general, name='reporte_general'),
 ]
