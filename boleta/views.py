@@ -269,7 +269,6 @@ def prueba_vih(request):
 			'persona' : persona,
 			'expediente': expediente,
 			'numero_prueba' : cantidad_boleta,
-			'reponsable': responsable,
 			'boleta' : boleta,
 		}
 		return HttpResponse(json.dumps(data, default=date_handler), content_type='application/json')
