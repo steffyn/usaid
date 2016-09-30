@@ -269,6 +269,7 @@ def prueba_vih(request):
 			'persona' : persona,
 			'expediente': expediente,
 			'numero_prueba' : cantidad_boleta,
+			'reponsable': responsable,
 			'boleta' : boleta,
 		}
 		return HttpResponse(json.dumps(data, default=date_handler), content_type='application/json')
@@ -2828,24 +2829,30 @@ def boleta_seguimiento(request):
 @transaction.atomic
 @login_required()
 def reporte_general(request):
+	query ={}
 	try:
 		responsable = usuario(request.user.pk)
+		query['establecimiento'] = responsable.establecimiento
+
+		if request.method == 'POST':
+			query['fecha_creacion']= request.POST.get('fecha')
+
+		listado = Boletas.objects.values(
+			'identidad',
+			'expediente',
+			'fecha_creacion',
+			'creado_por__username'
+		).filter(**query).order_by('-fecha_actualizacion').annotate(
+			consejeria=Count('boletasconsejeria__id'), 
+			postprueba=Count('boletasconsejeriapostprueba__id'),  
+			prueba=Count('boletaspruebas__id'), 
+			clinica=Count('boletasclinicas__id'),
+			seguimiento=Count('boletasclinicas__boletasseguimientos__id')
+		)
+
 	except Exception, e:
 		responsable = ''
-
-	listado = Boletas.objects.values(
-		'identidad',
-		'expediente',
-		'fecha_creacion',
-		'creado_por__username'
-	).filter().order_by('-fecha_actualizacion').annotate(
-		consejeria=Count('boletasconsejeria__id'), 
-		postprueba=Count('boletasconsejeriapostprueba__id'),  
-		prueba=Count('boletaspruebas__id'), 
-		clinica=Count('boletasclinicas__id'),
-		seguimiento=Count('boletasclinicas__boletasseguimientos__id')
-	)
-
+		listado = False
 
 	ctx = {
 		'responsable' : responsable,

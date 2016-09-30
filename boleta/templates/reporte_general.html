@@ -18,8 +18,13 @@
   <div class="box-header with-border">
     <h3 class="box-title">Reporte General</h3>
   </div>
-  <form  class="form-horizontal" role="form"  method="POST">
+  <form  class="form-inline" role="form"  method="POST">
     {% csrf_token %}
+
+    <label for="fecha"> Fecha </label>
+    <input type="text" class="form-control" value="{{fecha}}" name="fecha" id="id_fecha" required> 
+    <button class="btn btn-success">Ver Boletas</button>
+
     <div class="box-body table-responsive no-padding">
       <table id="tabla" class="table">
         <thead>
@@ -89,6 +94,40 @@
       "autoWidth": false
     });
   });
+
+   $('#id_fecha').daterangepicker({
+        //autoUpdateInput: false,
+        singleDatePicker: true,
+        showDropdowns: true,
+        maxDate: moment(),
+        locale: {
+          format: 'YYYY-MM-DD',
+
+          daysOfWeek: [
+            "Do",
+            "Lu",
+            "Ma",
+            "Mi",
+            "Ju",
+            "Vi",
+            "Sa"
+        ],
+        monthNames: [
+            "Enero",
+            "Febrero",
+            "Marzo",
+            "Abril",
+            "Mayo",
+            "Junio",
+            "Julio",
+            "Agosto",
+            "Septiembre",
+            "Octubre",
+            "Noviembre",
+            "Diciembre"
+        ],
+        },
+    }).val('{{fecha}}');
 </script>
 {% endblock %}
 

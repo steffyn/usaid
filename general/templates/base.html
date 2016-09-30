@@ -197,22 +197,27 @@
             <li><a href="#"><i class="fa fa-circle-o"></i> Accion 2</a></li>
           </ul>
         </li>
-        {% if perms.user.add_user %}
+        {% if perms.boleta.ver_administracion %}
           <li class="header">ADMINISTRATIVO</li>
-          <li><a href="{% url 'reporte_general' %}"><i class="fa fa-circle-o"></i><span> MONITOREO DE BOLETAS </span> </a></li>
-          <li class="treeview">
-            <a href="#">
-            <i class="fa fa-circle-o"></i>
-              <span>SEGURIDAD</span>
-              <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-              </span>
-            </a>
-            <ul class="treeview-menu">
-              <li><a href="{% url 'crear_usuario' %}">Usuarios</a></li>
-            </ul>
-          </li>
+          {% if perms.boleta.ver_monitoreo_boleta %}
+            <li><a href="{% url 'reporte_general' %}"><i class="fa fa-circle-o"></i><span> MONITOREO DE BOLETAS </span> </a></li>
+          {% endif %} 
+          {% if perms.auth.add_user %}
+            <li class="treeview">
+              <a href="#">
+              <i class="fa fa-circle-o"></i>
+                <span>SEGURIDAD</span>
+                <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="{% url 'crear_usuario' %}">Usuarios</a></li>
+              </ul>
+            </li>
+          {% endif %}
         {% endif %}
+        
       </ul>
     </section>
     <!-- /.sidebar -->
