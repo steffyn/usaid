@@ -2824,7 +2824,7 @@ def boleta_seguimiento(request):
 		}
 		return render(request, 'boleta_seguimiento.html', ctx)
 
-
+from datetime import datetime
 @transaction.atomic
 @login_required()
 def reporte_general(request):
@@ -2834,7 +2834,11 @@ def reporte_general(request):
 		query['establecimiento'] = responsable.establecimiento
 
 		if request.method == 'POST':
-			query['fecha_creacion']= request.POST.get('fecha')
+			from datetime import timedelta
+			fecha = request.POST.get('fecha')
+			n_days_ago = (datetime.strptime(fecha, "%Y-%m-%d") + timedelta(days=1))
+			
+			query['fecha_creacion__range']= [fecha ,n_days_ago]
 
 		listado = Boletas.objects.values(
 			'identidad',
@@ -2849,7 +2853,10 @@ def reporte_general(request):
 			seguimiento=Count('boletasclinicas__boletasseguimientos__id')
 		)
 
+		print listado.query
+
 	except Exception, e:
+		raise e
 		responsable = ''
 		listado = False
 
