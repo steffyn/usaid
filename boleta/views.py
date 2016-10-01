@@ -68,7 +68,7 @@ def pre_prueba_vih(request):
 		identidad = request.GET['identidad']
 		
 		#VALIDACIONES DONDE SI TIENE BOLETA INGRESADA MAYOR DE 3
-		hoy = datetime.date.today()
+		hoy = datetime.today().date()
 		try:
 			ultima_boleta = Boletas.objects.filter(identidad=identidad).order_by('-fecha_actualizacion')[:1].get()
 			fecha = add_months(ultima_boleta.fecha_actualizacion, 3)
@@ -198,7 +198,7 @@ def prueba_vih(request):
 	if request.is_ajax():
 		identidad = request.GET['identidad']
 		#VALIDACIONES DONDE SI TIENE BOLETA INGRESADA MAYOR DE 3
-		hoy = datetime.date.today()
+		hoy = datetime.today().date()
 		try:
 			ultima_boleta = BoletasPruebas.objects.filter(boleta__identidad=identidad).order_by('-fecha_actualizacion')[:1].get()
 			fecha = add_months(ultima_boleta.fecha_actualizacion, 3)
@@ -316,7 +316,7 @@ def post_prueba_vih(request):
 	if request.is_ajax():
 		identidad = request.GET['identidad']
 		#VALIDACIONES DONDE SI TIENE BOLETA INGRESADA MAYOR DE 3
-		hoy = datetime.date.today()
+		hoy = datetime.today().date()
 		try:
 			ultima_boleta = BoletasConsejeriaPostPrueba.objects.filter(boleta__identidad=identidad).order_by('-fecha_actualizacion')[:1].get()
 			fecha = add_months(ultima_boleta.fecha_actualizacion, 3)
@@ -814,7 +814,7 @@ def boleta_clinica(request):
 				persona = False
 
 		#VALIDACIONES DONDE SI TIENE BOLETA INGRESADA MAYOR DE 3
-		hoy = datetime.date.today()
+		hoy = datetime.today().date()
 		try:
 			ultima_boleta = BoletasClinicas.objects.filter(boleta__identidad=identidad).order_by('-fecha_actualizacion')[:1].get()
 			fecha = add_months(ultima_boleta.fecha_actualizacion, 3)
@@ -1859,7 +1859,7 @@ def boleta_seguimiento(request):
 			seguimiento = False
 
 		#VALIDACIONES DONDE SI TIENE BOLETA INGRESADA MAYOR DE 3
-		hoy = datetime.date.today()
+		hoy = datetime.today().date()
 		try:
 			ultima_boleta = BoletasSeguimientos.objects.filter(boleta_clinica__boleta__identidad=identidad).order_by('-fecha_actualizacion')[:1].get()
 			fecha = add_months(ultima_boleta.fecha_actualizacion, 3)
@@ -2837,7 +2837,7 @@ def reporte_general(request):
 			from datetime import timedelta
 			fecha = request.POST.get('fecha')
 			n_days_ago = (datetime.strptime(fecha, "%Y-%m-%d") + timedelta(days=1))
-			
+
 			query['fecha_creacion__range']= [fecha ,n_days_ago]
 
 		listado = Boletas.objects.values(
