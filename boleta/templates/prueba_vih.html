@@ -213,8 +213,12 @@ $('#id_kit_prueba_tamizaje').attr('required', 'true');
 
     if ($(this).val() == 1){
       $('#prueba_positiva').show()
+      $('#id_kit_prueba_confirmatoria').select2('destroy').prop('required', true)
+      $('input[name=resultado_prueba_confirmatoria]').prop('required', true)
     }else{
       $('#prueba_positiva').hide()
+      $('#id_kit_prueba_confirmatoria').prop('required', false)
+      $('input[name=resultado_prueba_confirmatoria]').prop('required', false)
     }
   })
 

@@ -291,6 +291,7 @@ def prueba_vih(request):
 			registro.boleta =  Boletas.objects.get(pk=request.POST['boleta'])
 			registro.resultado_prueba_confirmatoria = None if request.POST.get('resultado_prueba_confirmatoria') == None or request.POST.get('resultado_prueba_confirmatoria') == '' else request.POST.get('resultado_prueba_confirmatoria')
 			registro.creado_por = request.user
+			registro.institucion_prueba_confirmatoria = None if responsable == '' else responsable.establecimiento.pk
 			registro.actualizado_por = request.user
 			registro.save()
 

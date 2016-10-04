@@ -226,7 +226,7 @@ class Asistencia(models.Model):
 	fecha = models.DateField()
 	lugar = models.IntegerField(choices=LUGARES)
 	poblacion = models.IntegerField(choices=TIPO_POBLACION, verbose_name='Tipo de Población Clave Atendida')
-	intervencion = models.IntegerField(choices=TIPO_INTERVENCION, verbose_name='Tipo de Intervensión')
+	intervencion = models.IntegerField(choices=TIPO_INTERVENCION, verbose_name='Tipo de Intervención')
 	responsable = models.CharField(max_length=100,blank=True, null=True, verbose_name='Nombre del/la Responsable de la Actividad')
 	coordinador = models.CharField(max_length=100,blank=True, null=True, verbose_name='Nombre del/la Coordinador de Proyecto')
 	identidad_reclutador = models.CharField(max_length=50,blank=True, null=True, verbose_name='Identidad del Reclutador')
