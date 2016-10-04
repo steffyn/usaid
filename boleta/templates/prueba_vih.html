@@ -87,7 +87,7 @@
 </div>
 <script type="text/javascript">
 $('#id_kit_prueba_tamizaje').attr('required', 'true');
-  $("select").select2();
+  $("#id_kit_prueba_tamizaje").select2();
   $('#id_fecha_solicitud, #id_fecha_extraccion, #id_fecha_muestra, #id_fecha_prueba, #id_fecha_prueba_confirmatoria, #id_fecha_refirio_prueba_confirmatoria').daterangepicker({
         singleDatePicker: true,
         maxDate: moment(),
@@ -213,7 +213,7 @@ $('#id_kit_prueba_tamizaje').attr('required', 'true');
 
     if ($(this).val() == 1){
       $('#prueba_positiva').show()
-      $('#id_kit_prueba_confirmatoria').select2('destroy').prop('required', true)
+      $('#id_kit_prueba_confirmatoria').prop('required', true)
       $('input[name=resultado_prueba_confirmatoria]').prop('required', true)
     }else{
       $('#prueba_positiva').hide()
