@@ -24,6 +24,11 @@
             Se guardaron los datos correctamente 
           </div>
         {% endif %}
+        {% if error %}
+            <div class="alert alert-danger" role="alert"> 
+              <p> {{error}} </p>
+            </div>
+         {% endif %}
 
 
         <div class="row">
@@ -31,7 +36,7 @@
             <div class="form-group">
               <label for="inputEmail3" class="col-sm-4 control-label">Identidad</label>
               <div class="col-sm-8 form-inline">
-                <input type="text" class="form-control" id='identidad' name="identidad">
+                <input type="text" class="form-control" id='identidad' value="{{identidad}}" name="identidad">
                 <button type="button" class="btn btn-primary" id="search_identidad"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button><br>
                 <span class="label label-danger "  id='error_identidad' style="display:none">No se encontraron registros con la identidad ingresada</span>
                 <span class="label label-warning "  id='error_identidad2' style="display:none">Existe una Consejería Post Prueba Activa con la Identidad Ingresada</span>
@@ -125,7 +130,7 @@
   //BUSQUEDA DE IDENTIDAD
   $('#identidad').attr({
     type:'number',
-    onKeyDown:"if(this.value.length==15 && event.keyCode!=8 && event.keyCode!=13) return false;"
+    onKeyDown:"if(this.value.length==13 && event.keyCode!=8 && event.keyCode!=13) return false;"
   }).keypress(function (e) {
       identidad = $(this).val()
       var key = e.which;

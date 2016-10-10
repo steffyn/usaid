@@ -23,12 +23,17 @@
             Se guardaron los datos correctamente 
           </div>
         {% endif %}
+        {% if error %}
+            <div class="alert alert-danger" role="alert"> 
+              <p> {{error}} </p>
+            </div>
+         {% endif %}
         <div class="row">
           <div class="col-sm-8">
             <div class="form-group">
               <label for="inputEmail3" class="col-sm-4 control-label">Identidad</label>
               <div class="col-sm-8 form-inline">
-                <input type="text" class="form-control" id='identidad' name="identidad" required="required">
+                <input type="text" class="form-control" id='identidad' value="{{identidad}}" name="identidad" required="required">
                 <button type="button" class="btn btn-primary" id="search_identidad"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button><br>
                 <span class="label label-danger "  id='error_identidad' style="display:none">No se encontraron registros con la identidad ingresadda</span>
                 <span class="label label-warning "  id='error_identidad2' style="display:none">Existe una Prueba Activa con la Identidad Ingresada</span>
@@ -130,7 +135,7 @@ $('#id_kit_prueba_tamizaje').attr('required', 'true');
   //BUSQUEDA DE IDENTIDAD
   $('#identidad').attr({
     type:'number',
-   onKeyDown:"if(this.value.length==15 && event.keyCode!=8 && event.keyCode!=13) return false;"
+   onKeyDown:"if(this.value.length==13 && event.keyCode!=8 && event.keyCode!=13) return false;"
   }).keypress(function (e) {
       identidad = $(this).val().replace('-', '');
       identidad = identidad.replace('-', '')

@@ -11,4 +11,5 @@ urlpatterns = [
 	url(r'^ajax/$', views.ajax, name='ajax'),
 	url(r'^identidad/$', views.identidad, name='identidad'),
 	url(r'^reporte/general/$', views.reporte_general, name='reporte_general'),
+	url(r'^reporte/intervenciones/$', views.reporte_intervenciones, name='reporte_intervenciones'),
 ]

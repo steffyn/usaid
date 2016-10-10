@@ -201,6 +201,7 @@
           <li class="header">ADMINISTRATIVO</li>
           {% if perms.boleta.ver_monitoreo_boleta %}
             <li><a href="{% url 'reporte_general' %}"><i class="fa fa-circle-o"></i><span> MONITOREO DE BOLETAS </span> </a></li>
+            <li><a href="{% url 'reporte_intervenciones' %}"><i class="fa fa-circle-o"></i><span> INTERVENCIONES </span> </a></li>
           {% endif %} 
           {% if perms.auth.add_user %}
             <li class="treeview">

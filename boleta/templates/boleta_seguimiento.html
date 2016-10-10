@@ -1653,7 +1653,7 @@ $('#id_fecha_proxima_cita,#id_fecha_proxentrega_arv').daterangepicker({
 //BUSQUEDA DE IDENTIDAD
 $('#identidad').attr({
    type: 'number',
-   onKeyDown:"if(this.value.length==15 && event.keyCode!=8 && event.keyCode!=13) return false;"
+   onKeyDown:"if(this.value.length==13 && event.keyCode!=8 && event.keyCode!=13) return false;"
 }).keypress(function (e) {
    identidad = $(this).val();
 
@@ -1672,9 +1672,7 @@ $('#identidad').attr({
    }
    })
    .done(function( msg ) {
-      console.log('AJSHDKJHASKJDHAKSJs', msg)
       if (msg.seg == false){
-         console.log('asdalsdjalksjdlaksjdlaksjdalkdjlaksjlakjdlaksjdlak')
          $('#formulario').trigger("reset");
          $('#identidad').val(identidad)
          $('#error_identidad').show().delay(4000).fadeOut()

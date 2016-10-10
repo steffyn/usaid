@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load bootstrap %}
+
+
+{% block contenido %}
+<link rel="stylesheet" href="{% static 'plugins/select2/select2.css' %}">
+<link rel="stylesheet" href="{% static 'plugins/daterangepicker/daterangepicker.css' %}">
+<link rel="stylesheet" href="{% static 'plugins/datatables/dataTables.bootstrap.css' %}">
+
+<script src="{% static 'plugins/select2/select2.min.js' %}"></script>
+<script src="{% static 'plugins/daterangepicker/moment.min.js' %}"></script>
+<script src="{% static 'plugins/daterangepicker/daterangepicker.js' %}"></script>
+<script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'plugins/datatables/dataTables.bootstrap.min.js' %}"></script>
+
+<div class="box box-primary">
+  <div class="box-header with-border">
+    <h3 class="box-title">Reporte General</h3>
+  </div>
+  <form  class="form-inline" role="form"  method="POST">
+    {% csrf_token %}
+
+    <label for="fecha"> Fecha </label>
+    <input type="text" class="form-control" value="{{fecha}}" name="fecha" id="id_fecha" required> 
+    <button class="btn btn-success">Ver Boletas</button>
+
+    <div class="box-body table-responsive no-padding">
+      <table id="tabla" class="table">
+        <thead>
+          <tr>
+             <th>Usuario</th>
+             <th>Poblacion</th>
+             <th>Intervencion</th>
+             <th>Fecha Creación</th>
+             <th>Identidades</th>
+          </tr>            
+        </thead>
+        <tbody>
+        {% if listado %}
+          {% for data in listado  %}
+             <tr>
+                <td>{{data.0.usuario }} </td>
+                <td>{{data.0.poblacion }}</td>
+                <td>{{data.0.intervencion }}</td>
+                <td>{{data.0.fecha }}</td>
+                <td>
+                  {% for identidad in data.0.asistencia %} 
+                      {{identidad}} <br>
+                  {% endfor %} 
+                </td>
+             </tr>
+          {% endfor %}
+        {% endif %}
+        </tbody>
+       </table>
+    </div> 
+  </form>     
+</div>
+<script type="text/javascript">
+  $(function () {
+    $('#tabla').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": true,
+      "ordering": true,
+      "info": false,
+      "autoWidth": false
+    });
+  });
+
+   $('#id_fecha').daterangepicker({
+        //autoUpdateInput: false,
+        singleDatePicker: true,
+        showDropdowns: true,
+        maxDate: moment(),
+        locale: {
+          format: 'YYYY-MM-DD',
+
+          daysOfWeek: [
+            "Do",
+            "Lu",
+            "Ma",
+            "Mi",
+            "Ju",
+            "Vi",
+            "Sa"
+        ],
+        monthNames: [
+            "Enero",
+            "Febrero",
+            "Marzo",
+            "Abril",
+            "Mayo",
+            "Junio",
+            "Julio",
+            "Agosto",
+            "Septiembre",
+            "Octubre",
+            "Noviembre",
+            "Diciembre"
+        ],
+        },
+    }).val('{{fecha}}');
+</script>
+{% endblock %}
+

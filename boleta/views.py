@@ -32,6 +32,7 @@ def date_handler(obj):
 
 
 def add_months(sourcedate,months):
+	import datetime
 	month = sourcedate.month - 1 + months
 	year = int(sourcedate.year + month / 12 )
 	month = month % 12 + 1
@@ -39,7 +40,6 @@ def add_months(sourcedate,months):
 	return datetime.date(year,month,day)
 
 def identidad(request):
-
 	identidad = request.GET['identidad']
 	try:
 		persona = dict(RPN.objects.values('primer_nombre', 'segundo_nombre', 'primer_apellido', 'segundo_apellido', 'sexo', 'fecha_nacimiento').get(identidad=identidad))
@@ -54,6 +54,7 @@ def identidad(request):
 @login_required()
 def pre_prueba_vih(request):
 	exito = False
+	error = False
 	try:
 		responsable = usuario(request.user.pk)
 	except Exception, e:
@@ -111,16 +112,30 @@ def pre_prueba_vih(request):
 
 	#POST
 	elif request.method == 'POST':
+		if request.POST.get('identidad') == '' or request.POST.get('primer_nombre') == '' or request.POST.get('primer_apellido') == '':
+			formulario = RPNForm(request.POST)
+			formulario2 = BoletaForm(request.POST)
+			formulario3 = BoletaConsejeriaForm(request.POST)
+			ctx = {
+				'formulario' : formulario,
+				'formulario2': formulario2,
+				'formulario3': formulario3,
+				'embarazada': embarazada,
+				'error': 'LOS DATOS GENERALES NO PUEDEN IR VACIOS, PORFAVOR REVISARLOS.',
+				'responsable': responsable,
+			}
+			return render(request, 'pre_prueba_vih.html', ctx)
+
 		ide = request.POST['identidad']
 		identidad = ide.replace("-", "")
-
+		
 		formulario = RPNForm()
 		formulario2 = BoletaForm(request.POST)
 		formulario3 = BoletaConsejeriaForm(request.POST)
 		if formulario2.is_valid() and formulario3.is_valid():
 			try:
 				registro = formulario2.save(commit=False)
-				registro.expediente =  request.POST['expediente']
+				registro.expediente =  identidad +'-'+ request.POST['fecha_nacimiento'] +'-'+ request.POST['sexo_persona']
 				registro.grupo_etnico =  None if request.POST.get('grupo_etnico') == '' or request.POST.get('grupo_etnico') == None else GruposEtnicos.objects.get(pk=request.POST.get('grupo_etnico'))
 				try:
 					registro.ciudad =  Ciudades.objects.get(pk=request.POST['ciudad'])
@@ -174,15 +189,16 @@ def pre_prueba_vih(request):
 				formulario3 = BoletaConsejeriaForm()
 				exito = True
 			except Exception, e:
-				pass
+				error= 'Se genero un error al guardar los datos, revise bien el formulario. Si no contactese con el Administrador.'
 		else:
-			pass
+			error = 'Hay un error en el formulario, por favor revise los datos ingresados'
 		ctx = {
 			'formulario' : formulario,
 			'formulario2': formulario2,
 			'formulario3': formulario3,
 			'embarazada': embarazada,
 			'exito': exito,
+			'error':error,
 			'responsable': responsable,
 		}
 		return render(request, 'pre_prueba_vih.html', ctx)
@@ -199,6 +215,7 @@ def prueba_vih(request):
 		identidad = request.GET['identidad']
 		#VALIDACIONES DONDE SI TIENE BOLETA INGRESADA MAYOR DE 3
 		hoy = datetime.today().date()
+		print hoy
 		try:
 			ultima_boleta = BoletasPruebas.objects.filter(boleta__identidad=identidad).order_by('-fecha_actualizacion')[:1].get()
 			fecha = add_months(ultima_boleta.fecha_actualizacion, 3)
@@ -285,6 +302,18 @@ def prueba_vih(request):
 
 	#POST
 	elif request.method == 'POST':
+		try:
+			Boletas.objects.get(pk=request.POST['boleta'])
+		except Exception as e:
+			formulario = BoletaPruebaForm(request.POST)
+			ctx = {
+				'formulario' : formulario,
+				'error': 'La identidad ingresada no tiene una boleta activa, por favor revisar los datos ingresados o de click a la lupa para buscar la boleta',
+				'responsable': responsable,
+				'identidad':request.POST['identidad']
+			}
+			return render(request, 'prueba_vih.html', ctx)	
+
 		formulario = BoletaPruebaForm(request.POST)
 		if formulario.is_valid():
 			registro = formulario.save(commit=False)
@@ -321,6 +350,7 @@ def post_prueba_vih(request):
 		hoy = datetime.today().date()
 		try:
 			ultima_boleta = BoletasConsejeriaPostPrueba.objects.filter(boleta__identidad=identidad).order_by('-fecha_actualizacion')[:1].get()
+			
 			fecha = add_months(ultima_boleta.fecha_actualizacion, 3)
 			if fecha > hoy:
 				persona = 'existe'
@@ -399,6 +429,18 @@ def post_prueba_vih(request):
 
 	#POST
 	elif request.method == 'POST':
+		try:
+			Boletas.objects.get(pk=request.POST['boleta'])
+		except Exception as e:
+			formulario = BoletasConsejeriaPostPruebaForm(request.POST)
+			ctx = {
+				'formulario' : formulario,
+				'error': 'La identidad ingresada no tiene una boleta activa, por favor revisar los datos ingresados o de click a la lupa para buscar la boleta',
+				'responsable': responsable,
+				'identidad':request.POST['identidad']
+			}
+			return render(request, 'post_prueba_vih.html', ctx)	
+
 		formulario = BoletasConsejeriaPostPruebaForm(request.POST)
 		if formulario.is_valid():
 			try:
@@ -457,6 +499,15 @@ def listado_asistencia(request):
 		}
 		return render(request, 'listado_asistencia.html', ctx)
 	if request.method == 'POST':
+		identidades = request.POST.getlist('identidad[]')
+		if len(identidades) == 0:
+			formulario = AsistenciaForm(request.POST)
+			ctx = {
+				'formulario' : formulario,
+				'error': 'Porfavor ingrese al menos un participante',
+				'responsable': responsable,
+			}	
+			return render(request, 'listado_asistencia.html', ctx)
 		try:
 			with transaction.atomic():
 				identidades = request.POST.getlist('identidad[]')
@@ -816,15 +867,15 @@ def boleta_clinica(request):
 				persona = False
 
 		#VALIDACIONES DONDE SI TIENE BOLETA INGRESADA MAYOR DE 3
-		hoy = datetime.today().date()
-		try:
-			ultima_boleta = BoletasClinicas.objects.filter(boleta__identidad=identidad).order_by('-fecha_actualizacion')[:1].get()
-			fecha = add_months(ultima_boleta.fecha_actualizacion, 3)
-			if fecha > hoy:
-				persona = 'existe'
-				clinica = False
-		except Exception, e:
-			pass
+		# hoy = datetime.today().date()
+		# try:
+		# 	ultima_boleta = BoletasClinicas.objects.filter(boleta__identidad=identidad).order_by('-fecha_actualizacion')[:1].get()
+		# 	fecha = add_months(ultima_boleta.fecha_actualizacion, 3)
+		# 	if fecha > hoy:
+		# 		persona = 'existe'
+		# 		clinica = False
+		# except Exception, e:
+		# 	pass
 		data ={
 			'persona': persona,
 			'clinica': clinica,
@@ -846,6 +897,20 @@ def boleta_clinica(request):
 		}
 		return render(request, 'boleta_clinica.html', ctx)
 	if request.method == 'POST':
+		if request.POST.get('identidad') == '' or request.POST.get('primer_nombre') == '' or request.POST.get('primer_apellido') == '':
+			formulario = RPNForm(request.POST)
+			formulario2 = BoletaForm(request.POST)
+			formulario3 = BoletaClinicaForm(request.POST)
+			ctx = {
+				'formulario' : formulario,
+				'formulario2': formulario2,
+				'formulario3': formulario3,
+				'embarazada': embarazada,
+				'error': 'LOS DATOS GENERALES NO PUEDEN IR VACIOS, PORFAVOR REVISARLOS.',
+				'responsable': responsable,
+			}
+			return render(request, 'boleta_clinica.html', ctx)
+
 		ide = request.POST['identidad']
 		identidad = ide.replace("-", "")
 		#try:
@@ -1861,17 +1926,17 @@ def boleta_seguimiento(request):
 			seguimiento = False
 
 		#VALIDACIONES DONDE SI TIENE BOLETA INGRESADA MAYOR DE 3
-		hoy = datetime.today().date()
-		try:
-			ultima_boleta = BoletasSeguimientos.objects.filter(boleta_clinica__boleta__identidad=identidad).order_by('-fecha_actualizacion')[:1].get()
-			fecha = add_months(ultima_boleta.fecha_actualizacion, 3)
-			print fecha , hoy
-			if fecha > hoy:
-				print 'PASO POR AQUI?'
-				persona = 'existe'
-				seg = False
-		except Exception, e:
-			pass
+		# hoy = datetime.today().date()
+		# try:
+		# 	ultima_boleta = BoletasSeguimientos.objects.filter(boleta_clinica__boleta__identidad=identidad).order_by('-fecha_actualizacion')[:1].get()
+		# 	fecha = add_months(ultima_boleta.fecha_actualizacion, 3)
+		# 	print fecha , hoy
+		# 	if fecha > hoy:
+		# 		print 'PASO POR AQUI?'
+		# 		persona = 'existe'
+		# 		seg = False
+		# except Exception, e:
+			# pass
 
 		data = {
 			'persona' : persona,
@@ -2827,7 +2892,6 @@ def boleta_seguimiento(request):
 		return render(request, 'boleta_seguimiento.html', ctx)
 
 from datetime import datetime
-@transaction.atomic
 @login_required()
 def reporte_general(request):
 	query ={}
@@ -2867,3 +2931,88 @@ def reporte_general(request):
 		'listado': listado,
 	}
 	return render(request, 'reporte_general.html', ctx)
+
+@login_required()
+def reporte_intervenciones(request):
+	query ={}
+	responsable = usuario(request.user.pk)
+	query['establecimiento'] = responsable.establecimiento
+
+	if request.method == 'POST':
+		from datetime import timedelta
+		fecha = request.POST.get('fecha')
+		n_days_ago = (datetime.strptime(fecha, "%Y-%m-%d") + timedelta(days=1))
+		query['fecha_creacion__range']= [fecha ,n_days_ago]
+		print fecha
+	asistencia = Asistencia.objects.values_list('pk', flat=True).filter(**query).order_by('-fecha_actualizacion')
+
+	listados = Asistencia.objects.extra({'fecha_cast': "CAST(fecha_creacion as DATE)"}).values('lugar',
+		'poblacion',
+		'intervencion',
+		'responsable',
+		'coordinador',
+		'identidad_reclutador',
+		'id',
+		'creado_por__first_name',
+		'creado_por__last_name',
+		'fecha_cast'
+	).filter(**query).order_by('-fecha_actualizacion')
+
+	listado_asistencia = ListadoAsistencia.objects.values(
+		'asistencia__id',
+		'identidad',
+		'nombres',
+		'correo_electronico',
+		'edad',
+		'telefono',
+		'cantidad_condones',
+	).filter(asistencia__in=asistencia)
+
+	print asistencia.count(), listados.count(), asistencia.query
+	
+	intervenciones = []
+	for listado in listados:
+		data = []
+		data_asis = []
+		for asistencia in listado_asistencia:
+			if asistencia['asistencia__id'] == listado['id']:
+				data_asis.append(asistencia['identidad'])
+
+		if listado['poblacion'] == 1:
+			listado['poblacion'] = "MTS"
+		else:
+			listado['poblacion'] =  "HSH/TG"
+
+		if listado['intervencion'] == 1:
+			listado['intervencion'] = "Proveer o referir a Servicios de Consejeria y Prueba"			
+		elif listado['intervencion'] == 2:
+			listado['intervencion'] = "Promocion y Distribucion de Condones y Lubricantes"
+		elif listado['intervencion'] == 2:
+			listado['intervencion'] = "Referencia a Tamizaje, Prevencion y Tratamiento de ITS"
+		elif listado['intervencion'] == 2:
+			listado['intervencion'] = "Difusion/Alcance y Empoderamiento"
+		elif listado['intervencion'] == 2:
+			listado['intervencion'] = "Abordaje para IEC"
+		else:
+			listado['intervencion']="Referencia Salud Reproductiva (Planificacion Familiar)"
+
+		print listado['fecha_cast'], '-------------------------------'
+		data.append({
+			'poblacion': listado['poblacion'],
+			'intervencion': listado['intervencion'],
+			'responsable': listado['responsable'],
+			'coordinador': listado['coordinador'],
+			'identidad_reclutador': listado['identidad_reclutador'],
+			'id': listado['id'],
+			'usuario': listado['creado_por__first_name'] + ' ' + listado['creado_por__last_name'],
+			'asistencia':data_asis,
+			'fecha': listado['fecha_cast']
+		})
+
+		intervenciones.append(data)
+
+	ctx = {
+		'responsable' : responsable,
+		'listado': intervenciones,
+	}
+	return render(request, 'reporte_intervenciones.html', ctx)

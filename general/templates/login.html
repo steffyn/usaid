@@ -50,7 +50,7 @@
        <img src="{% static 'img/logo-secretaria.jpg' %}">
     </div>
    
-
+    
     <form action="" method="post">
       {% csrf_token %}
       <div class="form-group has-feedback">
@@ -69,6 +69,9 @@
           <br>
         </div>
       {% endif %}
+      <div class="text-right">
+      <a href="{% url 'registrate' %}">Registrate</a> 
+      </div>
 
       <div class="text-center">
         <a href="#" id="huella">

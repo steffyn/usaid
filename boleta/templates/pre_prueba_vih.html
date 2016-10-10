@@ -43,6 +43,11 @@
             Se guardaron los datos correctamente 
           </div>
         {% endif %}
+         {% if error %}
+            <div class="alert alert-danger" role="alert"> 
+              <label> {{error}} </label>
+            </div>
+         {% endif %}
         <h4 class="text-center font-style"> <b>
           DATOS GENERALES DE LA PERSONA USUARIA DE LOS SERVICIOS
         </b></h4>
@@ -190,7 +195,7 @@
               <div class="form-group">
                 <label for="temp1" class="col-md-4 control-label">Identidad</label>
                 <div class="col-md-8">
-                  <input type="text" name='temp1' readonly class="form-control identidad">
+                  <input type="text" name='temp1' readonly class="form-control identidad" id="id_consejeria">
                 </div>
               </div>
               <div class="form-group">
@@ -422,7 +427,7 @@ function calcularEdad()
   //BUSQUEDA DE IDENTIDAD
   $('#identidad').attr({
     type:'number',
-   onKeyDown:"if(this.value.length==15 && event.keyCode!=8 && event.keyCode!=13) return false;"
+   onKeyDown:"if(this.value.length==13 && event.keyCode!=8 && event.keyCode!=13) return false;"
   }).keypress(function (e) {
       
       identidad = $(this).val();
@@ -646,6 +651,7 @@ $('#no_identidad').change(function(){
   if (no_identidad == true){
     rand = Math.floor(Math.random()*9999999999999+1);
     $('#identidad').val(rand)
+    $('#id_consejeria').val(rand)
     $('#id_primer_nombre').prop('readonly', false).val('')
     $('#id_segundo_nombre').prop('readonly', false).val('')
     $('#id_primer_apellido').prop('readonly', false).val('')
