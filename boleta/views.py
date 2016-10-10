@@ -2922,7 +2922,6 @@ def reporte_general(request):
 		print listado.query
 
 	except Exception, e:
-		raise e
 		responsable = ''
 		listado = False
 
@@ -2935,82 +2934,82 @@ def reporte_general(request):
 @login_required()
 def reporte_intervenciones(request):
 	query ={}
-	responsable = usuario(request.user.pk)
-	query['establecimiento'] = responsable.establecimiento
+	try:
+		responsable = usuario(request.user.pk)
+		query['establecimiento'] = responsable.establecimiento
 
-	if request.method == 'POST':
-		from datetime import timedelta
-		fecha = request.POST.get('fecha')
-		n_days_ago = (datetime.strptime(fecha, "%Y-%m-%d") + timedelta(days=1))
-		query['fecha_creacion__range']= [fecha ,n_days_ago]
-		print fecha
-	asistencia = Asistencia.objects.values_list('pk', flat=True).filter(**query).order_by('-fecha_actualizacion')
+		if request.method == 'POST':
+			from datetime import timedelta
+			fecha = request.POST.get('fecha')
+			n_days_ago = (datetime.strptime(fecha, "%Y-%m-%d") + timedelta(days=1))
+			query['fecha_creacion__range']= [fecha ,n_days_ago]
+			
+		asistencia = Asistencia.objects.values_list('pk', flat=True).filter(**query).order_by('-fecha_actualizacion')
+		listados = Asistencia.objects.extra({'fecha_cast': "CAST(fecha_creacion as DATE)"}).values('lugar',
+			'poblacion',
+			'intervencion',
+			'responsable',
+			'coordinador',
+			'identidad_reclutador',
+			'id',
+			'creado_por__first_name',
+			'creado_por__last_name',
+			'fecha_cast'
+		).filter(**query).order_by('-fecha_actualizacion')
 
-	listados = Asistencia.objects.extra({'fecha_cast': "CAST(fecha_creacion as DATE)"}).values('lugar',
-		'poblacion',
-		'intervencion',
-		'responsable',
-		'coordinador',
-		'identidad_reclutador',
-		'id',
-		'creado_por__first_name',
-		'creado_por__last_name',
-		'fecha_cast'
-	).filter(**query).order_by('-fecha_actualizacion')
+		listado_asistencia = ListadoAsistencia.objects.values(
+			'asistencia__id',
+			'identidad',
+			'nombres',
+			'correo_electronico',
+			'edad',
+			'telefono',
+			'cantidad_condones',
+		).filter(asistencia__in=asistencia)
 
-	listado_asistencia = ListadoAsistencia.objects.values(
-		'asistencia__id',
-		'identidad',
-		'nombres',
-		'correo_electronico',
-		'edad',
-		'telefono',
-		'cantidad_condones',
-	).filter(asistencia__in=asistencia)
+		
+		intervenciones = []
+		for listado in listados:
+			data = []
+			data_asis = []
+			for asistencia in listado_asistencia:
+				if asistencia['asistencia__id'] == listado['id']:
+					data_asis.append(asistencia['identidad'])
 
-	print asistencia.count(), listados.count(), asistencia.query
-	
-	intervenciones = []
-	for listado in listados:
-		data = []
-		data_asis = []
-		for asistencia in listado_asistencia:
-			if asistencia['asistencia__id'] == listado['id']:
-				data_asis.append(asistencia['identidad'])
+			if listado['poblacion'] == 1:
+				listado['poblacion'] = "MTS"
+			else:
+				listado['poblacion'] =  "HSH/TG"
 
-		if listado['poblacion'] == 1:
-			listado['poblacion'] = "MTS"
-		else:
-			listado['poblacion'] =  "HSH/TG"
+			if listado['intervencion'] == 1:
+				listado['intervencion'] = "Proveer o referir a Servicios de Consejeria y Prueba"			
+			elif listado['intervencion'] == 2:
+				listado['intervencion'] = "Promocion y Distribucion de Condones y Lubricantes"
+			elif listado['intervencion'] == 2:
+				listado['intervencion'] = "Referencia a Tamizaje, Prevencion y Tratamiento de ITS"
+			elif listado['intervencion'] == 2:
+				listado['intervencion'] = "Difusion/Alcance y Empoderamiento"
+			elif listado['intervencion'] == 2:
+				listado['intervencion'] = "Abordaje para IEC"
+			else:
+				listado['intervencion']="Referencia Salud Reproductiva (Planificacion Familiar)"
 
-		if listado['intervencion'] == 1:
-			listado['intervencion'] = "Proveer o referir a Servicios de Consejeria y Prueba"			
-		elif listado['intervencion'] == 2:
-			listado['intervencion'] = "Promocion y Distribucion de Condones y Lubricantes"
-		elif listado['intervencion'] == 2:
-			listado['intervencion'] = "Referencia a Tamizaje, Prevencion y Tratamiento de ITS"
-		elif listado['intervencion'] == 2:
-			listado['intervencion'] = "Difusion/Alcance y Empoderamiento"
-		elif listado['intervencion'] == 2:
-			listado['intervencion'] = "Abordaje para IEC"
-		else:
-			listado['intervencion']="Referencia Salud Reproductiva (Planificacion Familiar)"
+			data.append({
+				'poblacion': listado['poblacion'],
+				'intervencion': listado['intervencion'],
+				'responsable': listado['responsable'],
+				'coordinador': listado['coordinador'],
+				'identidad_reclutador': listado['identidad_reclutador'],
+				'id': listado['id'],
+				'usuario': listado['creado_por__first_name'] + ' ' + listado['creado_por__last_name'],
+				'asistencia':data_asis,
+				'fecha': listado['fecha_cast']
+			})
 
-		print listado['fecha_cast'], '-------------------------------'
-		data.append({
-			'poblacion': listado['poblacion'],
-			'intervencion': listado['intervencion'],
-			'responsable': listado['responsable'],
-			'coordinador': listado['coordinador'],
-			'identidad_reclutador': listado['identidad_reclutador'],
-			'id': listado['id'],
-			'usuario': listado['creado_por__first_name'] + ' ' + listado['creado_por__last_name'],
-			'asistencia':data_asis,
-			'fecha': listado['fecha_cast']
-		})
-
-		intervenciones.append(data)
-
+			intervenciones.append(data)
+	except Exception as e:
+		responsable = False
+		listado = {}
 	ctx = {
 		'responsable' : responsable,
 		'listado': intervenciones,
