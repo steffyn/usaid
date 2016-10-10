@@ -3009,7 +3009,7 @@ def reporte_intervenciones(request):
 			intervenciones.append(data)
 	except Exception as e:
 		responsable = False
-		listado = {}
+		intervenciones = {}
 	ctx = {
 		'responsable' : responsable,
 		'listado': intervenciones,
