@@ -35,6 +35,24 @@ def login(request):
 			}
 	return render(request, 'login.html', ctx)
 
+def registrate(request):
+	ctx = {}
+	logout(request)
+	if request.POST:
+		
+		from django.core.mail import EmailMultiAlternatives
+		subject = 'Peticion De Registro'
+		text_content = 'Mensaje...nLinea 2nLinea3'
+		html_content = 'Tienes una nueva Peticion de Registro: <br> <br> Nombre:<b>'+ request.POST.get('nombre') +'</b> <br> Telefono:<b>'+ request.POST.get('telefono') +'</b> <br> Correo: <b>'+ request.POST.get('correo') +'</b><br> Comentario: <b>'+ request.POST.get('observaciones') +'</b> <br>'
+		from_email = 'kshernandez90@gmail.com' 
+		to = 'kshernandez90@gmail.com'
+		msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+		msg.attach_alternative(html_content, "text/html")
+		msg.send()
+		ctx = { 'exito': True }
+	else:
+		pass
+	return render(request, 'registrate.html', ctx)
 
 @login_required()
 @transaction.atomic
