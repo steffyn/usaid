@@ -43,9 +43,9 @@ def registrate(request):
 		from django.core.mail import EmailMultiAlternatives
 		subject = 'Peticion De Registro'
 		text_content = 'Mensaje...nLinea 2nLinea3'
-		html_content = 'Tienes una nueva Peticion de Registro: <br> <br> Nombre:<b>'+ request.POST.get('nombre') +'</b> <br> Telefono:<b>'+ request.POST.get('telefono') +'</b> <br> Correo: <b>'+ request.POST.get('correo') +'</b><br> Comentario: <b>'+ request.POST.get('observaciones') +'</b> <br>'
-		from_email = 'kshernandez90@gmail.com' 
-		to = 'kshernandez90@gmail.com'
+		html_content = 'Tienes una nueva Peticion de Registro: <br> <br> Nombre:<b>'+ request.POST.get('nombre') +'</b> <br> Telefono:<b>'+ request.POST.get('telefono') +'</b> <br> Correo: <b>'+ request.POST.get('correo') +'</b><br> Rol Seleccionado: <b>'+ request.POST.get('rol') +'</b> <br> Comentario: <b>'+ request.POST.get('observaciones') +'</b> <br>'
+		from_email = 'usuariotecugi@gmail.com'
+		to = 'usuariotecugi@gmail.com'
 		msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
 		msg.attach_alternative(html_content, "text/html")
 		msg.send()
