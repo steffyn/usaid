@@ -21,8 +21,6 @@ import calendar
 def usuario(id):
 	return Responsables.objects.get(usuario_sistema__id=id)
 
-
-
 def date_handler(obj):
 	if hasattr(obj, 'isoformat'):
 		return obj.isoformat()
