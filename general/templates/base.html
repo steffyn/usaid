@@ -114,7 +114,24 @@
           {% if perms.boleta.add_boletasclinicas %}
             <li><a href="{% url 'boleta_seguimiento' %}"> Ficha de Seguimiento</a></li>
           {% endif %}
+          <!-- MENU DE REPORTES -->
+          <li class="treeview">
+            <a href="#">
+              Reportes
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              <li><a href="http://sql5030.smarterasp.net/Reports/report/Linkages/Reportes/BoletasXUsuario?usuario={{user.id}}"> Pre Prueba</a></li>
+              <li><a href="http://sql5030.smarterasp.net/Reports/report/Linkages/Reportes/PruebasXUsuario?usuario={{user.id}}"> Prueba</a></li>
+              <li><a href="http://sql5030.smarterasp.net/Reports/report/Linkages/Reportes/BoletaPostPruebaPorUsuario?usuario={{user.id}}"> Post Prueba</a></li>
+              <li><a href="http://sql5030.smarterasp.net/Reports/report/Linkages/Reportes/BoletasClinicasXUsuario?usuario={{user.id}}"> Ficha Clinica</a></li>
+              <li><a href="http://sql5030.smarterasp.net/Reports/report/Linkages/Reportes/FichasSeguimientosPorusuario?usuario={{user.id}}"> Ficha Seguimiento</a></li>
+            </ul>
+          </li>
           </ul>
+
         </li>
         <li class="treeview">
           <a href="#">
