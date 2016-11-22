@@ -646,6 +646,13 @@ class BoletasSeguimientos(models.Model):
 	ral_cant= models.IntegerField(blank=True, null=True, verbose_name='Raltegravir (RAL)')
 	evg_cant= models.IntegerField(blank=True, null=True, verbose_name='Elvitegravir (EVG)')
 	dtg_cant= models.IntegerField(blank=True, null=True, verbose_name='Dolutegravir (DTG)')
+	azt_3tc= models.IntegerField(blank=True, null=True, verbose_name='AZT_3TC')
+	acb_3tc_azt_cant= models.IntegerField(blank=True, null=True, verbose_name='ACB/3TC/AZT')
+	efv_ftc_tdf_cant= models.IntegerField(blank=True, null=True, verbose_name='EFV_FTC_TDF')
+	rpv_ftc_tdf_cant= models.IntegerField(blank=True, null=True, verbose_name='RPV_FTC_TDF')
+    rpv_ftc_tdf_cant= models.IntegerField(blank=True, null=True, verbose_name='RPV_FTC_TDF')
+    dtf_ftc_cant= models.IntegerField(blank=True, null=True, verbose_name='DTf_FTC')
+    lpv_rtv_cant= models.IntegerField(blank=True, null=True, verbose_name='LPV_RTV')
 
 	abc_med = models.NullBooleanField(default=False)
 	ft_med= models.NullBooleanField(default=False)
