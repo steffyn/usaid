@@ -158,11 +158,14 @@ def pre_prueba_vih(request):
 				registro.creado_por = request.user
 				registro.actualizado_por = request.user
 
-				try:
-					responsable = Responsables.objects.get(usuario_sistema=request.user)
-					registro.establecimiento = responsable.establecimiento
-				except Exception, e:
-					registro.establecimiento = None
+				if request.user.has_perm('boleta.ingresar_establecimiento'):
+					registro.establecimiento = Establecimientos.objects.get(pk=request.POST['establecimiento'])
+				else:
+					try:
+						responsable = Responsables.objects.get(usuario_sistema=request.user)
+						registro.establecimiento = responsable.establecimiento
+					except Exception, e:
+						registro.establecimiento = None
 
 				registro.save()
 				formulario2.save_m2m()
@@ -187,7 +190,7 @@ def pre_prueba_vih(request):
 				formulario3 = BoletaConsejeriaForm()
 				exito = True
 			except Exception, e:
-				error= 'Se genero un error al guardar los datos, revise bien el formulario. Si no contactese con el Administrador.'
+				error= 'Se genero un error al guardar los datos, revise bien el formulario. Si no contactese con el Administrador.',e
 		else:
 			error = 'Hay un error en el formulario, por favor revise los datos ingresados'
 		ctx = {

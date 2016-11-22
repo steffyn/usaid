@@ -1465,6 +1465,8 @@
 
 <script type="text/javascript">
 
+
+
 $('#button').click(function(){
    $(this).delay(300)
    $("#id_fecha_nacimiento, input[name=sexo]").prop('disabled', false)
@@ -1571,7 +1573,7 @@ vars += '#id_infpel_diag, #id_infpel_fecha_initrat, #id_infpel_entrat_diag, #id_
 vars += '#id_cita_medica, #id_retiro_medicamento, #id_fecha_inicio_tarv,'
 vars += '#id_isoniacida_fecha_initrat, #id_isoniacida_fecha_fintrat, #id_isoniacida_fecha_intrat, #id_isoniacida_fecha_reitrat,'
 vars += '#id_tmpsmx_fecha_initrat, #id_tmpsmx_fecha_fintrat, #id_tmpsmx_fecha_intrat, #id_tmpsmx_fecha_reitrat,'
-vars += '#id_azitromicida_fecha_initrat, #id_azitromicida_fecha_fintrat, #id_azitromicida_fecha_intrat, #id_azitromicida_fecha_reitrat, #id_fecha_consulta,'
+vars += '#id_azitromicida_fecha_initrat, #id_azitromicida_fecha_fintrat, #id_azitromicida_fecha_intrat, #id_azitromicida_fecha_reitrat,'
 vars += '#id_arv_fecha_ini, #id_fecha_abandono, #id_fecha_suspension, #id_fecha_reinicio, #id_fecha_fallecido, #id_fecha_entrega_arv, #id_fecha_prescripcion_arv, #id_fecha_cambio_terapia'
 
 function cb(start, end) {
@@ -1617,6 +1619,40 @@ $(vars).daterangepicker({
       ],
    },
 }).val('');
+
+$('#id_fecha_consulta').daterangepicker({
+   //autoUpdateInput: false,
+   singleDatePicker: true,
+   showDropdowns: true,
+   maxDate: moment(),
+   locale: {
+      format: 'YYYY-MM-DD',
+      daysOfWeek: [
+         "Do",
+         "Lu",
+         "Ma",
+         "Mi",
+         "Ju",
+         "Vi",
+         "Sa"
+      ],
+      monthNames: [
+         "Enero",
+         "Febrero",
+         "Marzo",
+         "Abril",
+         "Mayo",
+         "Junio",
+         "Julio",
+         "Agosto",
+         "Septiembre",
+         "Octubre",
+         "Noviembre",
+         "Diciembre"
+      ],
+   },
+})
+
 
 $(vars).on('cancel.daterangepicker', function(ev, picker) {
   //do something, like clearing an input
@@ -4196,6 +4232,21 @@ $('#parte22').click(function(){
 })
 $('#parte23').click(function(){
    $('input[name="esquema_arv"], input[name="cambio_terapia"], input[name="motivo_cambio_terapia"], input[name="esquema_actual_arv"], input[name="documentado_con"] ').prop('checked', false).trigger('change');
+})
+
+$('input[type=number]').change(function(){
+   $(this).val(Math.abs($(this).val()))
+})
+
+$('input[type=number]').attr('min', 1)
+
+$('input[name=motivo_cambio_terapia]').change(function(){
+   if ( $('#id_motivo_cambio_terapia_0').prop('checked') == true ){
+      $('input[name=documentado_con]').prop('disabled', false)
+
+   }else{
+      $('input[name=documentado_con]').attr('disabled', true)
+   }
 })
 </script>
 

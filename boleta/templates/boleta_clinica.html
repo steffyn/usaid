@@ -3487,6 +3487,54 @@ $('#parte18').click(function(){
 $('#parte19').click(function(){
    $('input[name="infpel"], input[name="infpel_initrat"], input[name="infpel_entrat"], input[name="infpel_entrat_fintrat"],input[name="infpel_intrat"] ,input[name="infpel_intrat_reitrat"]').prop('checked', false).trigger('change');
 })
+
+$('input[type=number]').change(function(){
+   $(this).val(Math.abs($(this).val()))
+})
+
+$('input[type=number]').attr('min', 1)
+
+$('#id_talla, #id_peso').keyup(function(){
+   peso = $('#id_peso').val()
+   talla = $('#id_talla').val()
+
+   if(peso != 0 && talla != 0){
+      m = talla/100
+      kg = peso/2.2046
+
+      imc = kg/(m*m)
+      $('#id_imc').val(imc)
+   }else{
+      $('#id_imc').val('0')
+   }
+})
+
+$('#id_talla, #id_peso').change(function(){
+   
+   peso = $('#id_peso').val()
+   talla = $('#id_talla').val()
+
+   if(peso != 0 && talla != 0){
+      m = talla/100
+      kg = peso/2.2046
+
+      imc = kg/(m*m)
+      $('#id_imc').val(imc)
+   }else{
+      $('#id_imc').val('0')
+   }
+})
+
+$('input[name=actualmente_tarv]').change(function(){
+   if ( $('#id_actualmente_tarv_0').prop('checked') == true ){
+      $('input[name=estatus_actual_tarv]').prop('disabled', false)
+      $('#id_fecha_inicio_tarv').prop('readonly', false)
+      $('#id_estatus_actual_tarv_0').prop('checked', true)
+   }else{
+      $('input[name=estatus_actual_tarv]').prop('checked', false).attr('disabled', true)
+      $('#id_fecha_inicio_tarv').prop('readonly', true)
+   }
+})
 </script>
 
 {% endblock %}

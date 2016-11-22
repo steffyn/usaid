@@ -201,7 +201,7 @@ class BoletasPruebas(models.Model):
 	boleta = models.ForeignKey(Boletas)
 	fecha_solicitud = models.DateTimeField(blank=True, null=True)
 	numero_prueba = models.IntegerField(blank=True, null=True, verbose_name='Número de Prueba')
-	fecha_extraccion = models.DateTimeField(blank=True, null=True, verbose_name='Fecha de Estracción')
+	fecha_extraccion = models.DateTimeField(blank=True, null=True, verbose_name='Fecha de Extracción')
 	fecha_muestra = models.DateTimeField(blank=True, null=True, verbose_name='Fecha de Recepción de Muestra')
 	fecha_prueba = models.DateTimeField(blank=True, null=True, verbose_name='Fecha en que se Realizó la Prueba')
 	kit_prueba_tamizaje = models.ForeignKey(Pruebas, blank=True, null=True, related_name='kit_tamizaje', verbose_name='Kit Utilizado en Prueba Tamizaje')

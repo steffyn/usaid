@@ -96,40 +96,69 @@
             </span>
           </a>
           <ul class="treeview-menu">
-          {% if perms.boleta.add_boletasconsejeria %}
-            <li><a href="{% url 'pre_prueba_vih' %}">Registro Consejeria Pre Prueba</a></li>
-          {% endif %}
-          {% if perms.boleta.add_boletaspruebas %}
-            <li><a href="{% url 'prueba_vih' %}"> Registro de Pruebas</a></li>
-          {% endif %}
-          {% if perms.boleta.add_boletasconsejeriapostprueba %}
-            <li><a href="{% url 'post_prueba_vih' %}"> Registro Consejeria Post-Prueba</a></li>
-          {% endif %}
-          {% if perms.boleta.add_listadoasistencia %}
-            <li><a href="{% url 'listado_asistencia' %}"> Intervenciones Comunitarias</a></li>
-          {% endif %}
-          {% if perms.boleta.add_boletasclinicas %}
-            <li><a href="{% url 'boleta_clinica' %}"> Ficha Clinica</a></li>
-          {% endif %}
-          {% if perms.boleta.add_boletasclinicas %}
-            <li><a href="{% url 'boleta_seguimiento' %}"> Ficha de Seguimiento</a></li>
-          {% endif %}
-          <!-- MENU DE REPORTES -->
-          <li class="treeview">
-            <a href="#">
-              Reportes
-              <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-              </span>
-            </a>
-            <ul class="treeview-menu">
-              <li><a href="http://sql5030.smarterasp.net/Reports/report/Linkages/Reportes/BoletasXUsuario?usuario={{user.id}}"> Pre Prueba</a></li>
-              <li><a href="http://sql5030.smarterasp.net/Reports/report/Linkages/Reportes/PruebasXUsuario?usuario={{user.id}}"> Prueba</a></li>
-              <li><a href="http://sql5030.smarterasp.net/Reports/report/Linkages/Reportes/BoletaPostPruebaPorUsuario?usuario={{user.id}}"> Post Prueba</a></li>
-              <li><a href="http://sql5030.smarterasp.net/Reports/report/Linkages/Reportes/BoletasClinicasXUsuario?usuario={{user.id}}"> Ficha Clinica</a></li>
-              <li><a href="http://sql5030.smarterasp.net/Reports/report/Linkages/Reportes/FichasSeguimientosPorusuario?usuario={{user.id}}"> Ficha Seguimiento</a></li>
-            </ul>
-          </li>
+            {% if perms.boleta.add_boletasconsejeria %}
+              <li><a href="{% url 'pre_prueba_vih' %}">Registro Consejeria Pre Prueba</a></li>
+            {% endif %}
+            {% if perms.boleta.add_boletaspruebas %}
+              <li><a href="{% url 'prueba_vih' %}"> Registro de Pruebas</a></li>
+            {% endif %}
+            {% if perms.boleta.add_boletasconsejeriapostprueba %}
+              <li><a href="{% url 'post_prueba_vih' %}"> Registro Consejeria Post-Prueba</a></li>
+            {% endif %}
+            {% if perms.boleta.add_listadoasistencia %}
+              <li><a href="{% url 'listado_asistencia' %}"> Intervenciones Comunitarias</a></li>
+            {% endif %}
+            {% if perms.boleta.add_boletasclinicas %}
+              <li><a href="{% url 'boleta_clinica' %}"> Ficha Clinica</a></li>
+            {% endif %}
+            {% if perms.boleta.add_boletasclinicas %}
+              <li><a href="{% url 'boleta_seguimiento' %}"> Ficha de Seguimiento</a></li>
+            {% endif %}
+            <!-- MENU DE REPORTES -->
+            <li class="treeview">
+              <a href="#">
+                Registros Ingresados
+                <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+              </a>
+              <ul class="treeview-menu">
+                {% if perms.boleta.add_boletasconsejeria %}
+                  <li><a href="http://sql5030.smarterasp.net/Reports/report/Linkages/Digitador/BoletasXUsuario?usuario={{user.id}}"> Pre Prueba</a></li>
+                {% endif %}
+                {% if perms.boleta.add_boletaspruebas %}
+                <li><a href="http://sql5030.smarterasp.net/Reports/report/Linkages/Digitador/PruebasPorUsuario?usuario={{user.id}}"> Prueba</a></li>
+                {% endif %}
+                {% if perms.boleta.add_boletasconsejeriapostprueba %}
+                <li><a href="http://sql5030.smarterasp.net/Reports/report/Linkages/Digitador/BoletaPostPruebaPorUsuario?usuario={{user.id}}"> Post Prueba</a></li>
+                {% endif %}
+                {% if perms.boleta.add_boletasclinicas %}
+                <li><a href="http://sql5030.smarterasp.net/Reports/report/Linkages/Digitador/BoletasClinicasXUsuario?usuario={{user.id}}"> Ficha Clinica</a></li>
+                {% endif %}
+                {% if perms.boleta.add_boletasclinicas %}
+                <li><a href="http://sql5030.smarterasp.net/Reports/report/Linkages/Digitador/FichasSeguimientosPorusuario?usuario={{user.id}}"> Ficha Seguimiento</a></li>
+                {% endif %}
+              </ul>
+            </li>
+
+            {% if perms.boleta.reportes_ugi %}
+            <!-- MENU DE REPORTES PARA LOS ADMINISTRADORES DE UGI -->
+            <li class="treeview">
+              <a href="#">
+                Monitoreo de usuarios
+                <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="http://sql5030.smarterasp.net/Reports/report/Linkages/UGI/BoletasXUsuario"> Pre Prueba</a></li>
+                <li><a href="http://sql5030.smarterasp.net/Reports/report/Linkages/UGI/PruebasPorUsuario"> Prueba</a></li>
+                <li><a href="http://sql5030.smarterasp.net/Reports/report/Linkages/UGI/BoletaPostPruebaPorUsuario"> Post Prueba</a></li>
+                <li><a href="http://sql5030.smarterasp.net/Reports/report/Linkages/UGI/BoletasClinicasXUsuario"> Ficha Clinica</a></li>
+                <li><a href="http://sql5030.smarterasp.net/Reports/report/Linkages/UGI/FichasSeguimientosPorusuario"> Ficha Seguimiento</a></li>
+              </ul>
+            </li>
+            {% endif %}
           </ul>
 
         </li>

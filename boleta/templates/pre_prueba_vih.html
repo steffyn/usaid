@@ -52,6 +52,13 @@
           DATOS GENERALES DE LA PERSONA USUARIA DE LOS SERVICIOS
         </b></h4>
         <p class="page-header"></p>
+        {% if perms.boleta.ingresar_establecimiento %}
+          <div class="row">
+            <div class="col-sm-7">
+              {{formulario2.establecimiento|bootstrap_horizontal:'col-md-4' }}
+            </div>
+          </div>
+        {% endif %}
 
         <div class="row">
           <div class="col-sm-7">
@@ -239,6 +246,12 @@
 </div>
 
 <script type="text/javascript">
+  //SI EL USUARIO PUEDE INGRESAR ESTABLECIMIENTO, ENTONCES EL CAMPO ES OBLIGATORIO
+  {% if perms.boleta.ingresar_establecimiento %}
+    $('#id_establecimiento').prop('required', true)       
+  {% endif %}
+
+  //DESHABILITA LOS BOTONES FECHA NACIMIENTO Y SEXO
   $('#button').click(function(){
     $("#id_fecha_nacimiento, input[name=sexo]").prop('disabled', false)
     return true
@@ -294,10 +307,6 @@ function calcularEdad()
             ultimoDiaMes=new Date(ahora_ano, ahora_mes, 0);
             dias=ultimoDiaMes.getDate()-(dia-ahora_dia);
         }
- 
-        document.getElementById("result").innerHTML="Tienes "+edad+" años, "+meses+" meses y "+dias+" días";
-    }else{
-        document.getElementById("result").innerHTML="La fecha "+fecha+" es incorrecta";
     }
 }
 
@@ -424,7 +433,7 @@ function calcularEdad()
    onKeyDown:"if(this.value.length==15 && event.keyCode!=8 && event.keyCode!=13) return false;"
   })
 
-  //BUSQUEDA DE IDENTIDAD
+  //BUSQUEDA DE IDENTIDAD CON LA TECLA ENTER
   $('#identidad').attr({
     type:'number',
    onKeyDown:"if(this.value.length==13 && event.keyCode!=8 && event.keyCode!=13) return false;"
@@ -448,16 +457,19 @@ function calcularEdad()
                 }
         })
           .done(function( persona ) {
+            //NO SE ENCUENTRA LA IDENTIDAD
             if (persona==false){
               $('#error_identidad').show().delay(4000).fadeOut()
               $('#id_primer_nombre, #id_segundo_nombre, #id_primer_apellido, #id_segundo_apellido, #id_fecha_nacimiento').prop('readonly', false).val('')
               $('#id_fecha_nacimiento, input[name=sexo]').prop('disabled',false).val('')
 
-
+              //EL PACIENTE TIENE UNA BOLETA ACTIVA
             }else if (persona == 'existe'){
               $('#error_identidad2').show().delay(4000).fadeOut()
               $('#id_primer_nombre, #id_segundo_nombre, #id_primer_apellido, #id_segundo_apellido, #id_fecha_nacimiento').prop('readonly', true).val('')
               $('#id_fecha_nacimiento, input[name=sexo]').prop('disabled',true).val('')
+              
+              //CARGAR LOS DATOS DEL PACIENTE
             }else{
               $('#error_identidad').hide()
               $('#id_primer_nombre').val(persona.primer_nombre).prop('readonly', true)
@@ -521,7 +533,8 @@ function calcularEdad()
           });
       }
   }); 
-
+  
+  //BOTON BUSQUEDA DE IDENTIDAD
   $('#search_identidad').click(function (e) {
       
       identidad = $('#identidad').val();
@@ -539,16 +552,19 @@ function calcularEdad()
                 }
         })
           .done(function( persona ) {
+            //NO SE ENCUENTRA LA IDENTIDAD
             if (persona==false){
               $('#error_identidad').show().delay(4000).fadeOut()
               $('#id_primer_nombre, #id_segundo_nombre, #id_primer_apellido, #id_segundo_apellido, #id_fecha_nacimiento').prop('readonly', false).val('')
               $('#id_fecha_nacimiento, input[name=sexo]').prop('disabled',false).val('')
 
-
+            //EL PACIENTE TIENE UNA BOLETA ACTIVA
             }else if (persona == 'existe'){
               $('#error_identidad2').show().delay(4000).fadeOut()
               $('#id_primer_nombre, #id_segundo_nombre, #id_primer_apellido, #id_segundo_apellido, #id_fecha_nacimiento').prop('readonly', true).val('')
               $('#id_fecha_nacimiento, input[name=sexo]').prop('disabled',true).val('')
+            
+            //CARGAR LOS DATOS DEL PACIENTE
             }else{
               $('#error_identidad').hide()
               $('#id_primer_nombre').val(persona.primer_nombre).prop('readonly', true)
@@ -603,6 +619,7 @@ function calcularEdad()
               }else{
                 $('#encargados').hide().fadeOut();
               }
+              //EXPEDIENTE
               expediente = btoa(identidad) + '-' + persona.fecha_nacimiento + '-' + persona.sexo
               $('#expediente').text(expediente)
               expediente = identidad + '-' + persona.fecha_nacimiento + '-' + persona.sexo
@@ -645,7 +662,7 @@ function calcularEdad()
       ajaxsace('ciudad', 'id_municipio', 'id_ciudad' )
     })
 
-//NO IDENTIDAD
+//CUANDO EL PACIENTE NO TIENE IDENTIDAD
 $('#no_identidad').change(function(){
   no_identidad = $(this).prop('checked')
   if (no_identidad == true){
@@ -682,7 +699,7 @@ $('#no_identidad').change(function(){
 var embarazada_id = {{embarazada.pk}}
 $("#id_condiciones option[value="+ embarazada_id +"]").remove();
 
-//NO IDENTIDAD
+//CUANDO EL SEXO CAMBIA 
 $('input[name=sexo]').change(function(){
    genero = $("#id_sexo_1").prop("checked")
 
