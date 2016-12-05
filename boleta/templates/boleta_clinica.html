@@ -3503,7 +3503,7 @@ $('#id_talla, #id_peso').keyup(function(){
       kg = peso/2.2046
 
       imc = kg/(m*m)
-      $('#id_imc').val(imc)
+      $('#id_imc').val(parseFloat(imc).toFixed(2))
    }else{
       $('#id_imc').val('0')
    }
@@ -3519,7 +3519,7 @@ $('#id_talla, #id_peso').change(function(){
       kg = peso/2.2046
 
       imc = kg/(m*m)
-      $('#id_imc').val(imc)
+      $('#id_imc').val(parseFloat(imc).toFixed(2))
    }else{
       $('#id_imc').val('0')
    }
