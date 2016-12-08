@@ -1437,7 +1437,7 @@ $("#id_identidad_madre, #id_identidad_padre, #id_identidad_tutor").attr({
 
 //BUSQUEDA DE IDENTIDAD
 $('#identidad').attr({
-   type: 'number',
+   type: 'text',
    onKeyDown:"if(this.value.length==13 && event.keyCode!=8 && event.keyCode!=13) return false;"
 }).keypress(function (e) {
    identidad = $(this).val();

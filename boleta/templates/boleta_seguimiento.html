@@ -1430,11 +1430,40 @@
                {{formulario4.dtg_cant|bootstrap}}
             </div>
             <div class="col-sm-2">
-               {{formulario4.azt_3tc_cant|bootstrap}}
+              {{formulario4.azt_3tc_cant|bootstrap}}
             </div>
-
-
+            <div class="col-sm-2">
+              {{formulario4.abc_3tc_azt_cant|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+              {{formulario4.efv_ftc_tdf_cant|bootstrap}}
+            </div>
          </div>
+
+
+
+
+         <div class="row">
+           <div class="col-sm-2 form-inline">
+              {{formulario4.rpv_ftc_tdf_cant|bootstrap}}
+           </div>
+
+           <div class="col-sm-2">
+              {{formulario4.tdf_ftc_cant|bootstrap}}
+           </div>
+           <div class="col-sm-2">
+              {{formulario4.lpv_rtv_cant|bootstrap}}
+           </div>
+           <div class="col-sm-2">
+              {{formulario4.abc_3tc_cant|bootstrap}}
+           </div>
+           <div class="col-sm-3">
+               {{formulario4.cantidad_medicamento|bootstrap}}
+           </div>
+         </div>
+
+
+
          <div class="row">
             <div class="col-sm-3">
                {{formulario4.adherencia|bootstrap}}
@@ -1445,9 +1474,7 @@
             <div class="col-sm-4">
                {{formulario4.fecha_proxentrega_arv|bootstrap}}
             </div>
-            <div class="col-sm-3">
-               {{formulario4.cantidad_medicamento|bootstrap}}
-            </div>
+
          </div>
 
       </div>
@@ -1465,7 +1492,7 @@
 
 <script type="text/javascript">
 
-
+$('#identidad').attr('type', 'text')
 
 $('#button').click(function(){
    $(this).delay(300)
@@ -1693,7 +1720,7 @@ $('#id_fecha_proxima_cita,#id_fecha_proxentrega_arv').daterangepicker({
 
 //BUSQUEDA DE IDENTIDAD
 $('#identidad').attr({
-   type: 'number',
+   type: 'text',
    onKeyDown:"if(this.value.length==13 && event.keyCode!=8 && event.keyCode!=13) return false;"
 }).keypress(function (e) {
    identidad = $(this).val();
@@ -1800,6 +1827,15 @@ $('#identidad').attr({
          $('#id_ral_cant').val(msg.seg.ral_cant)
          $('#id_evg_cant').val(msg.seg.evg_cant)
          $('#id_dtg_cant').val(msg.seg.dtg_cant)
+
+         $('#id_azt_3tc_cant').val(msg.seg.azt_3tc_cant)
+         $('#id_acb_3tc_azt_cant').val(msg.seg.acb_3tc_azt_cant)
+         $('#id_efv_ftc_tdf_cant').val(msg.seg.efv_ftc_tdf_cant)
+         $('#id_rpv_ftc_tdf_cant').val(msg.seg.rpv_ftc_tdf_cant)
+         $('#id_tdf_ftc_cant').val(msg.seg.tdf_ftc_cant)
+         $('#id_lpv_rtv_cant').val(msg.seg.lpv_rtv_cant)
+         $('#id_abc_3tc_cant').val(msg.seg.abc_3tc_cant)
+         $('#id_abc_3tc_azt_cant').val(msg.seg.abc_3tc_azt_cant)
 
          var option = new Array();
          if (msg.seg.azt==true){
@@ -2437,6 +2473,16 @@ $('#search_identidad').click(function() {
          $('#id_ral_cant').val(msg.seg.ral_cant)
          $('#id_evg_cant').val(msg.seg.evg_cant)
          $('#id_dtg_cant').val(msg.seg.dtg_cant)
+
+
+         $('#id_azt_3tc_cant').val(msg.seg.azt_3tc_cant)
+         $('#id_abc_3tc_azt_cant').val(msg.seg.acb_3tc_azt_cant)
+         $('#id_efv_ftc_tdf_cant').val(msg.seg.efv_ftc_tdf_cant)
+         $('#id_rpv_ftc_tdf_cant').val(msg.seg.rpv_ftc_tdf_cant)
+         $('#id_tdf_ftc_cant').val(msg.seg.tdf_ftc_cant)
+         $('#id_lpv_rtv_cant').val(msg.seg.lpv_rtv_cant)
+         $('#id_abc_3tc_cant').val(msg.seg.abc_3tc_cant)
+         $('#id_abc_3tc_azt_cant').val(msg.seg.abc_3tc_azt_cant)
 
          var option = new Array();
          if (msg.seg.azt==true){

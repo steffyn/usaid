@@ -1915,7 +1915,14 @@ def boleta_seguimiento(request):
 						'cantidad_medicamento',
 						'adherencia',
 						'tiempo_arv',
-						'fecha_proxentrega_arv'
+						'fecha_proxentrega_arv',
+						'azt_3tc_cant',
+						'abc_3tc_azt_cant',
+						'efv_ftc_tdf_cant',
+						'rpv_ftc_tdf_cant',
+						'tdf_ftc_cant',
+						'lpv_rtv_cant',
+						'abc_3tc_cant'
 					).filter(boleta_clinica=persona['id'])[:1].get()
 				)
 			except Exception, e:
@@ -2511,6 +2518,14 @@ def boleta_seguimiento(request):
 				except Exception, e:
 					registro2.establecimiento = None
 
+				registro2.azt_3tc_cant= request.POST.get('azt_3tc') #aqui cambiar trat por nombre del campo
+				registro2.abc_3tc_azt_cant= request.POST.get('abc_3tc_azt')
+				registro2.efv_ftc_tdf_cant= request.POST.get('efv_ftc_tdf')
+				registro2.rpv_ftc_tdf_cant= request.POST.get('rpv_ftc_tdf')
+				registro2.tdf_ftc_cant= request.POST.get('tdf_ftc')
+				registro2.lpv_rtv_cant= request.POST.get('lpv_rtv')
+				registro2.abc_3tc_cant= request.POST.get('abc_3tc')
+
 				registro2.save()
 
 				try:
@@ -2866,6 +2881,14 @@ def boleta_seguimiento(request):
 				else:
 					registro.fecha_proxentrega_arv = None	 			
 	 			registro.save()
+	 			registro.isoniacida = request.POST.get('isoniacida')
+	 			registro.azt_3tc_cant = request.POST.get('azt_3tc_cant')
+				registro.abc_3tc_azt_cant = request.POST.get('abc_3tc_azt_cant')
+				registro.efv_ftc_tdf_cant = request.POST.get('efv_ftc_tdf_cant')
+				registro.rpv_ftc_tdf_cant = request.POST.get('rpv_ftc_tdf_cant')
+				registro.tdf_ftc_cant = request.POST.get('tdf_ftc_cant')
+				registro.lpv_rtv_cant = request.POST.get('lpv_rtv_cant')
+				registro.abc_3tc_cant = request.POST.get('abc_3tc_cant')
 
 				formulario = RPNForm()
 				formulario.fields['sexo'].widget.attrs['disabled'] = True
