@@ -271,9 +271,9 @@ class BoletasClinicas(models.Model):
 	fecha_proxima_cita = models.DateField(blank=True, null=True, verbose_name='Fecha de Próxima Cita')
 	cita_medica = models.CharField(max_length=200, blank=True, null=True, verbose_name='Cita Médica')
 	retiro_medicamento = models.CharField(max_length=200, blank=True, null=True, verbose_name='Retiro de Medicamento')
-	talla = models.CharField(max_length=3, blank=True, null=True, verbose_name='Talla (Cms)')
-	peso = models.CharField(max_length=3, blank=True, null=True, verbose_name='Peso (Lbs)')
-	imc = models.CharField(max_length=3, blank=True, null=True, verbose_name='IMC')
+	talla = models.CharField(max_length=10, blank=True, null=True, verbose_name='Talla (Cms)')
+	peso = models.CharField(max_length=10, blank=True, null=True, verbose_name='Peso (Lbs)')
+	imc = models.CharField(max_length=10, blank=True, null=True, verbose_name='IMC')
 	estado_inmunologico = models.IntegerField(choices=ESTADO_INMUNOLOGICO, blank=True, null=True, verbose_name='Estadio Inmunológico')
 	estado_clinico = models.CharField(max_length=3, choices=ESTADIO_CLINICO, blank=True, null=True, verbose_name='Estadio Clínico')
 	estadio_infeccion = models.CharField(max_length=2, blank=True, null=True, verbose_name='Estadio de la Infección')
@@ -646,6 +646,7 @@ class BoletasSeguimientos(models.Model):
 	ral_cant= models.IntegerField(blank=True, null=True, verbose_name='Raltegravir (RAL)')
 	evg_cant= models.IntegerField(blank=True, null=True, verbose_name='Elvitegravir (EVG)')
 	dtg_cant= models.IntegerField(blank=True, null=True, verbose_name='Dolutegravir (DTG)')
+<<<<<<< HEAD
 	azt_3tc_cant= models.IntegerField(blank=True, null=True, verbose_name='AZT_3TC')
 	abc_3tc_azt_cant= models.IntegerField(blank=True, null=True, verbose_name='ACB_3TC_AZT')
 	efv_ftc_tdf_cant= models.IntegerField(blank=True, null=True, verbose_name='EFV_FTC_TDF')
@@ -653,6 +654,8 @@ class BoletasSeguimientos(models.Model):
 	tdf_ftc_cant= models.IntegerField(blank=True, null=True, verbose_name='TDF_FTC')
 	lpv_rtv_cant= models.IntegerField(blank=True, null=True, verbose_name='LPV_rtv')
 	abc_3tc_cant= models.IntegerField(blank=True, null=True, verbose_name='ABC_3TC')
+=======
+>>>>>>> e0a8cdd845f5091ab7d950f0a756030430b9e36a
 
 	abc_med = models.NullBooleanField(default=False)
 	ft_med= models.NullBooleanField(default=False)

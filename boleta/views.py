@@ -1915,6 +1915,7 @@ def boleta_seguimiento(request):
 						'cantidad_medicamento',
 						'adherencia',
 						'tiempo_arv',
+<<<<<<< HEAD
 						'fecha_proxentrega_arv',
 						'azt_3tc_cant',
 						'abc_3tc_azt_cant',
@@ -1924,6 +1925,10 @@ def boleta_seguimiento(request):
 						'lpv_rtv_cant',
 						'abc_3tc_cant'
 					).filter(boleta_clinica=persona['id'])[:1].get()
+=======
+						'fecha_proxentrega_arv'
+					).filter(boleta_clinica=persona['id']).order_by('-fecha_actualizacion')[:1].get()
+>>>>>>> e0a8cdd845f5091ab7d950f0a756030430b9e36a
 				)
 			except Exception, e:
 				seguimiento = False
@@ -1933,18 +1938,19 @@ def boleta_seguimiento(request):
 			persona = False
 			seguimiento = False
 
-		#VALIDACIONES DONDE SI TIENE BOLETA INGRESADA MAYOR DE 3
-		# hoy = datetime.today().date()
-		# try:
-		# 	ultima_boleta = BoletasSeguimientos.objects.filter(boleta_clinica__boleta__identidad=identidad).order_by('-fecha_actualizacion')[:1].get()
-		# 	fecha = add_months(ultima_boleta.fecha_actualizacion, 3)
-		# 	print fecha , hoy
-		# 	if fecha > hoy:
-		# 		print 'PASO POR AQUI?'
-		# 		persona = 'existe'
-		# 		seg = False
-		# except Exception, e:
-			# pass
+		#VALIDACIONES DONDE SI TIENE BOLETA INGRESADA MAYOR DE 7 DIAS PUES CREA UNA NUEVA, SINO CARGA LA ANTERIOR
+		hoy = datetime.today().date()
+		try:
+			ultima_boleta = BoletasSeguimientos.objects.filter(boleta_clinica__boleta__identidad=identidad).order_by('-fecha_actualizacion')[:1].get()
+			from datetime import timedelta
+			dias = timedelta(days=5)
+			fecha = datetime.date(ultima_boleta.fecha_actualizacion + dias)
+			print ultima_boleta.fecha_actualizacion , fecha, hoy
+			if fecha < hoy:
+				seguimiento = False
+		except Exception, e:
+			print e
+			pass
 
 		data = {
 			'persona' : persona,
@@ -2539,6 +2545,7 @@ def boleta_seguimiento(request):
 
 				registro.actualizado_por = request.user
 				registro.boleta_clinica = registro2
+				registro.identidad =  identidad
 				if '1' in request.POST.getlist('co1'):
 					registro.azt = True
 				else:
