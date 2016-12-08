@@ -1916,7 +1916,7 @@ def boleta_seguimiento(request):
 						'adherencia',
 						'tiempo_arv',
 						'fecha_proxentrega_arv'
-					).filter(boleta_clinica=persona['id'])[:1].get()
+					).filter(boleta_clinica=persona['id']).order_by('-fecha_actualizacion')[:1].get()
 				)
 			except Exception, e:
 				seguimiento = False
@@ -1926,18 +1926,19 @@ def boleta_seguimiento(request):
 			persona = False
 			seguimiento = False
 
-		#VALIDACIONES DONDE SI TIENE BOLETA INGRESADA MAYOR DE 3
-		# hoy = datetime.today().date()
-		# try:
-		# 	ultima_boleta = BoletasSeguimientos.objects.filter(boleta_clinica__boleta__identidad=identidad).order_by('-fecha_actualizacion')[:1].get()
-		# 	fecha = add_months(ultima_boleta.fecha_actualizacion, 3)
-		# 	print fecha , hoy
-		# 	if fecha > hoy:
-		# 		print 'PASO POR AQUI?'
-		# 		persona = 'existe'
-		# 		seg = False
-		# except Exception, e:
-			# pass
+		#VALIDACIONES DONDE SI TIENE BOLETA INGRESADA MAYOR DE 7 DIAS PUES CREA UNA NUEVA, SINO CARGA LA ANTERIOR
+		hoy = datetime.today().date()
+		try:
+			ultima_boleta = BoletasSeguimientos.objects.filter(boleta_clinica__boleta__identidad=identidad).order_by('-fecha_actualizacion')[:1].get()
+			from datetime import timedelta
+			dias = timedelta(days=5)
+			fecha = datetime.date(ultima_boleta.fecha_actualizacion + dias)
+			print ultima_boleta.fecha_actualizacion , fecha, hoy
+			if fecha < hoy:
+				seguimiento = False
+		except Exception, e:
+			print e
+			pass
 
 		data = {
 			'persona' : persona,
@@ -2524,6 +2525,7 @@ def boleta_seguimiento(request):
 
 				registro.actualizado_por = request.user
 				registro.boleta_clinica = registro2
+				registro.identidad =  identidad
 				if '1' in request.POST.getlist('co1'):
 					registro.azt = True
 				else:

@@ -646,7 +646,6 @@ class BoletasSeguimientos(models.Model):
 	ral_cant= models.IntegerField(blank=True, null=True, verbose_name='Raltegravir (RAL)')
 	evg_cant= models.IntegerField(blank=True, null=True, verbose_name='Elvitegravir (EVG)')
 	dtg_cant= models.IntegerField(blank=True, null=True, verbose_name='Dolutegravir (DTG)')
-	azt_3tc= models.IntegerField(blank=True, null=True, verbose_name='AZT_3TC')
 
 	abc_med = models.NullBooleanField(default=False)
 	ft_med= models.NullBooleanField(default=False)
