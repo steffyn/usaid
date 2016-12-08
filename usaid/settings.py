@@ -81,27 +81,32 @@ WSGI_APPLICATION = 'usaid.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
-#os.environ["ODBCSYSINI"] = "/home/BiDSS"
+os.environ["ODBCSYSINI"] = "/home/BiDSS"
 
 
 DATABASES = {
-
     'default': {
-
         'ENGINE': 'sql_server.pyodbc', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-
         'NAME': 'DB_A0641C_USAID',                      # Or path to database file if using sqlite3.
-
-        'USER': '',                      # Not used with sqlite3.
-
-        'PASSWORD': '',                  # Not used with sqlite3.
-
-        'HOST': 'LAPTOP-8V5K536O\SQLEXPRESS',
-
+        'USER': 'DB_A0641C_USAID_admin',                      # Not used with sqlite3.
+        'PASSWORD': 'Motagua2016',                  # Not used with sqlite3.
+        'HOST': 'sqlserverdatasource',                      # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '1433',                      # Set to empty string for default. Not used with sqlite3.
+        'OPTIONS': {
+                'host_is_server': False,
+                'dsn': 'sqlserverdatasource',
+        },
     }
-
 }
-
+DATABASE_NAME = 'DB_A0641C_USAID'
+DATABASE_HOST = 'sqlserverdatasource'
+DATABASE_PORT = '1433'
+DATABASE_USER = 'DB_A0641C_USAID_admin'
+DATABASE_PASSWORD = 'Motagua2016'
+DATABASE_OPTIONS = {
+        'host_is_server': False,
+        'dsn': 'sqlserverdatasource',
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
