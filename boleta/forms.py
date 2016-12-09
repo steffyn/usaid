@@ -19,6 +19,11 @@ RESULTADOS = (
 	(2, "Negativo"),
 )
 
+RESULTADOSSIFILIS = (
+	(1, "Reactivo"),
+	(2, "No Reactivo"),
+)
+
 TIPO_POBLACION = (
 	(1, "MTS"),
 	(2, "HSH/TG"),
@@ -56,7 +61,7 @@ ESTADIO_CLINICO = (
 	("C", "C"),
 )
 
-GENERO = (
+GENERO = (#COPIAR TODO ESTO PEGAR ABAJO CON OTRO NOMBRE Y AGREGAR LOS OTROS MARICAS
 	(1, "Hombre"),
 	(2, "Mujer"),
 )
@@ -177,11 +182,11 @@ class BoletaClinicaForm(ModelForm):
 	seguro_privado =  forms.ChoiceField(widget=RadioSelect, choices=SI_NO, label='Seguro de Salud Privado', required=False, initial=None)
 	relaciones_mismo_sexo =  forms.ChoiceField(widget=RadioSelect, choices=SI_NO, label='¿Ha tenido/tiene relaciones sexuales con personas de su mismo sexo?', required=False, initial=None)
 	dinero_por_relaciones =  forms.ChoiceField(widget=RadioSelect, choices=SI_NO, label='¿Ha aceptado/acepta dinero, bienes o servicios a cambio de relaciones sexuales en los últmos meses?', required=False, initial=None)
-	identificacion_genero =  forms.ChoiceField(widget=RadioSelect, choices=GENERO, label='¿Cómo se identifica: Hombre o Mujer?', required=False, initial=None)
+	identificacion_genero =  forms.ChoiceField(widget=RadioSelect, choices=GENERO, label='¿Cómo se identifica: Hombre o Mujer?', required=False, initial=None)#MODIFICAR AQUI COMO SE IDENTIFICA
 	
 	hepb_resultado =  forms.ChoiceField(widget=RadioSelect, choices=RESULTADOS, label='Resultado', required=False, initial=None)
 	hepc_resultado =  forms.ChoiceField(widget=RadioSelect, choices=RESULTADOS, label='Resultado', required=False, initial=None)
-	rpr_resultado =  forms.ChoiceField(widget=RadioSelect, choices=RESULTADOS, label='Resultado', required=False, initial=None)
+	rpr_resultado =  forms.ChoiceField(widget=RadioSelect, choices=RESULTADOSSIFILIS, label='Resultado', required=False, initial=None)
 	
 	actualmente_tarv =  forms.ChoiceField(widget=RadioSelect, choices=SI_NO, label='Actualmente TARV', required=False, initial=None)
 	estatus_actual_tarv =  forms.ChoiceField(widget=RadioSelect, choices=STATUS_TARV, label='', required=False, initial=None)
