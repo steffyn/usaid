@@ -362,7 +362,7 @@ class BoletasClinicas(models.Model):
 	tudi_intrat_reitrat = models.IntegerField(choices=SI_NO, blank=True, null=True, verbose_name='Reinicio Tratamiento')
 	tudi_intrat_fecha_reitrat = models.DateField(blank=True, null=True, verbose_name='Fecha')
 
-	hepb = models.IntegerField(choices=SI_NO, blank=True, null=True)
+	hepb2 = models.IntegerField(choices=SI_NO, blank=True, null=True)
 	hepb_diag = models.DateField(blank=True, null=True, verbose_name='Fecha de Diagnóstico')
 	hepb_initrat = models.IntegerField(choices=SI_NO, blank=True, null=True)
 	hepb_fecha_initrat = models.DateField(blank=True, null=True, verbose_name='Fecha')
@@ -376,7 +376,7 @@ class BoletasClinicas(models.Model):
 	hepb_intrat_fecha_reitrat = models.DateField(blank=True, null=True, verbose_name='Fecha')
 
 
-	hepc = models.IntegerField(choices=SI_NO, blank=True, null=True)
+	hepc2 = models.IntegerField(choices=SI_NO, blank=True, null=True)
 	hepc_diag = models.DateField(blank=True, null=True, verbose_name='Fecha de Diagnóstico')
 	hepc_initrat = models.IntegerField(choices=SI_NO, blank=True, null=True)
 	hepc_fecha_initrat = models.DateField(blank=True, null=True, verbose_name='Fecha')

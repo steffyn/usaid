@@ -644,7 +644,7 @@
          </div>
          <div class="row">
             <div class="col-sm-4 form-inline">
-               {{formulario3.hepb|bootstrap}}
+               {{formulario3.hepb2|bootstrap}}
             </div>
             <div class="col-sm-2">
                {{formulario3.hepb_diag|bootstrap}}
@@ -696,7 +696,7 @@
          </div>
          <div class="row">
             <div class="col-sm-4 form-inline">
-               {{formulario3.hepc|bootstrap}}
+               {{formulario3.hepc2|bootstrap}}
             </div>
             <div class="col-sm-2">
                {{formulario3.hepc_diag|bootstrap}}
@@ -1461,7 +1461,6 @@ $('#identidad').attr({
    }
    })
    .done(function( data ) {
-      console.log(data)
       if (data.persona==false){
 
          $('#persona').val(1)
@@ -1487,9 +1486,11 @@ $('#identidad').attr({
             $('#id_estado_civil_'+(data.persona.estado_civil-1)).prop('checked', true)
             $('#id_telefono_fijo').val(data.persona.telefono_fijo)
             $('#id_telefono_celular').val(data.persona.telefono_celular)
+            console.log(data.persona.departamento__pk, '-------------', data.persona.municipio__pk, data.persona.ciudad__pk)
             $("#id_departamento").select2('val', String(data.persona.departamento__pk))
-            $("#id_departamento").val(data.persona.departamento__pk)
+            $("#id_departamento").val(data.persona.departamento__pk).trigger('change')
             $("#id_ocupacion").select2('val', String(data.persona.ocupacion__pk))
+            $("#id_ocupacion").val(data.persona.ocupacion__pk).trigger('change')
             $('#id_calle').val(data.persona.calle)
             $('#id_bloque').val(data.persona.bloque)
             $('#id_numero_casa').val(data.persona.numero_casa)
@@ -1508,6 +1509,7 @@ $('#identidad').attr({
             $('#id_direccion_tutor').val(data.persona.direccion_tutor)
             $('#id_poblacion_'+(data.persona.poblacion__pk-1)).prop('checked', true)
             $('#id_actividad_economica').select2('val', String(data.persona.actividad_economica__pk))
+            $('#id_actividad_economica').val(data.persona.actividad_economica__pk).trigger('change')
             $('#id_fecha_ultima_menstruacion').val(data.persona.fecha_ultima_menstruacion)
             $('#id_condiciones').val(data.persona.condiciones)
             $('#id_otro_condicion').val(data.persona.otro_condicion)
@@ -1515,11 +1517,13 @@ $('#identidad').attr({
 
             setTimeout(function(){
                $("#id_municipio").select2('val', String(data.persona.municipio__pk))
-            }, 2000);
+               $("#id_municipio").val(data.persona.municipio__pk).trigger('change')
+            }, 4000);
 
             setTimeout(function(){
                $("#id_ciudad").select2('val', String(data.persona.ciudad__pk))
-            }, 4000);
+               $("#id_ciudad").val(data.persona.ciudad__pk).trigger('change')
+            }, 9000);
 
          }else{
             $('#persona').val(3)
@@ -1725,7 +1729,7 @@ $('#identidad').attr({
          $('#id_tudi_intrat_diag').val(data.clinica.tudi_intrat_diag)
          $('#id_tudi_intrat_fecha_reitrat').val(data.clinica.tudi_intrat_fecha_reitrat)
 
-         $('#id_hepb_'+(data.clinica.hepb-1)).prop('checked', true).trigger('change')
+         $('#id_hepb2_'+(data.clinica.hepb2-1)).prop('checked', true).trigger('change')
          $('#id_hepb_initrat_'+(data.clinica.hepb_initrat-1)).prop('checked', true).trigger('change')
          $('#id_hepb_entrat_'+(data.clinica.hepb_entrat-1)).prop('checked', true).trigger('change')
          $('#id_hepb_entrat_fintrat_'+(data.clinica.hepb_entrat_fintrat-1)).prop('checked', true).trigger('change')
@@ -1738,7 +1742,7 @@ $('#identidad').attr({
          $('#id_hepb_intrat_diag').val(data.clinica.hepb_intrat_diag)
          $('#id_hepb_intrat_fecha_reitrat').val(data.clinica.hepb_intrat_fecha_reitrat)
 
-         $('#id_hepc_'+(data.clinica.hepc-1)).prop('checked', true).trigger('change')
+         $('#id_hepc2_'+(data.clinica.hepc2-1)).prop('checked', true).trigger('change')
          $('#id_hepc_initrat_'+(data.clinica.hepc_initrat-1)).prop('checked', true).trigger('change')
          $('#id_hepc_entrat_'+(data.clinica.hepc_entrat-1)).prop('checked', true).trigger('change')
          $('#id_hepc_entrat_fintrat_'+(data.clinica.hepc_entrat_fintrat-1)).prop('checked', true).trigger('change')
@@ -1954,8 +1958,9 @@ $('#search_identidad').click(function (e) {
             $('#id_telefono_fijo').val(data.persona.telefono_fijo)
             $('#id_telefono_celular').val(data.persona.telefono_celular)
             $("#id_departamento").select2('val', String(data.persona.departamento__pk))
-            $("#id_departamento").val(data.persona.departamento__pk)
+            $("#id_departamento").val(data.persona.departamento__pk).trigger('change')
             $("#id_ocupacion").select2('val', String(data.persona.ocupacion__pk))
+            $("#id_ocupacion").val(data.persona.ocupacion__pk).trigger('change')
             $('#id_calle').val(data.persona.calle)
             $('#id_bloque').val(data.persona.bloque)
             $('#id_numero_casa').val(data.persona.numero_casa)
@@ -1974,6 +1979,7 @@ $('#search_identidad').click(function (e) {
             $('#id_direccion_tutor').val(data.persona.direccion_tutor)
             $('#id_poblacion_'+(data.persona.poblacion__pk-1)).prop('checked', true)
             $('#id_actividad_economica').select2('val', String(data.persona.actividad_economica__pk))
+            $('#id_actividad_economica').val(data.persona.actividad_economica__pk).trigger('change')
             $('#id_fecha_ultima_menstruacion').val(data.persona.fecha_ultima_menstruacion)
             $('#id_condiciones').val(data.persona.condiciones)
             $('#id_otro_condicion').val(data.persona.otro_condicion)
@@ -1981,11 +1987,13 @@ $('#search_identidad').click(function (e) {
 
             setTimeout(function(){
                $("#id_municipio").select2('val', String(data.persona.municipio__pk))
-            }, 2000);
+               $("#id_municipio").val(data.persona.municipio__pk).trigger('change')
+            }, 4000);
 
             setTimeout(function(){
                $("#id_ciudad").select2('val', String(data.persona.ciudad__pk))
-            }, 4000);
+               $("#id_ciudad").val(data.persona.ciudad__pk).trigger('change')
+            }, 9000);
 
          }else{
             $('#persona').val(3)
@@ -2191,7 +2199,7 @@ $('#search_identidad').click(function (e) {
          $('#id_tudi_intrat_diag').val(data.clinica.tudi_intrat_diag)
          $('#id_tudi_intrat_fecha_reitrat').val(data.clinica.tudi_intrat_fecha_reitrat)
 
-         $('#id_hepb_'+(data.clinica.hepb-1)).prop('checked', true).trigger('change')
+         $('#id_hepb2_'+(data.clinica.hepb-1)).prop('checked', true).trigger('change')
          $('#id_hepb_initrat_'+(data.clinica.hepb_initrat-1)).prop('checked', true).trigger('change')
          $('#id_hepb_entrat_'+(data.clinica.hepb_entrat-1)).prop('checked', true).trigger('change')
          $('#id_hepb_entrat_fintrat_'+(data.clinica.hepb_entrat_fintrat-1)).prop('checked', true).trigger('change')
@@ -2204,7 +2212,7 @@ $('#search_identidad').click(function (e) {
          $('#id_hepb_intrat_diag').val(data.clinica.hepb_intrat_diag)
          $('#id_hepb_intrat_fecha_reitrat').val(data.clinica.hepb_intrat_fecha_reitrat)
 
-         $('#id_hepc_'+(data.clinica.hepc-1)).prop('checked', true).trigger('change')
+         $('#id_hepc2_'+(data.clinica.hepc-1)).prop('checked', true).trigger('change')
          $('#id_hepc_initrat_'+(data.clinica.hepc_initrat-1)).prop('checked', true).trigger('change')
          $('#id_hepc_entrat_'+(data.clinica.hepc_entrat-1)).prop('checked', true).trigger('change')
          $('#id_hepc_entrat_fintrat_'+(data.clinica.hepc_entrat_fintrat-1)).prop('checked', true).trigger('change')

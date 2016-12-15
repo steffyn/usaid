@@ -216,7 +216,6 @@ def prueba_vih(request):
 		identidad = request.GET['identidad']
 		#VALIDACIONES DONDE SI TIENE BOLETA INGRESADA MAYOR DE 3
 		hoy = datetime.today().date()
-		print hoy
 		try:
 			ultima_boleta = BoletasPruebas.objects.filter(boleta__identidad=identidad).order_by('-fecha_actualizacion')[:1].get()
 			fecha = add_months(ultima_boleta.fecha_actualizacion, 3)
@@ -247,13 +246,11 @@ def prueba_vih(request):
 
 					persona = True
 				except Exception, e:
-					print e
 					persona = False
 					expediente = False
 					cantidad_boleta = False
 					boleta = False
 		except Exception, e:
-			print 'ERROR',e	
 			try:
 				boleta = Boletas.objects.values(
 					'expediente', 
@@ -276,7 +273,6 @@ def prueba_vih(request):
 
 				persona = True
 			except Exception, e:
-				print e
 				persona = False
 				expediente = False
 				cantidad_boleta = False
@@ -379,7 +375,6 @@ def post_prueba_vih(request):
 					persona = True
 
 				except Exception, e:
-					print e
 					persona = False
 					expediente = False
 					boleta = False
@@ -405,7 +400,6 @@ def post_prueba_vih(request):
 				persona = True
 
 			except Exception, e:
-				print e
 				persona = False
 				expediente = False
 				boleta = False
@@ -633,9 +627,11 @@ def boleta_clinica(request):
 						'caviral_ordenado_consulta',
 						'caviral_detectable',
 						'hepb',
+						'hepb2',
 						'hepb_resultado',
 						'hepb_fecha_realizacion',
 						'hepb_ordenado_consulta',
+						'hepc2',
 						'hepc',
 						'hepc_resultado',
 						'hepc_fecha_realizacion',
@@ -977,8 +973,8 @@ def boleta_clinica(request):
 						pass
 
 					registro.actualizado_por = request.user
-					registro.save()
 					formulario2.save_m2m()
+					registro.save()
 
 				try:
 					instance = BoletasClinicas.objects.get(pk=request.POST.get('boleta_clinica'))
@@ -1013,8 +1009,10 @@ def boleta_clinica(request):
 				registro2.caviral_ordenado_consulta= request.POST.get('caviral_ordenado_consulta')
 				registro2.caviral_detectable=request.POST.get('caviral_detectable')
 				registro2.hepb= request.POST.get('hepb')
+				registro2.hepb2= request.POST.get('hepb2')
 				registro2.hepb_ordenado_consulta= request.POST.get('hepb_ordenado_consulta')
 				registro2.hepc= request.POST.get('hepc')
+				registro2.hepc2= request.POST.get('hepc2')
 				registro2.hepc_ordenado_consulta= request.POST.get('hepc_ordenado_consulta')
 				registro2.rpr= request.POST.get('rpr')
 				registro2.rpr_ordenado_consulta= request.POST.get('rpr_ordenado_consulta')
@@ -1047,6 +1045,7 @@ def boleta_clinica(request):
 				registro2.tudi_intrat_reitrat= request.POST.get('tudi_intrat_reitrat')
 				registro2.tudi_trat= request.POST.get('tudi_trat')
 				registro2.hepb= request.POST.get('hepb')
+				registro2.hepb2= request.POST.get('hepb2')
 				registro2.hepb_initrat= request.POST.get('hepb_initrat')
 				registro2.hepb_entrat= request.POST.get('hepb_entrat')
 				registro2.hepb_entrat_fintrat= request.POST.get('hepb_entrat_fintrat')
@@ -1054,6 +1053,7 @@ def boleta_clinica(request):
 				registro2.hepb_intrat_reitrat= request.POST.get('hepb_intrat_reitrat')
 				registro2.hepb_trat= request.POST.get('hepb_trat')
 				registro2.hepc= request.POST.get('hepc')
+				registro2.hepc2= request.POST.get('hepc2')
 				registro2.hepc_initrat= request.POST.get('hepc_initrat')
 				registro2.hepc_entrat= request.POST.get('hepc_entrat')
 				registro2.hepc_entrat_fintrat= request.POST.get('hepc_entrat_fintrat')
@@ -1124,6 +1124,8 @@ def boleta_clinica(request):
 				registro2.infpel_intrat_reitrat= request.POST.get('infpel_intrat_reitrat')
 				registro2.infpel_trat= request.POST.get('infpel_trat')
 				registro2.actualizado_por = request.user
+
+				print registro2.hepc2, registro2.hepb2, '----------------------------------------------------------------'
 				if request.POST.get('fecha_ultima_menstruacion') != '':
 					registro2.fecha_ultima_menstruacion = request.POST.get('fecha_ultima_menstruacion')
 				else:
@@ -1585,10 +1587,12 @@ def boleta_seguimiento(request):
 					'caviral_ordenado_consulta',
 					'caviral_detectable',
 					'hepb',
+					'hepb2',
 					'hepb_resultado',
 					'hepb_fecha_realizacion',
 					'hepb_ordenado_consulta',
 					'hepc',
+					'hepc2',
 					'hepc_resultado',
 					'hepc_fecha_realizacion',
 					'hepc_ordenado_consulta',
@@ -1952,11 +1956,9 @@ def boleta_seguimiento(request):
 			from datetime import timedelta
 			dias = timedelta(days=2)
 			fecha = datetime.date(ultima_boleta.fecha_actualizacion + dias)
-			print ultima_boleta.fecha_actualizacion , fecha, hoy
 			if fecha < hoy:
 				seguimiento = False
 		except Exception, e:
-			print e
 			pass
 
 		data = {
@@ -2029,8 +2031,10 @@ def boleta_seguimiento(request):
 				registro2.caviral_ordenado_consulta= request.POST.get('caviral_ordenado_consulta')
 				registro2.caviral_detectable= request.POST.get('caviral_detectable')
 				registro2.hepb= request.POST.get('hepb')
+				registro2.hepb2= request.POST.get('hepb2')
 				registro2.hepb_ordenado_consulta= request.POST.get('hepb_ordenado_consulta')
 				registro2.hepc= request.POST.get('hepc')
+				registro2.hepc2= request.POST.get('hepc2')
 				registro2.hepc_ordenado_consulta= request.POST.get('hepc_ordenado_consulta')
 				registro2.rpr= request.POST.get('rpr')
 				registro2.rpr_ordenado_consulta= request.POST.get('rpr_ordenado_consulta')
@@ -2070,6 +2074,7 @@ def boleta_seguimiento(request):
 				registro2.hepb_intrat_reitrat= request.POST.get('hepb_intrat_reitrat')
 				registro2.hepb_trat= request.POST.get('hepb_trat')
 				registro2.hepc= request.POST.get('hepc')
+				registro2.hepc2= request.POST.get('hepc2')
 				registro2.hepc_initrat= request.POST.get('hepc_initrat')
 				registro2.hepc_entrat= request.POST.get('hepc_entrat')
 				registro2.hepc_entrat_fintrat= request.POST.get('hepc_entrat_fintrat')
@@ -2539,8 +2544,10 @@ def boleta_seguimiento(request):
 				registro2.tdf_ftc_cant= request.POST.get('tdf_ftc')
 				registro2.lpv_rtv_cant= request.POST.get('lpv_rtv')
 				registro2.abc_3tc_cant= request.POST.get('abc_3tc')
+
 				registro2.mvc_cant= request.POST.get('mvc')
 				registro2.t20_cant= request.POST.get('t20')
+
 				registro2.save()
 
 				try:
@@ -2987,8 +2994,6 @@ def reporte_general(request):
 			clinica=Count('boletasclinicas__id'),
 			seguimiento=Count('boletasclinicas__boletasseguimientos__id')
 		)
-
-		print listado.query
 
 	except Exception, e:
 		responsable = ''
