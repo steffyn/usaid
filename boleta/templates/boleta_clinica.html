@@ -343,7 +343,11 @@
                {{formulario3.caviral_ordenado_consulta|bootstrap}}
             </div>
          </div>
-
+         <div class="row">
+            <div class="col-sm-2 form-inline">
+               {{formulario3.caviral_detectable|bootstrap}}
+            </div>
+         </div>
          <p class="page-header"></p>
          <p class="text-center sub-style">SEROLOGIA</p>
          <div class="row">
@@ -1627,6 +1631,7 @@ $('#identidad').attr({
          $('#id_caviral_ordenado_consulta_'+(data.clinica.caviral_ordenado_consulta-1)).prop('checked', true).trigger('change')
          $('#id_caviral_resultado').val(data.clinica.caviral_resultado)
          $('#id_caviral_fecha_realizacion').val(data.clinica.caviral_fecha_realizacion)
+         $('#id_caviral_detectable_'+(data.clinica.caviral_detectable-1)).prop('checked', true).trigger('change')
 
          $('#id_hepb_'+(data.clinica.hepb-1)).prop('checked', true).trigger('change')
          $('#id_hepb_ordenado_consulta_'+(data.clinica.hepb_ordenado_consulta-1)).prop('checked', true).trigger('change')
@@ -2092,6 +2097,7 @@ $('#search_identidad').click(function (e) {
          $('#id_caviral_ordenado_consulta_'+(data.clinica.caviral_ordenado_consulta-1)).prop('checked', true).trigger('change')
          $('#id_caviral_resultado').val(data.clinica.caviral_resultado)
          $('#id_caviral_fecha_realizacion').val(data.clinica.caviral_fecha_realizacion)
+         $('#id_caviral_detectable_'+(data.clinica.caviral_detectable-1)).prop('checked', true).trigger('change')
 
          $('#id_hepb_'+(data.clinica.hepb-1)).prop('checked', true).trigger('change')
          $('#id_hepb_ordenado_consulta_'+(data.clinica.hepb_ordenado_consulta-1)).prop('checked', true).trigger('change')
@@ -2453,16 +2459,27 @@ $('input[name=lic4]').change(function(){
       $('#id_lic4_resultado, #id_lic4_fecha_realizacion, input[name=lic4_ordenado_consulta]').prop('disabled', false)
    }
 })
-
+/*aqui se oculta al escoger no en carga viral*/
 $('input[name=caviral]').change(function(){
    opcion = $("#id_caviral_1").prop("checked")
 
    if (opcion == true){
-      $('#id_caviral_resultado, #id_caviral_fecha_realizacion, input[name=caviral_ordenado_consulta]').prop('disabled', true)
+      $('#id_caviral_resultado, #id_caviral_fecha_realizacion, input[name=caviral_ordenado_consulta],input[name=caviral_detectable]').prop('disabled', true)
+   }else{
+      $('#id_caviral_resultado, #id_caviral_fecha_realizacion, input[name=caviral_ordenado_consulta],input[name=caviral_detectable]').prop('disabled', false)
+   }
+})
+
+$('input[name=caviral_detectable]').change(function(){
+   opcion = $("#id_caviral_detectable_1").prop("checked")
+
+   if (opcion == true){
+      $('#id_caviral_resultado').prop('disabled', true)
    }else{
       $('#id_caviral_resultado, #id_caviral_fecha_realizacion, input[name=caviral_ordenado_consulta]').prop('disabled', false)
    }
 })
+
 
 $('input[name=hepb]').change(function(){
    opcion = $("#id_hepb_1").prop("checked")
@@ -3440,7 +3457,7 @@ $('#parte2').click(function(){
    $('input[name="estado_inmunologico"], input[name="estado_clinico"], input[name="estadio_infeccion"], input[name="estatus_actual_tarv"], input[name="actualmente_tarv"]').prop('checked', false).trigger('change');
 })
 $('#parte3').click(function(){
-   $('input[name="lic4"], input[name="lic4_ordenado_consulta"], input[name="caviral"], input[name="caviral_ordenado_consulta"]').prop('checked', false).trigger('change');
+   $('input[name="lic4"], input[name="lic4_ordenado_consulta"], input[name="caviral"], input[name="caviral_ordenado_consulta"],input[name="caviral_detectable"]').prop('checked', false).trigger('change');
 })
 $('#parte4').click(function(){
    $('input[name="hepb"], input[name="hepb_ordenado_consulta"], input[name="hepc"], input[name="hepc_ordenado_consulta"],input[name="rpr"] ,input[name="rpr_ordenado_consulta"],input[name="hepb_resultado"] ,input[name="rpr_resultado"],input[name="hepc_resultado"] ').prop('checked', false).trigger('change');
@@ -3492,17 +3509,16 @@ $('input[type=number]').change(function(){
    $(this).val(Math.abs($(this).val()))
 })
 
-$('input[type=number]').attr('min', 1)
-
+$('input[type=number]').attr('min', 0)/*entero minimo en ficha clinica*/
 $('#id_talla, #id_peso').keyup(function(){
    peso = $('#id_peso').val()
    talla = $('#id_talla').val()
 
    if(peso != 0 && talla != 0){
       m = talla/100
-      kg = peso/2.2046
+    /*kg = peso/2.2046*/
 
-      imc = kg/(m*m)
+      imc = peso/(m*m)
       $('#id_imc').val(parseFloat(imc).toFixed(2))
    }else{
       $('#id_imc').val('0')
@@ -3516,9 +3532,9 @@ $('#id_talla, #id_peso').change(function(){
 
    if(peso != 0 && talla != 0){
       m = talla/100
-      kg = peso/2.2046
+      /*kg = peso/2.2046*/
 
-      imc = kg/(m*m)
+      imc = peso/(m*m)
       $('#id_imc').val(parseFloat(imc).toFixed(2))
    }else{
       $('#id_imc').val('0')

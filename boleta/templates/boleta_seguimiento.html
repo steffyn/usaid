@@ -1241,18 +1241,18 @@
                <label for="medicamento_preinscritos">Medicamentos Prescritos en la Consulta Actual</label>
                <select class="form-control" id="medicamento_preinscritos" multiple name="medicamento_prescritos">
                   <option value='1'> Abacavir (ABC) </option>
-                  <option value='2'> Emtricitabina (FT) </option>
+                  <option value='2'> Emtricitabina (FTC) </option>
                   <option value='3'> Estavudina (D4T) </option>
-                  <option value='4'> Zidovunidina (AZT) </option>
+                  <option value='4'> Zidovudina (AZT) </option>
                   <option value='5'> Efavirenz (EFV) </option>
-                  <option value='6'> Neviraparina (NVP) </option>
+                  <option value='6'> Nevirapina (NVP) </option>
                   <option value='7'> Didanosida (DDI) </option>
                   <option value='8'> Lamivudina (3TC) </option>
                   <option value='9'> Tenofovir (TDF) </option>
                   <option value='10'> Rilpavirina (RPV) </option>
                   <option value='11'> Etravirina (ETR) </option>
                   <option value='12'> Atazanavir (ATV) </option>
-                  <option value='13'> Darunavir (RAL) </option>
+                  <option value='13'> Darunavir (DRV) </option>
                   <option value='14'> Fosamprenavir (FPV) </option>
                   <option value='15'> Indinavir (IDV) </option>
                   <option value='16'> Nelfinavir (NFV) </option>
@@ -1261,17 +1261,20 @@
                   <option value='19'> Raltegravir (RAL) </option>
                   <option value='20'> Elvitegravir (EVG) </option>
                   <option value='21'> Dolutegravir (DTG) </option>
+                  <option value='22'> Maraviroc (MVC) </option>  
+                  <option value='23'> Enfurvirtide (T20) </option>                  
                </select>
             </div>
             <div class="col-sm-6">
                <label for="sel1">Co-Formulaciones</label>
                <select class="form-control" id="sel1" multiple name="co1">
                   <option value='1'> AZT/3TC </option>
-                  <option value='2'> ACB/3TC/AZT </option>
-                  <option value='3'> EFV/TFC/TDF </option>
+                  <option value='2'> ABC/3TC/AZT </option>
+                  <option value='3'> EFV/FTC/TDF </option>
                   <option value='4'> RPV/FTC/TDF </option>
-                  <option value='5'> DTF/FTC </option>
-                  <option value='6'> LPV/RTV </option>
+                  <option value='5'> TDF/FTC </option>
+                  <option value='6'> LPV/rtv </option>
+                  <option value='7'> ABC/3TC </option>
                </select>
             </div>
          </div>
@@ -1314,18 +1317,18 @@
                <label for="terapia">Nueva Terapia</label>
                <select class="form-control" id="terapia" multiple name="terapia">
                   <option value='1'> Abacavir (ABC) </option>
-                  <option value='2'> Emtricitabina (FT) </option>
+                  <option value='2'> Emtricitabina (FTC) </option>
                   <option value='3'> Estavudina (D4T) </option>
-                  <option value='4'> Zidovunidina (AZT) </option>
+                  <option value='4'> Zidovudina (AZT) </option>
                   <option value='5'> Efavirenz (EFV) </option>
-                  <option value='6'> Neviraparina (NVP) </option>
+                  <option value='6'> Nevirapina (NVP) </option>
                   <option value='7'> Didanosida (DDI) </option>
                   <option value='8'> Lamivudina (3TC) </option>
                   <option value='9'> Tenofovir (TDF) </option>
                   <option value='10'> Rilpavirina (RPV) </option>
                   <option value='11'> Etravirina (ETR) </option>
                   <option value='12'> Atazanavir (ATV) </option>
-                  <option value='13'> Darunavir (RAL) </option>
+                  <option value='13'> Darunavir (DRV) </option>
                   <option value='14'> Fosamprenavir (FPV) </option>
                   <option value='15'> Indinavir (IDV) </option>
                   <option value='16'> Nelfinavir (NFV) </option>
@@ -1334,6 +1337,8 @@
                   <option value='19'> Raltegravir (RAL) </option>
                   <option value='20'> Elvitegravir (EVG) </option>
                   <option value='21'> Dolutegravir (DTG) </option>
+                  <option value='22'> Maraviroc (MVC) </option>  
+                  <option value='23'> Enfurvirtide (T20) </option>   
                </select>
             </div>
             <div class="col-sm-6">
@@ -1344,7 +1349,8 @@
                   <option value='3'> EFV/TFC/TDF </option>
                   <option value='4'> RPV/FTC/TDF </option>
                   <option value='5'> DTF/FTC </option>
-                  <option value='6'> LPV/RTV </option>
+                  <option value='6'> LPV/rtv </option>
+                  <option value='7'> ABC/3TC </option>
                </select>
             </div>
          </div>
@@ -1430,13 +1436,13 @@
                {{formulario4.dtg_cant|bootstrap}}
             </div>
             <div class="col-sm-2">
+               {{formulario4.mvc_cant|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+               {{formulario4.t20_cant|bootstrap}}
+            </div>
+            <div class="col-sm-2">
               {{formulario4.azt_3tc_cant|bootstrap}}
-            </div>
-            <div class="col-sm-2">
-              {{formulario4.abc_3tc_azt_cant|bootstrap}}
-            </div>
-            <div class="col-sm-2">
-              {{formulario4.efv_ftc_tdf_cant|bootstrap}}
             </div>
          </div>
 
@@ -1444,10 +1450,15 @@
 
 
          <div class="row">
-           <div class="col-sm-2 form-inline">
+            <div class="col-sm-2 form-inline">
+              {{formulario4.abc_3tc_azt_cant|bootstrap}}
+            </div>
+            <div class="col-sm-2">
+              {{formulario4.efv_ftc_tdf_cant|bootstrap}}
+            </div>
+           <div class="col-sm-2 ">
               {{formulario4.rpv_ftc_tdf_cant|bootstrap}}
            </div>
-
            <div class="col-sm-2">
               {{formulario4.tdf_ftc_cant|bootstrap}}
            </div>
@@ -1457,9 +1468,7 @@
            <div class="col-sm-2">
               {{formulario4.abc_3tc_cant|bootstrap}}
            </div>
-           <div class="col-sm-3">
-               {{formulario4.cantidad_medicamento|bootstrap}}
-           </div>
+
          </div>
 
 
@@ -1473,6 +1482,9 @@
             </div>
             <div class="col-sm-4">
                {{formulario4.fecha_proxentrega_arv|bootstrap}}
+            </div>
+            <div class="col-sm-3">
+               {{formulario4.cantidad_medicamento|bootstrap}}
             </div>
          </div>
 
@@ -1826,7 +1838,9 @@ $('#identidad').attr({
          $('#id_ral_cant').val(msg.seg.ral_cant)
          $('#id_evg_cant').val(msg.seg.evg_cant)
          $('#id_dtg_cant').val(msg.seg.dtg_cant)
-
+         $('#id_mvc_cant').val(msg.seg.mvc_cant)
+         $('#id_t20_cant').val(msg.seg.t20_cant)
+         /*coformulaciones*/
          $('#id_azt_3tc_cant').val(msg.seg.azt_3tc_cant)
          $('#id_acb_3tc_azt_cant').val(msg.seg.acb_3tc_azt_cant)
          $('#id_efv_ftc_tdf_cant').val(msg.seg.efv_ftc_tdf_cant)
@@ -1835,7 +1849,7 @@ $('#identidad').attr({
          $('#id_lpv_rtv_cant').val(msg.seg.lpv_rtv_cant)
          $('#id_abc_3tc_cant').val(msg.seg.abc_3tc_cant)
          $('#id_abc_3tc_azt_cant').val(msg.seg.abc_3tc_azt_cant)
-
+         /*en esta parte se escoge la coformulacion de la consulta actual para enviar a la db */
          var option = new Array();
          if (msg.seg.azt==true){
             option.push('1')
@@ -1855,8 +1869,11 @@ $('#identidad').attr({
          if (msg.seg.lpv==true){
             option.push('6')
          }
+         if (msg.seg.abc_3tc_med==true){
+            option.push('7')
+         }
          $("#sel1").val(option).trigger("change");
-
+         /*en esta parte se escoge la coformulacion de la nueva terapia para enviar a la db */
          var option = new Array();
          if (msg.seg.azt2_ter==true){
             option.push('1')
@@ -1876,9 +1893,12 @@ $('#identidad').attr({
          if (msg.seg.lpv2_ter==true){
             option.push('6')
          }
+         if (msg.seg.abc_3tc_ter==true){
+            option.push('7')
+         }
          $("#sel2").val(option).trigger("change");
 
-
+         /*en esta parte se escoge el medicamento de la consulta actual para enviar a la db */
          var option = new Array();
          if (msg.seg.abc_med==true){
             option.push('1')
@@ -1943,7 +1963,15 @@ $('#identidad').attr({
          if (msg.seg.dtg_med==true){
             option.push('21')
          }
+         if (msg.seg.mvc_med==true){
+            option.push('22')
+         }
+         if (msg.seg.t20_med==true){
+            option.push('23')
+         }
          $("#medicamento_preinscritos").val(option).trigger("change");
+
+         /*en esta parte se escoge el medicamento de la nueva terapia para enviar a la db */
 
          var option = new Array();
          if (msg.seg.abc_ter==true){
@@ -2009,6 +2037,12 @@ $('#identidad').attr({
          if (msg.seg.dtg_ter==true){
             option.push('21')
          }
+         if (msg.seg.mvc_ter==true){
+            option.push('22')
+         }
+         if (msg.seg.t20_ter==true){
+            option.push('23')
+         }         
          $("#terapia").val(option).trigger("change");
 
       }
@@ -2472,8 +2506,9 @@ $('#search_identidad').click(function() {
          $('#id_ral_cant').val(msg.seg.ral_cant)
          $('#id_evg_cant').val(msg.seg.evg_cant)
          $('#id_dtg_cant').val(msg.seg.dtg_cant)
-
-
+         $('#id_mvc_cant').val(msg.seg.mvc_cant)
+         $('#id_t20_cant').val(msg.seg.t20_cant)
+         /*coformulaciones*/
          $('#id_azt_3tc_cant').val(msg.seg.azt_3tc_cant)
          $('#id_abc_3tc_azt_cant').val(msg.seg.acb_3tc_azt_cant)
          $('#id_efv_ftc_tdf_cant').val(msg.seg.efv_ftc_tdf_cant)
@@ -3727,7 +3762,7 @@ $('input[name=estado_inmunologico], input[name=estado_clinico]').change(function
    clinico = $('input[name=estado_clinico]:checked').val()
 
    if(inmunologico && clinico){
-      $('#id_estadio_infeccion').val(inmunologico+clinico)
+      $('#id_estadio_infeccion').val(clinico+inmunologico)
    }
 })
 
@@ -4283,7 +4318,7 @@ $('input[type=number]').change(function(){
    $(this).val(Math.abs($(this).val()))
 })
 
-$('input[type=number]').attr('min', 1)
+$('input[type=number]').attr('min', 0)/* minimo de entero boleta seguimiento-**/
 
 $('input[name=motivo_cambio_terapia]').change(function(){
    if ( $('#id_motivo_cambio_terapia_0').prop('checked') == true ){

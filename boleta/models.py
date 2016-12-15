@@ -94,6 +94,13 @@ STATUS_TARV = (
 	(5, "Sin Dato"),
 )
 
+CARGA_VIRAL = (
+	(1, "Detectable"),
+	(2, "No Detectable"),
+
+)
+
+
 #ESTA VA PARA BOLETAS
 class Condiciones(models.Model):
 	nombre = models.CharField(max_length=255)
@@ -272,7 +279,7 @@ class BoletasClinicas(models.Model):
 	cita_medica = models.CharField(max_length=200, blank=True, null=True, verbose_name='Cita Médica')
 	retiro_medicamento = models.CharField(max_length=200, blank=True, null=True, verbose_name='Retiro de Medicamento')
 	talla = models.CharField(max_length=10, blank=True, null=True, verbose_name='Talla (Cms)')
-	peso = models.CharField(max_length=10, blank=True, null=True, verbose_name='Peso (Lbs)')
+	peso = models.CharField(max_length=10, blank=True, null=True, verbose_name='Peso (Kg)')
 	imc = models.CharField(max_length=10, blank=True, null=True, verbose_name='IMC')
 	estado_inmunologico = models.IntegerField(choices=ESTADO_INMUNOLOGICO, blank=True, null=True, verbose_name='Estadio Inmunológico')
 	estado_clinico = models.CharField(max_length=3, choices=ESTADIO_CLINICO, blank=True, null=True, verbose_name='Estadio Clínico')
@@ -286,6 +293,7 @@ class BoletasClinicas(models.Model):
 	caviral_resultado = models.CharField(max_length=50, blank=True, null=True, verbose_name='Resultado (Copias/ml)')
 	caviral_fecha_realizacion = models.DateField(blank=True, null=True, verbose_name='Fecha de Realización')
 	caviral_ordenado_consulta = models.IntegerField(choices=ORDENADOS_EN_CONSULTA, blank=True, null=True, verbose_name='')
+	caviral_detectable = models.IntegerField(choices=CARGA_VIRAL, blank=True, null=True, verbose_name='')
 	hepb = models.IntegerField(choices=SI_NO, blank=True, null=True, verbose_name='')
 	hepb_resultado = models.CharField(max_length=50, blank=True, null=True, verbose_name='Resultado')
 	hepb_fecha_realizacion = models.DateField(blank=True, null=True, verbose_name='Fecha de Realización')
@@ -295,7 +303,7 @@ class BoletasClinicas(models.Model):
 	hepc_fecha_realizacion = models.DateField(blank=True, null=True, verbose_name='Fecha de Realización')
 	hepc_ordenado_consulta = models.IntegerField(choices=ORDENADOS_EN_CONSULTA, blank=True, null=True, verbose_name='')
 	rpr = models.IntegerField(choices=SI_NO, blank=True, null=True, verbose_name='')
-	rpr_resultado = models.CharField(max_length=50, blank=True, null=True, verbose_name='Resultado')
+	rpr_resultado = models.CharField(max_length=50, blank=True, null=True, verbose_name='Resultaado')
 	rpr_fecha_realizacion = models.DateField(blank=True, null=True, verbose_name='Fecha de Realización')
 	rpr_ordenado_consulta = models.IntegerField(choices=ORDENADOS_EN_CONSULTA, blank=True, null=True, verbose_name='')
 	rxtorax = models.IntegerField(choices=SI_NO, blank=True, null=True, verbose_name='')
@@ -618,26 +626,20 @@ class BoletasSeguimientos(models.Model):
 	esquema_actual_arv = models.IntegerField(choices=ESQUEMA_ARV, blank=True, null=True, verbose_name='Esquema Actual RV')
 	fecha_entrega_arv = models.DateField(blank=True, null=True, verbose_name='Fecha de Entrega de ARV')
 	
-	azt = models.NullBooleanField(default=False)
-	abc = models.NullBooleanField(default=False)
-	efv = models.NullBooleanField(default=False)
-	rpv = models.NullBooleanField(default=False)
-	dtf = models.NullBooleanField(default=False)
-	lpv = models.NullBooleanField(default=False)
 
 	abc_cant = models.IntegerField(blank=True, null=True, verbose_name='Abacavir (ABC)')
-	ft_cant= models.IntegerField(blank=True, null=True, verbose_name='Emtricitabina (FT)')
+	ft_cant= models.IntegerField(blank=True, null=True, verbose_name='Emtricitabina (FTC)')
 	d4t_cant= models.IntegerField(blank=True, null=True, verbose_name='Estavudina (D4T)')
-	azt_cant = models.IntegerField(blank=True, null=True, verbose_name='Zidovunidina (AZT)')
+	azt_cant = models.IntegerField(blank=True, null=True, verbose_name='Zidovudina (AZT)')
 	efv_cant= models.IntegerField(blank=True, null=True, verbose_name='Efavirenz (EFV)')
-	nvp_cant= models.IntegerField(blank=True, null=True, verbose_name='Neviraparina (NVP)')
+	nvp_cant= models.IntegerField(blank=True, null=True, verbose_name='Nevirapina (NVP)')
 	ddi_cant= models.IntegerField(blank=True, null=True, verbose_name='Didanosida (DDI)')
 	tc_cant= models.IntegerField(blank=True, null=True, verbose_name='Lamivudina (3TC)')
 	tdf_cant= models.IntegerField(blank=True, null=True, verbose_name='Tenofovir (TDF)')
 	rpv_cant= models.IntegerField(blank=True, null=True, verbose_name='Rilpavirina (RPV)')
 	etr_cant= models.IntegerField(blank=True, null=True, verbose_name='Etravirina (ETR)')
 	atv_cant= models.IntegerField(blank=True, null=True, verbose_name='Atazanavir (ATV)')
-	drv_cant= models.IntegerField(blank=True, null=True, verbose_name='Darunavir (RAL)')
+	drv_cant= models.IntegerField(blank=True, null=True, verbose_name='Darunavir (DRV)')
 	fpv_cant= models.IntegerField(blank=True, null=True, verbose_name='Fosamprenavir (FPV)')
 	idv_cant= models.IntegerField(blank=True, null=True, verbose_name='Indinavir (IDV)')
 	nfv_cant= models.IntegerField(blank=True, null=True, verbose_name='Nelfinavir (NFV)')
@@ -646,13 +648,16 @@ class BoletasSeguimientos(models.Model):
 	ral_cant= models.IntegerField(blank=True, null=True, verbose_name='Raltegravir (RAL)')
 	evg_cant= models.IntegerField(blank=True, null=True, verbose_name='Elvitegravir (EVG)')
 	dtg_cant= models.IntegerField(blank=True, null=True, verbose_name='Dolutegravir (DTG)')
+	mvc_cant= models.IntegerField(blank=True, null=True, verbose_name='Maraviroc (MVC)')
+	t20_cant= models.IntegerField(blank=True, null=True, verbose_name='Enfurvirtide (T-20)')
 	azt_3tc_cant= models.IntegerField(blank=True, null=True, verbose_name='AZT_3TC')
-	abc_3tc_azt_cant= models.IntegerField(blank=True, null=True, verbose_name='ACB_3TC_AZT')
+	abc_3tc_azt_cant= models.IntegerField(blank=True, null=True, verbose_name='ABC_3TC_AZT')
 	efv_ftc_tdf_cant= models.IntegerField(blank=True, null=True, verbose_name='EFV_FTC_TDF')
 	rpv_ftc_tdf_cant= models.IntegerField(blank=True, null=True, verbose_name='RPV_FTC_TDF')
 	tdf_ftc_cant= models.IntegerField(blank=True, null=True, verbose_name='TDF_FTC')
 	lpv_rtv_cant= models.IntegerField(blank=True, null=True, verbose_name='LPV_rtv')
 	abc_3tc_cant= models.IntegerField(blank=True, null=True, verbose_name='ABC_3TC')
+	#medicamentos preescritos en consulta actual
 
 	abc_med = models.NullBooleanField(default=False)
 	ft_med= models.NullBooleanField(default=False)
@@ -675,7 +680,18 @@ class BoletasSeguimientos(models.Model):
 	ral_med= models.NullBooleanField(default=False)
 	evg_med= models.NullBooleanField(default=False)
 	dtg_med= models.NullBooleanField(default=False)
+	mvc_med= models.NullBooleanField(default=False)
+	t20_med= models.NullBooleanField(default=False)
 
+	azt = models.NullBooleanField(default=False)
+	abc = models.NullBooleanField(default=False)
+	efv = models.NullBooleanField(default=False)
+	rpv = models.NullBooleanField(default=False)
+	dtf = models.NullBooleanField(default=False)
+	lpv = models.NullBooleanField(default=False)
+	abc_3tc_med= models.NullBooleanField(default=False)
+
+	#medicamentos de nueva terapia
 	abc_ter = models.NullBooleanField(default=False)
 	ft_ter= models.NullBooleanField(default=False)
 	d4t_ter= models.NullBooleanField(default=False)
@@ -697,6 +713,8 @@ class BoletasSeguimientos(models.Model):
 	ral_ter= models.NullBooleanField(default=False)
 	evg_ter= models.NullBooleanField(default=False)
 	dtg_ter= models.NullBooleanField(default=False)
+	mvc_ter= models.NullBooleanField(default=False)
+	t20_ter= models.NullBooleanField(default=False)
 
 	azt2_ter = models.NullBooleanField(default=False)
 	abc2_ter = models.NullBooleanField(default=False)
@@ -704,6 +722,8 @@ class BoletasSeguimientos(models.Model):
 	rpv2_ter = models.NullBooleanField(default=False)
 	dtf2_ter = models.NullBooleanField(default=False)
 	lpv2_ter = models.NullBooleanField(default=False)
+	abc_3tc_ter= models.NullBooleanField(default=False)
+
 
 		
 

@@ -631,6 +631,7 @@ def boleta_clinica(request):
 						'caviral_resultado',
 						'caviral_fecha_realizacion',
 						'caviral_ordenado_consulta',
+						'caviral_detectable',
 						'hepb',
 						'hepb_resultado',
 						'hepb_fecha_realizacion',
@@ -1010,6 +1011,7 @@ def boleta_clinica(request):
 				registro2.lic4_ordenado_consulta= request.POST.get('lic4_ordenado_consulta')
 				registro2.caviral= request.POST.get('caviral')
 				registro2.caviral_ordenado_consulta= request.POST.get('caviral_ordenado_consulta')
+				registro2.caviral_detectable=request.POST.get('caviral_detectable')
 				registro2.hepb= request.POST.get('hepb')
 				registro2.hepb_ordenado_consulta= request.POST.get('hepb_ordenado_consulta')
 				registro2.hepc= request.POST.get('hepc')
@@ -1581,6 +1583,7 @@ def boleta_seguimiento(request):
 					'caviral_resultado',
 					'caviral_fecha_realizacion',
 					'caviral_ordenado_consulta',
+					'caviral_detectable',
 					'hepb',
 					'hepb_resultado',
 					'hepb_fecha_realizacion',
@@ -1837,13 +1840,14 @@ def boleta_seguimiento(request):
 						'documentado_con',
 						'esquema_actual_arv',
 						'fecha_entrega_arv',
-						'azt',
+						'azt',# desde aqui estan los medicamentos preescritos de la consulta actual solo coformulaciones
 						'abc',
 						'efv',
 						'rpv',
 						'dtf',
 						'lpv',
-						'abc_cant',
+						'abc_3tc_med',# hasta aqui terminan las coformulaciones de los medicamentos de la consulta actual
+						'abc_cant',# desde aqui cominezan las cantidades de medicamentos y coforumulaciones 
 						'ft_cant',
 						'd4t_cant',
 						'azt_cant',
@@ -1864,7 +1868,16 @@ def boleta_seguimiento(request):
 						'ral_cant',
 						'evg_cant',
 						'dtg_cant',
-						'abc_med',
+						'mvc_cant',
+						't20_cant',
+						'azt_3tc_cant',
+						'abc_3tc_azt_cant',
+						'efv_ftc_tdf_cant',
+						'rpv_ftc_tdf_cant',
+						'tdf_ftc_cant',
+						'lpv_rtv_cant',
+						'abc_3tc_cant',# aqui terminan las cantidades de medicamentos y coformulaciones
+						'abc_med',# desde aqui estan los medicamentos preescritos de la consulta actual solo medicamentos
 						'ft_med',
 						'd4t_med',
 						'azt_med',
@@ -1885,7 +1898,9 @@ def boleta_seguimiento(request):
 						'ral_med',
 						'evg_med',
 						'dtg_med',
-						'abc_ter',
+						'mvc_med',
+						't20_med',# hasta aqui terminan los medicamentos preescritos de la consulta actual
+						'abc_ter',# aqui comienzan los medicamentos y coformulaciones de la nueva terapia
 						'ft_ter',
 						'd4t_ter',
 						'azt_ter',
@@ -1906,23 +1921,20 @@ def boleta_seguimiento(request):
 						'ral_ter',
 						'evg_ter',
 						'dtg_ter',
+						'mvc_med',
+						't20_med',
 						'azt2_ter',
 						'abc2_ter',
 						'efv2_ter',
 						'rpv2_ter',
 						'dtf2_ter',
 						'lpv2_ter',
+						'abc_3tc_ter',# aqui terminan los medicamentos y las coformulaciones de la nueva terapia
 						'cantidad_medicamento',
 						'adherencia',
 						'tiempo_arv',
-						'fecha_proxentrega_arv',
-						'azt_3tc_cant',
-						'abc_3tc_azt_cant',
-						'efv_ftc_tdf_cant',
-						'rpv_ftc_tdf_cant',
-						'tdf_ftc_cant',
-						'lpv_rtv_cant',
-						'abc_3tc_cant'
+						'fecha_proxentrega_arv'
+
 					).filter(boleta_clinica=persona['id']).order_by('-fecha_actualizacion')[:1].get()
 				)
 			except Exception, e:
@@ -2015,6 +2027,7 @@ def boleta_seguimiento(request):
 				registro2.lic4_ordenado_consulta= request.POST.get('lic4_ordenado_consulta')
 				registro2.caviral= request.POST.get('caviral')
 				registro2.caviral_ordenado_consulta= request.POST.get('caviral_ordenado_consulta')
+				registro2.caviral_detectable= request.POST.get('caviral_detectable')
 				registro2.hepb= request.POST.get('hepb')
 				registro2.hepb_ordenado_consulta= request.POST.get('hepb_ordenado_consulta')
 				registro2.hepc= request.POST.get('hepc')
@@ -2526,7 +2539,8 @@ def boleta_seguimiento(request):
 				registro2.tdf_ftc_cant= request.POST.get('tdf_ftc')
 				registro2.lpv_rtv_cant= request.POST.get('lpv_rtv')
 				registro2.abc_3tc_cant= request.POST.get('abc_3tc')
-
+				registro2.mvc_cant= request.POST.get('mvc')
+				registro2.t20_cant= request.POST.get('t20')
 				registro2.save()
 
 				try:
@@ -2541,6 +2555,7 @@ def boleta_seguimiento(request):
 				registro.actualizado_por = request.user
 				registro.boleta_clinica = registro2
 				registro.identidad =  identidad
+				#guardar en la db los medicamentos preescritos en la consulta actual
 				if '1' in request.POST.getlist('co1'):
 					registro.azt = True
 				else:
@@ -2565,6 +2580,10 @@ def boleta_seguimiento(request):
 					registro.lpv = True
 				else:
 					registro.lpv = False 
+				if '7' in request.POST.getlist('co1'):
+					registro.abc_3tc_med = True
+				else:
+					registro.abc_3tc_med = False 
 
 				if '1' in request.POST.getlist('medicamento_prescritos'):
 					registro.abc_med = True
@@ -2650,7 +2669,16 @@ def boleta_seguimiento(request):
 					registro.dtg_med = True
 				else:
 						registro.dtg_med = False
+				if '22' in request.POST.getlist('medicamento_prescritos'):
+					registro.mvc_med = True
+				else:
+						registro.mvc_med = False
+				if '23' in request.POST.getlist('medicamento_prescritos'):
+					registro.t20_med = True
+				else:
+						registro.t20_med = False
 
+				# guardar en la db los medicamentos y las coformulaciones de la nueva terapia
 				if '1' in request.POST.getlist('co2'):
 					registro.azt2_ter = True
 				else:
@@ -2675,6 +2703,11 @@ def boleta_seguimiento(request):
 					registro.lpv2_ter = True
 				else:
 					registro.lpv2_ter = False 
+
+				if '7' in request.POST.getlist('co2'):
+					registro.abc_3tc_ter = True
+				else:
+					registro.abc_3tc_ter = False 
 
 				if '1' in request.POST.getlist('terapia'):
 					registro.abc_ter = True
@@ -2760,6 +2793,14 @@ def boleta_seguimiento(request):
 					registro.dtg_ter = True
 				else:
 						registro.dtg_ter = False
+				if '22' in request.POST.getlist('terapia'):
+					registro.mvc_ter = True
+				else:
+						registro.mvc_ter = False
+				if '23' in request.POST.getlist('terapia'):
+					registro.t20_ter = True
+				else:
+						registro.t20_ter = False
 
 				registro.conteo_cd4 = request.POST.get('conteo_cd4')
 				registro.causa_fallecido = request.POST.get('causa_fallecido')
@@ -2891,6 +2932,8 @@ def boleta_seguimiento(request):
 				registro.tdf_ftc_cant = request.POST.get('tdf_ftc_cant')
 				registro.lpv_rtv_cant = request.POST.get('lpv_rtv_cant')
 				registro.abc_3tc_cant = request.POST.get('abc_3tc_cant')
+				registro2.mvc_cant= request.POST.get('mvc')
+				registro2.t20_cant= request.POST.get('t20')
 
 				formulario = RPNForm()
 				formulario.fields['sexo'].widget.attrs['disabled'] = True
