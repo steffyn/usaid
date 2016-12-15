@@ -1125,7 +1125,6 @@ def boleta_clinica(request):
 				registro2.infpel_trat= request.POST.get('infpel_trat')
 				registro2.actualizado_por = request.user
 
-				print registro2.hepc2, registro2.hepb2, '----------------------------------------------------------------'
 				if request.POST.get('fecha_ultima_menstruacion') != '':
 					registro2.fecha_ultima_menstruacion = request.POST.get('fecha_ultima_menstruacion')
 				else:
