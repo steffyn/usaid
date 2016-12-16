@@ -1924,15 +1924,15 @@ def boleta_seguimiento(request):
 						'ral_ter',
 						'evg_ter',
 						'dtg_ter',
-						'mvc_ter',
-						't20_ter',
+						'mvc_med',
+						't20_med',
 						'azt2_ter',
 						'abc2_ter',
 						'efv2_ter',
 						'rpv2_ter',
 						'dtf2_ter',
 						'lpv2_ter',
-						'abc_3tc_ter',
+						'abc_3tc_ter',# aqui terminan los medicamentos y las coformulaciones de la nueva terapia
 						'cantidad_medicamento',
 						'adherencia',
 						'tiempo_arv',
@@ -1943,7 +1943,7 @@ def boleta_seguimiento(request):
 			except Exception, e:
 				seguimiento = False
 				pass
-			#asdfasdf
+			
 		except Exception, e:
 			persona = False
 			seguimiento = False
@@ -2709,6 +2709,7 @@ def boleta_seguimiento(request):
 					registro.lpv2_ter = True
 				else:
 					registro.lpv2_ter = False 
+
 				if '7' in request.POST.getlist('co2'):
 					registro.abc_3tc_ter = True
 				else:

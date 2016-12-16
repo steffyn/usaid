@@ -284,7 +284,7 @@ class BoletasClinicas(models.Model):
 	estado_inmunologico = models.IntegerField(choices=ESTADO_INMUNOLOGICO, blank=True, null=True, verbose_name='Estadio Inmunológico')
 	estado_clinico = models.CharField(max_length=3, choices=ESTADIO_CLINICO, blank=True, null=True, verbose_name='Estadio Clínico')
 	estadio_infeccion = models.CharField(max_length=2, blank=True, null=True, verbose_name='Estadio de la Infección')
-#asdasdfa
+
 	lic4 = models.IntegerField(choices=SI_NO, blank=True, null=True, verbose_name='Linfocitos CD4')
 	lic4_resultado = models.CharField(max_length=50, blank=True, null=True, verbose_name='Resultado (Cel./mm)')
 	lic4_fecha_realizacion = models.DateField(blank=True, null=True, verbose_name='Fecha de Realización')
