@@ -153,8 +153,8 @@
          <h4 class="text-center font-style">
             [PARTE III] EVALUACION LABORATORIAL SUBSIGUIENTE
          </h4>
-         <p class="page-header"></p>
-
+        <p class="page-header"></p>
+<!--This is a comment. Comments are not displayed in the browser-->
          <p class="text-center sub-style">INMUNOLOGIA</p>
          <div class="row">
             <div class="col-sm-2">
@@ -244,7 +244,6 @@
             <div class="col-sm-3 form-inline">
                {{formulario3.rpr_ordenado_consulta|bootstrap}}
             </div>
-         </div>
 
          <p class="page-header"></p>
          <p class="text-center sub-style">ESTUDIOS PARA TB</p>
@@ -1896,6 +1895,7 @@ $('#identidad').attr({
          if (msg.seg.abc_3tc_ter==true){
             option.push('7')
          }
+      
          $("#sel2").val(option).trigger("change");
 
          /*en esta parte se escoge el medicamento de la consulta actual para enviar a la db */
@@ -2114,6 +2114,7 @@ $('#identidad').attr({
          $('#id_caviral_ordenado_consulta_'+(msg.persona.caviral_ordenado_consulta-1)).prop('checked', true).trigger('change')
          $('#id_caviral_resultado').val(msg.persona.caviral_resultado)
          $('#id_caviral_fecha_realizacion').val(msg.persona.caviral_fecha_realizacion)
+         
 
          $('#id_hepb_'+(msg.persona.hepb-1)).prop('checked', true).trigger('change')
          $('#id_hepb_ordenado_consulta_'+(msg.persona.hepb_ordenado_consulta-1)).prop('checked', true).trigger('change')
@@ -2537,6 +2538,9 @@ $('#search_identidad').click(function() {
          if (msg.seg.lpv==true){
             option.push('6')
          }
+         if (msg.seg.abc_3tc_med==true){
+            option.push('7')
+         }
          $("#sel1").val(option).trigger("change");
 
          var option = new Array();
@@ -2558,6 +2562,10 @@ $('#search_identidad').click(function() {
          if (msg.seg.lpv2_ter==true){
             option.push('6')
          }
+         if (msg.seg.abc_3tc_ter==true){
+            option.push('7')
+         }
+         
          $("#sel2").val(option).trigger("change");
 
 
@@ -2625,6 +2633,12 @@ $('#search_identidad').click(function() {
          if (msg.seg.dtg_med==true){
             option.push('21')
          }
+         if (msg.seg.mvc_ter==true){
+            option.push('22')
+         }
+         if (msg.seg.t20_ter==true){
+            option.push('23')
+         }
          $("#medicamento_preinscritos").val(option).trigger("change");
 
          var option = new Array();
@@ -2690,6 +2704,12 @@ $('#search_identidad').click(function() {
          }
          if (msg.seg.dtg_ter==true){
             option.push('21')
+         }
+         if (msg.seg.mvc_ter==true){
+            option.push('22')
+         }
+         if (msg.seg.t20_ter==true){
+            option.push('23')
          }
          $("#terapia").val(option).trigger("change");
 
@@ -2761,7 +2781,7 @@ $('#search_identidad').click(function() {
          $('#id_caviral_ordenado_consulta_'+(msg.persona.caviral_ordenado_consulta-1)).prop('checked', true).trigger('change')
          $('#id_caviral_resultado').val(msg.persona.caviral_resultado)
          $('#id_caviral_fecha_realizacion').val(msg.persona.caviral_fecha_realizacion)
-
+         
          $('#id_hepb_'+(msg.persona.hepb-1)).prop('checked', true).trigger('change')
          $('#id_hepb_ordenado_consulta_'+(msg.persona.hepb_ordenado_consulta-1)).prop('checked', true).trigger('change')
          $('#id_hepb_resultado_'+(parseInt(msg.persona.hepb_resultado)-1)).prop('checked', true).trigger('change')
@@ -3144,6 +3164,8 @@ $('input[name=caviral]').change(function(){
       $('#id_caviral_resultado, #id_caviral_fecha_realizacion, input[name=caviral_ordenado_consulta]').prop('disabled', false)
    }
 })
+
+
 
 $('input[name=hepb]').change(function(){
    opcion = $("#id_hepb_1").prop("checked")
@@ -4254,7 +4276,7 @@ $('#parte2').click(function(){
    $('input[name="estado_inmunologico"], input[name="estado_clinico"], input[name="estadio_infeccion"], input[name="estatus_actual_tarv"], input[name="actualmente_tarv"]').prop('checked', false).trigger('change');
 })
 $('#parte3').click(function(){
-   $('input[name="lic4"], input[name="lic4_ordenado_consulta"], input[name="caviral"], input[name="caviral_ordenado_consulta"]').prop('checked', false).trigger('change');
+   $('input[name="lic4"], input[name="lic4_ordenado_consulta"], input[name="caviral_ordenado_consulta"]').prop('checked', false).trigger('change');
 })
 $('#parte4').click(function(){
    $('input[name="hepb"], input[name="hepb_ordenado_consulta"], input[name="hepc"], input[name="hepc_ordenado_consulta"],input[name="rpr"] ,input[name="rpr_ordenado_consulta"],input[name="hepb_resultado"] ,input[name="rpr_resultado"],input[name="hepc_resultado"] ').prop('checked', false).trigger('change');

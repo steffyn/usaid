@@ -1804,7 +1804,7 @@ class BoletaClinicaSeguimientoForm(ModelForm):
 	    'type': 'button',
 	    'placement': 'append',
 	}), required=False, label='Fecha')
-
+#asdfasdfasddf
 
 
 class BoletaSeguimientoForm(ModelForm):
@@ -1819,6 +1819,7 @@ class BoletaSeguimientoForm(ModelForm):
 		exclude = ['azt','abc','efv','rpv','dtf','lpv', 'boleta_clinica', 'identidad', 'creado_por', 'fecha_creacion', 'fecha_actualizacion', 'actualizado_por',
 			'abc_med', 'ft_med', 'd4t_med', 'azt_med', 'efv_med', 'nvp_med', 'ddi_med', 'tc_med', 'tdf_med', 'rpv_med', 'etr_med', 'atv_med', 'drv_med', 'fpv_med', 'idv_med', 'nfv_med', 'sqv_med', 'tpv_med', 'ral_med', 'evg_med', 'dtg_med', 
 			'abc_ter', 'ft_ter', 'd4t_ter', 'azt_ter', 'efv_ter', 'nvp_ter', 'ddi_ter', 'tc_ter', 'tdf_ter', 'rpv_ter', 'etr_ter', 'atv_ter', 'drv_ter', 'fpv_ter', 'idv_ter', 'nfv_ter', 'sqv_ter', 'tpv_ter', 'ral_ter', 'evg_ter', 'dtg_ter'
+
 		]
 	conteo_cd4 =  forms.ChoiceField(widget=RadioSelect, choices=CONTEO, label='Conteo de CD4 con que Inició el Terapia', required=False, initial=None)
 	causa_fallecido =  forms.ChoiceField(widget=RadioSelect, choices=MOTIVOS_FALLECIMIENTO, label='Causa del Fallecimiento', required=False, initial=None)
