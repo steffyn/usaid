@@ -25,7 +25,7 @@ def date_handler(obj):
 	if hasattr(obj, 'isoformat'):
 		return obj.isoformat()
 	else:
-		raise TypeError
+		pass
 
 
 
@@ -857,6 +857,12 @@ def boleta_clinica(request):
 			except Exception, e:
 				clinica = False
 				pass
+
+			try:
+				prueba = dict(BoletasPruebas.objects.values('fecha_prueba_confirmatoria').filter(boleta=persona['id']).order_by('-fecha_actualizacion')[:1].get())
+			except Exception as e:
+				prueba = False
+
 		except Exception, e:
 			clinica = False
 			try:
@@ -877,6 +883,7 @@ def boleta_clinica(request):
 		data ={
 			'persona': persona,
 			'clinica': clinica,
+			'prueba': prueba
 		}
 
 		return HttpResponse(json.dumps(data, default=date_handler), content_type='application/json')
